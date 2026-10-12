@@ -107,26 +107,11 @@ export default function AboutSection({
             </div>
           </div>
 
-          {/* Right Column: Large Industrial Press Machine Image & Decorative Frame */}
-          <div className="lg:col-span-6 relative flex items-center">
-            {/* Outer Decorative Accent Geometric Frame on Right Edge */}
+          {/* Right Column: Large Industrial Press Machine Image */}
+          <div className="lg:col-span-6 relative flex items-center lg:pr-6 xl:pr-10">
             <div className="relative w-full h-full min-h-[420px] sm:min-h-[500px] lg:min-h-[560px]">
-              {/* Corner Graphic Accents (matching screenshot) */}
-              <div
-                className="absolute -top-3 -right-3 w-16 h-16 bg-[#cb5855] rounded-tr-2xl -z-0 hidden sm:block"
-                aria-hidden="true"
-              />
-              <div
-                className="absolute -bottom-3 -right-3 w-16 h-16 bg-[#cb5855] rounded-br-2xl -z-0 hidden sm:block"
-                aria-hidden="true"
-              />
-              <div
-                className="absolute top-10 -right-3 bottom-10 w-[2px] bg-[#cb5855]/40 -z-0 hidden sm:block"
-                aria-hidden="true"
-              />
-
               {/* Main Showcase Image Container */}
-              <div className="relative z-10 w-full h-full min-h-[420px] sm:min-h-[500px] lg:min-h-[560px]  overflow-hidden shadow-xl border border-gray-100 bg-gray-50 group">
+              <div className="relative z-10 w-full h-full min-h-[420px] sm:min-h-[500px] lg:min-h-[560px] overflow-hidden shadow-xl border border-gray-100 bg-gray-50 group">
                 <Image
                   src={largeImageSrc}
                   alt="PrintAxis Industrial Digital Printing Press Machine"
@@ -138,6 +123,38 @@ export default function AboutSection({
               </div>
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* Outer Decorative Accent Geometric Frame on Right Edge */}
+      {/* Corner Graphic Accents (matching screenshot) */}
+      <div
+        className="absolute right-0 top-0 bottom-0 w-16 sm:w-20 md:w-24 lg:w-28 pointer-events-none hidden sm:flex flex-col justify-between items-end z-0"
+        aria-hidden="true"
+      >
+        {/* Top-Right Graphic Accent (Flush to right edge) */}
+        <div className="w-full flex justify-end">
+          <svg
+            className="w-16 sm:w-20 md:w-24 lg:w-28 h-24 sm:h-28 md:h-32 lg:h-36 text-[#cb5855]"
+            viewBox="0 0 110 140"
+            fill="currentColor"
+          >
+            <polygon points="110,0 0,0 0,65 50,65 50,140 110,140" />
+          </svg>
+        </div>
+
+        {/* Vertical thin accent line running between top and bottom blocks */}
+        <div className="w-[1.5px] bg-[#cb5855]/70 h-full my-2 mr-8 sm:mr-10 md:mr-11 lg:mr-12" />
+
+        {/* Bottom-Right Graphic Accent (Flush to right edge) */}
+        <div className="w-full flex justify-end">
+          <svg
+            className="w-16 sm:w-20 md:w-24 lg:w-28 h-24 sm:h-28 md:h-32 lg:h-36 text-[#cb5855]"
+            viewBox="0 0 110 140"
+            fill="currentColor"
+          >
+            <polygon points="110,140 0,140 0,75 50,75 50,0 110,0" />
+          </svg>
         </div>
       </div>
     </section>
