@@ -32,7 +32,7 @@ export interface NavbarProps {
  */
 export const QuoteButton: React.FC<QuoteButtonProps> = ({
   label = "GET A QUOTE",
-  href = "/contact",
+  href = "/get-a-quote",
   onClick,
   className = "",
 }) => {

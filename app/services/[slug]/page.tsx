@@ -6,9 +6,13 @@ import { siteMap } from "@/data";
 
 export function generateStaticParams() {
   const services = siteMap.service?.servicesList || [];
-  return services.map((s) => ({
-    slug: s.href.replace("/services/", "").replace(/^\//, "") || s.id,
-  }));
+  const slugs = new Set<string>();
+  services.forEach((s) => {
+    if (s.id) slugs.add(s.id);
+    const hrefSlug = s.href?.replace("/services/", "").replace(/^\//, "");
+    if (hrefSlug) slugs.add(hrefSlug);
+  });
+  return Array.from(slugs).map((slug) => ({ slug }));
 }
 
 export default async function ServiceDetailPage({

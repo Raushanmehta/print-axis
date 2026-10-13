@@ -5,9 +5,13 @@ import { siteMap } from "@/data";
 
 export function generateStaticParams() {
   const posts = siteMap.blog?.blogPosts || [];
-  return posts.map((post) => ({
-    slug: post.href.replace("/blog/", "").replace(/^\//, "") || post.id,
-  }));
+  const slugs = new Set<string>();
+  posts.forEach((post) => {
+    if (post.id) slugs.add(post.id);
+    const hrefSlug = post.href?.replace("/blog/", "").replace(/^\//, "");
+    if (hrefSlug) slugs.add(hrefSlug);
+  });
+  return Array.from(slugs).map((slug) => ({ slug }));
 }
 
 export default async function BlogPostDetailPage({

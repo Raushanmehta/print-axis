@@ -239,7 +239,7 @@
                         ],
                         "cta": {
                             "label": "GET A QUOTE",
-                            "href": "/contact"
+                            "href": "/get-a-quote"
                         }
                     }
                 }
@@ -290,8 +290,8 @@
                                 "href": "/services"
                             },
                             {
-                                "label": "How We Do",
-                                "href": "/how-we-do"
+                                "label": "Get A Quote",
+                                "href": "/get-a-quote"
                             },
                             {
                                 "label": "Blog",
@@ -309,31 +309,27 @@
                         "services": [
                             {
                                 "label": "Digital Printing",
-                                "href": "/services"
+                                "href": "/services/digital-printing"
+                            },
+                            {
+                                "label": "3D Printing",
+                                "href": "/services/3d-printing"
                             },
                             {
                                 "label": "Offset Printing",
-                                "href": "/services"
+                                "href": "/services/offset-printing"
                             },
                             {
-                                "label": "Large Format Printing",
-                                "href": "/services"
+                                "label": "Design & Branding",
+                                "href": "/services/design-branding"
                             },
                             {
-                                "label": "Packaging & Labels",
-                                "href": "/services"
+                                "label": "Packaging & Boxes",
+                                "href": "/services/custom-packaging"
                             },
                             {
-                                "label": "Business Stationery",
-                                "href": "/services"
-                            },
-                            {
-                                "label": "Promotional Products",
-                                "href": "/services"
-                            },
-                            {
-                                "label": "Custom Printing Solutions",
-                                "href": "/services"
+                                "label": "Apparel Printing",
+                                "href": "/services/apparel-printing"
                             }
                         ],
                         "titles": {
@@ -377,7 +373,7 @@
                         "description": "From branding and packaging to marketing materials, we deliver premium printing solutions that make your brand stand out.",
                         "quoteButton": {
                             "label": "GET A QUOTE",
-                            "href": "/contact"
+                            "href": "/get-a-quote"
                         },
                         "servicesButton": {
                             "label": "OUR SERVICES",
@@ -1039,7 +1035,7 @@
                         "description": "Custom printing solutions for your business, events and personal needs. Get high-quality prints that make an impact.",
                         "button": {
                             "label": "Get a Quote",
-                            "href": "/contact"
+                            "href": "/get-a-quote"
                         },
                         "backgroundImageSrc": "/images/cta-banner.png"
                     }
