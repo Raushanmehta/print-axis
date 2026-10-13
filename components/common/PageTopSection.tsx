@@ -1,29 +1,36 @@
-
+import React from "react";
 import Link from "next/link";
+import { siteMap, PrintAxisPageTopSectionData } from "@/data";
 
 export interface PageTopSectionProps {
   title?: string;
   breadcrumb?: string;
   breadcrumbs?: string;
+  description?: string;
+  data?: PrintAxisPageTopSectionData;
 }
 
 export default function PageTopSection({
-  title = "Contact Us",
+  title,
   breadcrumb,
   breadcrumbs,
+  description,
+  data = siteMap.pageTopSection,
 }: PageTopSectionProps) {
-  // Simple props usage: breadcrumb or breadcrumbs or title
-  const activePage = breadcrumb || breadcrumbs || title;
+  const displayTitle = title || data?.defaultTitle || "PrintAxis Solutions";
+  const activePage = breadcrumb || breadcrumbs || data?.defaultBreadcrumb || displayTitle;
+  const homeLabel = data?.homeLabel || "Home";
+  const homeHref = data?.homeHref || "/";
 
   return (
-    <section className="relative w-full overflow-hidden bg-gradient-to-r from-[#351c2f] via-[#3a2034] to-[#45253e] py-16 sm:py-20 md:py-24 lg:py-28 text-white">
+    <section className="relative w-full overflow-hidden bg-gradient-to-r from-[#351c2f] via-[#3a2034] to-[#45253e] py-16 sm:py-20 md:py-24 lg:py-24 text-white">
       {/* Bottom-Left 8-Petal Asterisk Flower / Sparkle Icon */}
       <div
         className="absolute bottom-6 left-6 sm:bottom-8 sm:left-10 lg:bottom-10 lg:left-14 pointer-events-none z-10"
         aria-hidden="true"
       >
         <svg
-          className="w-7 h-7 sm:w-9 sm:h-9 text-[#e06864]"
+          className="w-11 h-11 sm:w-12 sm:h-12 text-[#e06864]"
           viewBox="0 0 40 40"
           fill="currentColor"
         >
@@ -95,18 +102,24 @@ export default function PageTopSection({
 
       {/* Centered Title and Breadcrumbs */}
       <div className="relative z-10 max-w-[1420px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 text-center flex flex-col items-center justify-center">
-        {/* Title from Props */}
-        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[54px] font-extrabold tracking-tight text-white leading-tight">
-          {title}
+        {/* Title from Props or JSON */}
+        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-[48px] font-extrabold tracking-tight text-white leading-tight">
+          {displayTitle}
         </h1>
 
-        {/* Simple Breadcrumb: Home > [Breadcrumb from Props] */}
+        {description && (
+          <p className="mt-3 text-sm sm:text-base text-white/80 max-w-2xl mx-auto">
+            {description}
+          </p>
+        )}
+
+        {/* Breadcrumb: [homeLabel] > [Breadcrumb] from JSON */}
         <div className="mt-3 sm:mt-4 flex items-center justify-center gap-2 text-sm sm:text-base font-normal">
           <Link
-            href="/"
+            href={homeHref}
             className="text-white/90 hover:text-white transition-colors duration-200"
           >
-            Home
+            {homeLabel}
           </Link>
           <span
             className="text-[#e06864] font-semibold select-none"

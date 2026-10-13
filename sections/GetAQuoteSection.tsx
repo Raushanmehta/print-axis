@@ -3,12 +3,24 @@
 import React, { useState, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { siteMap, type PrintAxisGetAQuoteData } from "@/data";
+import {
+  DiamondIcon,
+  ClockIcon,
+  TagIcon,
+  HeadsetIcon,
+  CheckCircleSolidIcon,
+  ChevronDownIcon,
+  UploadIcon,
+  SpinnerIcon,
+  ArrowRightIcon,
+} from "@/components/icons";
 
 export interface WhyChooseItem {
   id: string;
   title: string;
   description: string;
-  icon: React.ReactNode;
+  icon?: React.ReactNode;
 }
 
 export interface QuoteFormData {
@@ -22,6 +34,7 @@ export interface QuoteFormData {
 }
 
 export interface GetAQuoteSectionProps {
+  data?: PrintAxisGetAQuoteData;
   titlePart1?: string;
   titleHighlight?: string;
   subtitle?: string;
@@ -32,108 +45,36 @@ export interface GetAQuoteSectionProps {
   helpSubtitle?: string;
 }
 
-const defaultWhyChooseItems: WhyChooseItem[] = [
-  {
-    id: "quality",
-    title: "High Quality Printing",
-    description: "Premium materials and vibrant, long-lasting prints.",
-    icon: (
-      <svg
-        className="w-5 h-5 text-white"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="M6 3h12l4 6-10 12L2 9l4-6z" />
-        <path d="M11 3l-3 6 4 12 4-12-3-6" />
-        <path d="M2 9h20" />
-      </svg>
-    ),
-  },
-  {
-    id: "turnaround",
-    title: "Quick Turnaround",
-    description: "On-time delivery for all your business needs.",
-    icon: (
-      <svg
-        className="w-5 h-5 text-white"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <circle cx="12" cy="12" r="10" />
-        <polyline points="12 6 12 12 16 14" />
-      </svg>
-    ),
-  },
-  {
-    id: "pricing",
-    title: "Competitive Pricing",
-    description: "Best value without compromising quality.",
-    icon: (
-      <svg
-        className="w-5 h-5 text-white"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" />
-        <line x1="7" y1="7" x2="7.01" y2="7" />
-      </svg>
-    ),
-  },
-  {
-    id: "support",
-    title: "Expert Support",
-    description: "Our team is here to help you at every step.",
-    icon: (
-      <svg
-        className="w-5 h-5 text-white"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="M3 18v-6a9 9 0 0 1 18 0v6" />
-        <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z" />
-      </svg>
-    ),
-  },
-];
+function getWhyChooseIcon(id: string): React.ReactNode {
+  switch (id) {
+    case "quality":
+      return <DiamondIcon className="w-8 h-8 text-white" />;
+    case "turnaround":
+      return <ClockIcon className="w-8 h-8 text-white" />;
+    case "pricing":
+      return <TagIcon className="w-8 h-8 text-white" />;
+    case "support":
+    default:
+      return <HeadsetIcon className="w-8 h-8 text-white" />;
+  }
+}
 
-const defaultServices = [
-  "Choose a service",
-  "Offset Printing",
-  "Digital & Large Format Printing",
-  "3D Printing & Prototyping",
-  "Custom Packaging & Boxes",
-  "Corporate Identity & Stationery",
-  "Brochures, Catalogs & Flyers",
-  "Business Cards & Letterheads",
-  "Vinyl Banners & Signage",
-];
+export default function GetAQuoteSection(props: GetAQuoteSectionProps) {
+  const fallback = siteMap.getAQuote;
+  const titlePart1 = props.titlePart1 || props.data?.titlePart1 || fallback.titlePart1;
+  const titleHighlight = props.titleHighlight || props.data?.titleHighlight || fallback.titleHighlight;
+  const subtitle = props.subtitle || props.data?.subtitle || fallback.subtitle;
+  const successMessage = props.data?.successMessage || fallback.successMessage;
+  const servicesList = props.servicesList || props.data?.servicesList || fallback.servicesList;
+  const formLabels = props.data?.formLabels || fallback.formLabels;
+  const whyChooseTitle = props.data?.whyChooseTitle || fallback.whyChooseTitle;
 
-export default function GetAQuoteSection({
-  titlePart1 = "Request a",
-  titleHighlight = "Quote",
-  subtitle = "Fill out the form below with your printing requirements. We'll get back to you shortly with a customized quote.",
-  servicesList = defaultServices,
-  whyChooseItems = defaultWhyChooseItems,
-  helpTitlePart1 = "Need Help",
-  helpTitleHighlight = "with Your Quote?",
-  helpSubtitle = "Have a specific requirement or a large printing project? Get in touch with our team for expert guidance.",
-}: GetAQuoteSectionProps) {
+  const rawWhyChooseItems: WhyChooseItem[] = (props.whyChooseItems || props.data?.whyChooseItems || fallback.whyChooseItems) as WhyChooseItem[];
+  const helpCard = props.data?.helpCard || fallback.helpCard;
+  const helpTitlePart1 = props.helpTitlePart1 || helpCard.titlePart1;
+  const helpTitleHighlight = props.helpTitleHighlight || helpCard.titleHighlight;
+  const helpSubtitle = props.helpSubtitle || helpCard.subtitle;
+
   const [formData, setFormData] = useState<QuoteFormData>({
     fullName: "",
     phoneNumber: "",
@@ -201,52 +142,39 @@ export default function GetAQuoteSection({
   };
 
   return (
-    <section className="bg-[#fcfbfc] py-14 sm:py-16 lg:py-20">
+    <section className="bg-[#fcfbfc] py-8 lg:py-12">
       <div className="max-w-[1420px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 items-start">
           {/* Left Column: Form Card */}
-          <div className="lg:col-span-7 bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-10 border border-gray-100 shadow-[0_4px_25px_rgba(0,0,0,0.03)]">
+          <div className="lg:col-span-7 bg-white rounded-lg p-4 sm:p-6 border border-gray-100 shadow-xs">
             {/* Header */}
-            <div className="mb-8">
-              <h1 className="text-2xl sm:text-3xl lg:text-[34px] font-extrabold text-[#241121] tracking-tight">
+            <div className="mb-4">
+              <h1 className="text-2xl sm:text-3xl lg:text-[32px] font-extrabold text-[#241121] tracking-tight">
                 {titlePart1}{" "}
                 <span className="text-[#cb5855]">{titleHighlight}</span>
               </h1>
-              <p className="text-gray-500 text-xs sm:text-sm mt-2 leading-relaxed max-w-xl">
+              <p className="text-gray-500 text-xs sm:text-sm mt-1 leading-relaxed max-w-xl">
                 {subtitle}
               </p>
             </div>
 
             {submitted && (
-              <div className="mb-6 p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm flex items-center gap-3">
-                <svg
-                  className="w-5 h-5 text-emerald-600 flex-shrink-0"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                <span>
-                  Thank you! Your quote request has been received. Our team will
-                  review your requirements and contact you shortly.
-                </span>
+              <div className="mb-4 p-3 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs sm:text-sm flex items-center gap-2.5">
+                <CheckCircleSolidIcon className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+                <span>{successMessage}</span>
               </div>
             )}
 
             {/* Form */}
-            <form onSubmit={handleSubmit} className="space-y-5">
+            <form onSubmit={handleSubmit} className="space-y-3">
               {/* Row 1: Full Name & Phone Number */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label
                     htmlFor="fullName"
-                    className="block text-xs sm:text-sm font-semibold text-[#241121] mb-1.5"
+                    className="block text-xs font-semibold text-[#241121] mb-1"
                   >
-                    Full Name <span className="text-[#cb5855]">*</span>
+                    {formLabels.fullName} <span className="text-[#cb5855]">*</span>
                   </label>
                   <input
                     id="fullName"
@@ -255,17 +183,17 @@ export default function GetAQuoteSection({
                     required
                     value={formData.fullName}
                     onChange={handleInputChange}
-                    placeholder="Enter your full name"
-                    className="w-full px-4 py-2.5 sm:py-3 rounded-xl border border-gray-200 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-[#cb5855] focus:ring-1 focus:ring-[#cb5855] transition bg-white"
+                    placeholder={formLabels.fullNamePlaceholder}
+                    className="w-full px-3 py-2 rounded-lg border border-gray-200 text-xs sm:text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-[#cb5855] focus:ring-1 focus:ring-[#cb5855] transition bg-white"
                   />
                 </div>
 
                 <div>
                   <label
                     htmlFor="phoneNumber"
-                    className="block text-xs sm:text-sm font-semibold text-[#241121] mb-1.5"
+                    className="block text-xs font-semibold text-[#241121] mb-1"
                   >
-                    Phone Number <span className="text-[#cb5855]">*</span>
+                    {formLabels.phoneNumber} <span className="text-[#cb5855]">*</span>
                   </label>
                   <input
                     id="phoneNumber"
@@ -274,20 +202,20 @@ export default function GetAQuoteSection({
                     required
                     value={formData.phoneNumber}
                     onChange={handleInputChange}
-                    placeholder="Enter your phone number"
-                    className="w-full px-4 py-2.5 sm:py-3 rounded-xl border border-gray-200 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-[#cb5855] focus:ring-1 focus:ring-[#cb5855] transition bg-white"
+                    placeholder={formLabels.phoneNumberPlaceholder}
+                    className="w-full px-3 py-2 rounded-lg border border-gray-200 text-xs sm:text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-[#cb5855] focus:ring-1 focus:ring-[#cb5855] transition bg-white"
                   />
                 </div>
               </div>
 
               {/* Row 2: Email Address & Company Name */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label
                     htmlFor="email"
-                    className="block text-xs sm:text-sm font-semibold text-[#241121] mb-1.5"
+                    className="block text-xs font-semibold text-[#241121] mb-1"
                   >
-                    Email Address <span className="text-[#cb5855]">*</span>
+                    {formLabels.email} <span className="text-[#cb5855]">*</span>
                   </label>
                   <input
                     id="email"
@@ -296,17 +224,17 @@ export default function GetAQuoteSection({
                     required
                     value={formData.email}
                     onChange={handleInputChange}
-                    placeholder="Enter your email address"
-                    className="w-full px-4 py-2.5 sm:py-3 rounded-xl border border-gray-200 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-[#cb5855] focus:ring-1 focus:ring-[#cb5855] transition bg-white"
+                    placeholder={formLabels.emailPlaceholder}
+                    className="w-full px-3 py-2 rounded-lg border border-gray-200 text-xs sm:text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-[#cb5855] focus:ring-1 focus:ring-[#cb5855] transition bg-white"
                   />
                 </div>
 
                 <div>
                   <label
                     htmlFor="companyName"
-                    className="block text-xs sm:text-sm font-semibold text-[#241121] mb-1.5"
+                    className="block text-xs font-semibold text-[#241121] mb-1"
                   >
-                    Company Name
+                    {formLabels.companyName}
                   </label>
                   <input
                     id="companyName"
@@ -314,8 +242,8 @@ export default function GetAQuoteSection({
                     type="text"
                     value={formData.companyName}
                     onChange={handleInputChange}
-                    placeholder="Enter your company name"
-                    className="w-full px-4 py-2.5 sm:py-3 rounded-xl border border-gray-200 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-[#cb5855] focus:ring-1 focus:ring-[#cb5855] transition bg-white"
+                    placeholder={formLabels.companyNamePlaceholder}
+                    className="w-full px-3 py-2 rounded-lg border border-gray-200 text-xs sm:text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-[#cb5855] focus:ring-1 focus:ring-[#cb5855] transition bg-white"
                   />
                 </div>
               </div>
@@ -324,9 +252,9 @@ export default function GetAQuoteSection({
               <div>
                 <label
                   htmlFor="service"
-                  className="block text-xs sm:text-sm font-semibold text-[#241121] mb-1.5"
+                  className="block text-xs font-semibold text-[#241121] mb-1"
                 >
-                  Select Service <span className="text-[#cb5855]">*</span>
+                  {formLabels.service} <span className="text-[#cb5855]">*</span>
                 </label>
                 <div className="relative">
                   <select
@@ -335,7 +263,7 @@ export default function GetAQuoteSection({
                     required
                     value={formData.service}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-2.5 sm:py-3 rounded-xl border border-gray-200 text-sm text-gray-700 appearance-none cursor-pointer focus:outline-none focus:border-[#cb5855] focus:ring-1 focus:ring-[#cb5855] transition bg-white pr-10"
+                    className="w-full px-3 py-2 rounded-lg border border-gray-200 text-xs sm:text-sm text-gray-700 appearance-none cursor-pointer focus:outline-none focus:border-[#cb5855] focus:ring-1 focus:ring-[#cb5855] transition bg-white pr-9"
                   >
                     {servicesList.map((service, index) => (
                       <option
@@ -347,18 +275,8 @@ export default function GetAQuoteSection({
                       </option>
                     ))}
                   </select>
-                  <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none">
-                    <svg
-                      className="w-4 h-4 text-gray-400"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <polyline points="6 9 12 15 18 9" />
-                    </svg>
+                  <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                    <ChevronDownIcon className="w-4 h-4 text-gray-400" />
                   </div>
                 </div>
               </div>
@@ -367,61 +285,49 @@ export default function GetAQuoteSection({
               <div>
                 <label
                   htmlFor="productDetails"
-                  className="block text-xs sm:text-sm font-semibold text-[#241121] mb-1.5"
+                  className="block text-xs font-semibold text-[#241121] mb-1"
                 >
-                  Product Details <span className="text-[#cb5855]">*</span>
+                  {formLabels.productDetails} <span className="text-[#cb5855]">*</span>
                 </label>
                 <textarea
                   id="productDetails"
                   name="productDetails"
-                  rows={4}
+                  rows={3}
                   required
                   value={formData.productDetails}
                   onChange={handleInputChange}
-                  placeholder="Tell us about your printing requirements (size, quantity, material, color, design, etc.)"
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-[#cb5855] focus:ring-1 focus:ring-[#cb5855] transition bg-white resize-y leading-relaxed"
+                  placeholder={formLabels.productDetailsPlaceholder}
+                  className="w-full px-3 py-2 rounded-lg border border-gray-200 text-xs sm:text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-[#cb5855] focus:ring-1 focus:ring-[#cb5855] transition bg-white resize-y leading-relaxed"
                 />
               </div>
 
               {/* Row 5: Upload Files (Optional) */}
               <div>
-                <label className="block text-xs sm:text-sm font-semibold text-[#241121] mb-1.5">
-                  Upload Files (Optional)
+                <label className="block text-xs font-semibold text-[#241121] mb-1">
+                  {formLabels.uploadTitle}
                 </label>
                 <div
                   onClick={() => fileInputRef.current?.click()}
-                  className="w-full border border-gray-200/90 rounded-xl p-3 sm:p-4 bg-[#fcfbfc] hover:bg-[#faf8f9] hover:border-[#cb5855]/40 transition-all cursor-pointer flex items-center justify-between group"
+                  className="w-full border border-gray-200/90 rounded-lg p-2.5 sm:p-3 bg-[#fcfbfc] hover:bg-[#faf8f9] hover:border-[#cb5855]/40 transition-all cursor-pointer flex items-center justify-between group"
                 >
-                  <div className="flex items-center gap-3 sm:gap-4">
+                  <div className="flex items-center gap-3">
                     {/* Coral Icon Badge */}
-                    <div className="w-10 h-10 rounded-xl bg-[#cb5855]/10 flex items-center justify-center flex-shrink-0 group-hover:bg-[#cb5855]/20 group-hover:scale-105 transition-all">
-                      <svg
-                        className="w-5 h-5 text-[#cb5855]"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                        <polyline points="17 8 12 3 7 8" />
-                        <line x1="12" y1="3" x2="12" y2="15" />
-                      </svg>
+                    <div className="w-12 h-12 rounded-full bg-[#cb5855]/10 flex items-center justify-center shrink-0 group-hover:bg-[#cb5855]/20 group-hover:scale-105 transition-all">
+                      <UploadIcon className="w-6 h-6 text-[#cb5855]" />
                     </div>
 
                     <div>
                       <p className="text-xs sm:text-sm font-semibold text-[#241121] group-hover:text-[#cb5855] transition-colors">
-                        Choose Files
+                        {formLabels.uploadChoose}
                       </p>
-                      <p className="text-[11px] sm:text-xs text-gray-400 mt-0.5">
-                        PDF, AI, PSD, JPG, PNG (Max 10MB)
+                      <p className="text-[10px] sm:text-[11px] text-gray-400 mt-0.5">
+                        {formLabels.uploadFormats}
                       </p>
                     </div>
                   </div>
 
                   <span className="text-xs font-medium text-gray-400 group-hover:text-[#cb5855] transition-colors pr-1">
-                    Browse
+                    {formLabels.uploadBrowse}
                   </span>
 
                   <input
@@ -437,11 +343,11 @@ export default function GetAQuoteSection({
 
                 {/* Uploaded Files preview pills */}
                 {formData.files.length > 0 && (
-                  <div className="mt-3 flex flex-wrap gap-2">
+                  <div className="mt-2 flex flex-wrap gap-1.5">
                     {formData.files.map((file, idx) => (
                       <span
                         key={idx}
-                        className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-[#cb5855]/10 text-[#cb5855] border border-[#cb5855]/20"
+                        className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg text-xs font-medium bg-[#cb5855]/10 text-[#cb5855] border border-[#cb5855]/20"
                       >
                         <span className="truncate max-w-[180px]">{file.name}</span>
                         <button
@@ -462,50 +368,21 @@ export default function GetAQuoteSection({
               </div>
 
               {/* Submit Button */}
-              <div className="pt-2">
+              <div className="pt-1">
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full py-3.5 px-6 rounded-xl bg-[#cb5855] hover:bg-[#ba4c49] active:scale-[0.99] text-white font-semibold text-sm sm:text-base flex items-center justify-center gap-2 shadow-md shadow-[#cb5855]/20 hover:shadow-lg hover:shadow-[#cb5855]/30 transition-all duration-200 cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed"
+                  className="w-full py-3 px-5 rounded-lg bg-[#cb5855] hover:bg-[#ba4c49] active:scale-[0.99] text-white font-semibold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-xs hover:shadow-sm transition-all duration-200 cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed group"
                 >
                   {isSubmitting ? (
                     <>
-                      <svg
-                        className="animate-spin h-5 w-5 text-white"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                      >
-                        <circle
-                          className="opacity-25"
-                          cx="12"
-                          cy="12"
-                          r="10"
-                          stroke="currentColor"
-                          strokeWidth="4"
-                        />
-                        <path
-                          className="opacity-75"
-                          fill="currentColor"
-                          d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
-                        />
-                      </svg>
-                      <span>Submitting Request...</span>
+                      <SpinnerIcon className="animate-spin h-4 w-4 text-white" />
+                      <span>{formLabels.submittingButton}</span>
                     </>
                   ) : (
                     <>
-                      <span>Send Quote Request</span>
-                      <svg
-                        className="w-4 h-4 transition-transform group-hover:translate-x-1"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2.2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <line x1="5" y1="12" x2="19" y2="12" />
-                        <polyline points="12 5 19 12 12 19" />
-                      </svg>
+                      <span>{formLabels.submitButton}</span>
+                      <ArrowRightIcon className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                     </>
                   )}
                 </button>
@@ -514,27 +391,27 @@ export default function GetAQuoteSection({
           </div>
 
           {/* Right Column: Why Choose & Need Help Cards */}
-          <div className="lg:col-span-5 flex flex-col gap-6">
+          <div className="lg:col-span-5 flex flex-col gap-4">
             {/* Card 1: Why Choose PrintAxis? */}
-            <div className="bg-[#34142b] rounded-2xl sm:rounded-3xl p-6 sm:p-8 text-white shadow-lg relative overflow-hidden">
+            <div className="bg-[#34142b] rounded-lg p-4 sm:p-6 text-white shadow-md relative overflow-hidden">
               {/* Subtle decorative glow */}
               <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl pointer-events-none" />
 
-              <h2 className="text-xl sm:text-2xl font-bold text-white mb-7 tracking-tight relative z-10">
-                Why Choose PrintAxis?
+              <h2 className="text-lg sm:text-xl font-bold text-white mb-3 tracking-tight relative z-10">
+                {whyChooseTitle}
               </h2>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 relative z-10">
-                {whyChooseItems.map((item) => (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 relative z-10">
+                {rawWhyChooseItems.map((item) => (
                   <div key={item.id} className="flex flex-col items-start">
-                    {/* Circular Outline Icon Badge */}
-                    <div className="w-12 h-12 rounded-full border border-white/30 flex items-center justify-center mb-3.5 text-white bg-white/[0.04] flex-shrink-0 transition-transform hover:scale-105">
-                      {item.icon}
+                    {/* Outline Icon Badge */}
+                    <div className="w-16 h-16 rounded-full border border-white/30 flex items-center justify-center mb-3 text-white bg-white/[0.04] shrink-0 transition-transform hover:scale-105">
+                      {item.icon || getWhyChooseIcon(item.id)}
                     </div>
-                    <h3 className="font-bold text-sm sm:text-base text-white leading-snug mb-1">
+                    <h3 className="font-bold text-sm sm:text-base text-white leading-snug mb-0.5">
                       {item.title}
                     </h3>
-                    <p className="text-xs text-white/70 leading-relaxed">
+                    <p className="text-[11px] sm:text-xs text-white/70 leading-relaxed">
                       {item.description}
                     </p>
                   </div>
@@ -543,9 +420,9 @@ export default function GetAQuoteSection({
             </div>
 
             {/* Card 2: Need Help with Your Quote? */}
-            <div className="bg-white rounded-2xl sm:rounded-3xl border border-gray-100 shadow-[0_4px_25px_rgba(0,0,0,0.03)] overflow-hidden flex flex-col sm:flex-row items-stretch">
+            <div className="bg-white rounded-lg border border-gray-100 shadow-xs overflow-hidden flex flex-col sm:flex-row items-stretch">
               {/* Left Content Area */}
-              <div className="flex-1 p-6 sm:p-7 flex flex-col justify-between">
+              <div className="flex-1 p-4 sm:p-5 flex flex-col justify-between">
                 <div>
                   <h3 className="text-xl sm:text-2xl font-extrabold leading-tight tracking-tight">
                     <span className="text-[#241121] block">
@@ -555,46 +432,33 @@ export default function GetAQuoteSection({
                       {helpTitleHighlight}
                     </span>
                   </h3>
-                  <p className="text-xs sm:text-sm text-gray-500 mt-2.5 mb-6 leading-relaxed">
+                  <p className="text-sm text-gray-500 mt-1.5 mb-4 leading-relaxed">
                     {helpSubtitle}
                   </p>
                 </div>
 
                 <div>
                   <Link
-                    href="/contact"
-                    className="inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl border border-[#cb5855] text-[#cb5855] text-xs sm:text-sm font-semibold hover:bg-[#cb5855] hover:text-white transition-all duration-200 group w-fit"
+                    href={helpCard.buttonHref}
+                    className="inline-flex items-center gap-1.5 px-3.5 py-3 rounded-lg border border-[#cb5855] text-[#cb5855] text-sm font-semibold hover:bg-[#cb5855] hover:text-white transition-all duration-200 group w-fit"
                   >
-                    <span>Contact Us</span>
-                    <svg
-                      className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2.2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <line x1="5" y1="12" x2="19" y2="12" />
-                      <polyline points="12 5 19 12 12 19" />
-                    </svg>
+                    <span>{helpCard.buttonLabel}</span>
+                    <ArrowRightIcon className="w-5 h-5 transition-transform group-hover:translate-x-1" />
                   </Link>
                 </div>
               </div>
 
               {/* Right Mockup Graphic Area */}
-              <div className="relative w-full sm:w-44 md:w-52 min-h-[170px] sm:min-h-full bg-[#fdf5f4] flex items-center justify-center overflow-hidden p-3 sm:p-4">
-                {/* Decorative background image or graphic */}
-                <div className="relative w-full h-full min-h-[160px] flex items-center justify-center">
+              <div className="relative w-full sm:w-44 min-h-[140px] sm:min-h-full bg-[#fdf5f4] flex items-center justify-center overflow-hidden p-2.5 sm:p-3">
+                <div className="relative w-full h-full min-h-[130px] flex items-center justify-center">
                   <Image
-                    src="/images/blog-brochures.jpg"
-                    alt="PrintAxis Quote Help Spiral Notebook and Print Mockup"
+                    src={helpCard.imageSrc}
+                    alt={helpCard.imageAlt}
                     fill
-                    className="object-cover object-center rounded-xl"
-                    sizes="(max-width: 640px) 100vw, 220px"
+                    className="object-cover object-center rounded-lg"
+                    sizes="(max-width: 640px) 100vw, 200px"
                   />
-                  {/* Subtle gradient vignette to blend */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent rounded-xl" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent rounded-lg" />
                 </div>
               </div>
             </div>

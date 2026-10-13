@@ -129,3 +129,16 @@
     @apply font-sans;
   }
 }
+
+@keyframes dashFlowRight {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: -24;
+  }
+}
+
+.animate-dash-flow {
+  animation: dashFlowRight 1s linear infinite;
+}

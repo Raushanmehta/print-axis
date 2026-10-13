@@ -1,14 +1,22 @@
 import React from "react";
 import Link from "next/link";
+import { siteMap, PrintAxisHeroData } from "@/data";
+import {
+  QualityIcon,
+  SpeedIcon,
+  SupportIcon,
+  ArrowRightIcon,
+} from "@/components/icons";
 
 export interface FeatureBadge {
   id: string;
   line1: string;
   line2: string;
-  icon: React.ReactNode;
+  icon?: React.ReactNode | string;
 }
 
 export interface HeroSectionProps {
+  data?: PrintAxisHeroData;
   tagline?: string;
   titlePart1?: string;
   titleHighlight?: string;
@@ -18,114 +26,49 @@ export interface HeroSectionProps {
   quoteButtonHref?: string;
   servicesButtonText?: string;
   servicesButtonHref?: string;
+  backgroundImage?: string;
   features?: FeatureBadge[];
 }
 
-const DEFAULT_FEATURES: FeatureBadge[] = [
-  {
-    id: "quality",
-    line1: "Premium",
-    line2: "Print Quality",
-    icon: (
-      <svg
-        className="w-10 h-10 text-[#cb5855] shrink-0"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-        strokeWidth="1.8"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="m12.89 1.45 8 4a2 2 0 0 1 0 3.55l-8 4a2 2 0 0 1-1.79 0l-8-4a2 2 0 0 1 0-3.55l8-4a2 2 0 0 1 1.79 0z"
-        />
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="m2 12 9.11 4.55a2 2 0 0 0 1.78 0L22 12"
-        />
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="m2 17 9.11 4.55a2 2 0 0 0 1.78 0L22 17"
-        />
-      </svg>
-    ),
-  },
-  {
-    id: "speed",
-    line1: "Fast",
-    line2: "Turnaround",
-    icon: (
-      <svg
-        className="w-10 h-10 text-[#cb5855] shrink-0"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-        strokeWidth="1.8"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"
-        />
-        <path strokeLinecap="round" strokeLinejoin="round" d="M15 18H9" />
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M19 18h2a1 1 0 0 0 1-1v-5l-3-4h-5v10"
-        />
-        <circle cx="7" cy="18" r="2" />
-        <circle cx="17" cy="18" r="2" />
-        <path strokeLinecap="round" d="M2 8h3M1 12h4" />
-      </svg>
-    ),
-  },
-  {
-    id: "support",
-    line1: "Dedicated",
-    line2: "Support",
-    icon: (
-      <svg
-        className="w-10 h-10 text-[#cb5855] shrink-0"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-        strokeWidth="1.8"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M3 18v-6a9 9 0 0 1 18 0v6"
-        />
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"
-        />
-        <path strokeLinecap="round" strokeLinejoin="round" d="M14 19a2 2 0 0 1-2 2H9" />
-      </svg>
-    ),
-  },
-];
+const renderHeroFeatureIcon = (icon: React.ReactNode | string) => {
+  if (React.isValidElement(icon)) return icon;
 
-export default function HeroSection({
-  tagline = "PRINTING SOLUTIONS",
-  titlePart1 = "High Quality",
-  titleHighlight = "Printing",
-  titlePart2 = "For Your Business",
-  description = "From branding and packaging to marketing materials, we deliver premium printing solutions that make your brand stand out.",
-  quoteButtonText = "GET A QUOTE",
-  quoteButtonHref = "/contact",
-  servicesButtonText = "OUR SERVICES",
-  servicesButtonHref = "/services",
-  features = DEFAULT_FEATURES,
-}: HeroSectionProps) {
+  const iconName = typeof icon === "string" ? icon.toLowerCase() : "";
+
+  switch (iconName) {
+    case "quality":
+      return <QualityIcon />;
+    case "speed":
+      return <SpeedIcon />;
+    case "support":
+      return <SupportIcon />;
+    default:
+      return null;
+  }
+};
+
+export default function HeroSection(props: HeroSectionProps) {
+  const data = props.data || siteMap.hero;
+
+  const tagline = props.tagline || data?.tagline || siteMap.hero.tagline;
+  const titlePart1 = props.titlePart1 || data?.titlePart1 || siteMap.hero.titlePart1;
+  const titleHighlight = props.titleHighlight || data?.titleHighlight || siteMap.hero.titleHighlight;
+  const titlePart2 = props.titlePart2 || data?.titlePart2 || siteMap.hero.titlePart2;
+  const description = props.description || data?.description || siteMap.hero.description;
+
+  const quoteButtonText = props.quoteButtonText || data?.quoteButton?.label || siteMap.hero.quoteButton.label;
+  const quoteButtonHref = props.quoteButtonHref || data?.quoteButton?.href || siteMap.hero.quoteButton.href;
+  const servicesButtonText = props.servicesButtonText || data?.servicesButton?.label || siteMap.hero.servicesButton.label;
+  const servicesButtonHref = props.servicesButtonHref || data?.servicesButton?.href || siteMap.hero.servicesButton.href;
+
+  const backgroundImage = props.backgroundImage || data?.backgroundImage || siteMap.hero.backgroundImage;
+  const features = props.features || data?.features || siteMap.hero.features;
+
   return (
     <section
       className="relative w-full overflow-hidden bg-white bg-cover bg-no-repeat bg-right lg:bg-center min-h-[400px] sm:min-h-[450px] lg:min-h-[450px] xl:min-h-[450px] flex items-center"
       style={{
-        backgroundImage: "url('/images/hero-banner.png')",
+        backgroundImage: `url('${backgroundImage}')`,
       }}
     >
       {/* Soft gradient overlay on mobile screens to guarantee crisp text legibility */}
@@ -170,19 +113,7 @@ export default function HeroSection({
                 className="group inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl bg-gradient-to-r from-[#ba4f4c] via-[#c85956] to-[#d66560] text-white font-semibold text-xs sm:text-sm tracking-wide uppercase shadow-sm hover:shadow-md hover:brightness-105 active:scale-[0.98] transition-all duration-200"
               >
                 <span>{quoteButtonText}</span>
-                <svg
-                  className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth="2.2"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
-                  />
-                </svg>
+                <ArrowRightIcon />
               </Link>
 
               {/* Secondary "OUR SERVICES" Button */}
@@ -191,19 +122,7 @@ export default function HeroSection({
                 className="group inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl border-2 border-[#241121] bg-white/90 backdrop-blur-xs text-[#241121] font-semibold text-xs sm:text-sm tracking-wide uppercase hover:bg-[#241121] hover:text-white active:scale-[0.98] transition-all duration-200"
               >
                 <span>{servicesButtonText}</span>
-                <svg
-                  className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth="2.2"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
-                  />
-                </svg>
+                <ArrowRightIcon />
               </Link>
             </div>
 
@@ -212,7 +131,7 @@ export default function HeroSection({
               {features.map((item) => (
                 <div key={item.id} className="flex items-center gap-3 group">
                   <div className="transition-transform duration-200 group-hover:scale-110">
-                    {item.icon}
+                    {renderHeroFeatureIcon(item.icon)}
                   </div>
                   <div className="flex flex-col">
                     <span className="text-[13px] font-bold text-[#241121] leading-tight">

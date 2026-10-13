@@ -3,6 +3,24 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { siteMap, type PrintAxisContactData } from "@/data";
+import {
+  CallIcon,
+  EmailIcon,
+  LocationIcon,
+  UserIcon,
+  PhoneOutlineIcon,
+  LayersIcon,
+  ChevronDownIcon,
+  ChatBubbleIcon,
+  SendIcon,
+  FacebookIcon,
+  LinkedInIcon,
+  InstagramIcon,
+  YouTubeIcon,
+  XSocialIcon,
+  MapPinSolidIcon,
+} from "@/components/icons";
 
 export interface ContactInfoItem {
   id: string;
@@ -13,6 +31,7 @@ export interface ContactInfoItem {
 }
 
 export interface ContactSectionProps {
+  data?: PrintAxisContactData;
   tagline?: string;
   titlePart1?: string;
   titleHighlight?: string;
@@ -23,26 +42,45 @@ export interface ContactSectionProps {
   serviceOptions?: string[];
 }
 
-export default function ContactSection({
-  tagline = "GET IN TOUCH",
-  titlePart1 = "Contact",
-  titleHighlight = "Us",
-  subtitle = "Have a question or need assistance? We're here to help. Reach out to us and we'll get back to you as soon as possible.",
-  phoneNumbers = ["+91 98765 43210", "+91 87654 32109"],
-  emailAddresses = ["info@printaxis.com", "support@printaxis.com"],
-  officeAddress = [
-    "123 Creative Business Park,",
-    "New Delhi, DL 110001, India",
-  ],
-  serviceOptions = [
-    "Printing Services",
-    "3D Printing Service",
-    "Offset Printing",
-    "Design & Branding",
-    "Packaging & Labels",
-    "Custom Print Solutions",
-  ],
-}: ContactSectionProps) {
+function getSocialIcon(name: string): React.ReactNode {
+  switch (name.toLowerCase()) {
+    case "facebook":
+      return <FacebookIcon className="w-6 h-6 fill-current" />;
+    case "linkedin":
+      return <LinkedInIcon className="w-6 h-6 fill-current" />;
+    case "instagram":
+      return <InstagramIcon className="w-6 h-6 fill-current" />;
+    case "youtube":
+      return <YouTubeIcon className="w-6 h-6 fill-current" />;
+    case "x":
+    case "twitter":
+    default:
+      return <XSocialIcon className="w-5 h-5 fill-current" />;
+  }
+}
+
+export default function ContactSection(props: ContactSectionProps) {
+  const fallback = siteMap.contact;
+  const tagline = props.tagline || props.data?.tagline || fallback.tagline;
+  const titlePart1 = props.titlePart1 || props.data?.titlePart1 || fallback.titlePart1;
+  const titleHighlight = props.titleHighlight || props.data?.titleHighlight || fallback.titleHighlight;
+  const subtitle = props.subtitle || props.data?.subtitle || fallback.subtitle;
+
+  const phoneCard = props.data?.phoneCard || fallback.phoneCard;
+  const emailCard = props.data?.emailCard || fallback.emailCard;
+  const officeCard = props.data?.officeCard || fallback.officeCard;
+
+  const phoneNumbers = props.phoneNumbers || phoneCard.phoneNumbers;
+  const emailAddresses = props.emailAddresses || emailCard.emailAddresses;
+  const officeAddress = props.officeAddress || officeCard.officeAddress;
+
+  const formConfig = props.data?.form || fallback.form;
+  const serviceOptions = props.serviceOptions || formConfig.serviceOptions;
+
+  const sideImage = props.data?.sideImage || fallback.sideImage;
+  const followUs = props.data?.followUs || fallback.followUs;
+  const mapBanner = props.data?.mapBanner || fallback.mapBanner;
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -69,12 +107,12 @@ export default function ContactSection({
   };
 
   return (
-    <section className="relative w-full bg-[#faf8f9] py-16 sm:py-20 lg:py-24 overflow-hidden">
+    <section className="relative w-full bg-[#faf8f9] py-8 lg:py-12 overflow-hidden">
       <div className="max-w-[1420px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10">
         {/* ================= 1. HEADER ================= */}
         <div className="text-center max-w-3xl mx-auto">
           {/* Tagline */}
-          <div className="flex items-center justify-center gap-3 mb-3.5">
+          <div className="flex items-center justify-center gap-3 mb-2">
             <span
               className="w-9 h-[2px] bg-[#cb5855] rounded-full inline-block"
               aria-hidden="true"
@@ -89,163 +127,119 @@ export default function ContactSection({
           </div>
 
           {/* Headline */}
-          <h2 className="text-3xl sm:text-4xl lg:text-[50px] font-extrabold tracking-tight text-[#241121]">
+          <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-extrabold tracking-tight text-[#241121]">
             <span>{titlePart1} </span>
             <span className="text-[#cb5855]">{titleHighlight}</span>
           </h2>
 
           {/* Subtitle */}
-          <p className="mt-3.5 text-sm sm:text-base text-[#5b525a] leading-relaxed max-w-2xl mx-auto">
+          <p className="mt-2 text-sm sm:text-base text-[#5b525a] leading-relaxed max-w-2xl mx-auto">
             {subtitle}
           </p>
         </div>
 
         {/* ================= 2. TOP CONTACT CARDS ================= */}
-        <div className="mt-12 sm:mt-14 grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="mt-4 sm:mt-6 grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
           {/* Card 1: Phone */}
-          <div className="bg-white rounded-2xl p-6 sm:p-7 border border-gray-100 shadow-xs hover:shadow-md transition-shadow flex items-start gap-4">
-            <div className="w-14 h-14 rounded-full bg-[#fdf0ef] flex items-center justify-center shrink-0 text-[#cb5855]">
-              {/* Phone Icon */}
-              <svg
-                className="w-6 h-6"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-              >
-                <path d="M6.62 10.79a15.053 15.053 0 006.59 6.59l2.2-2.2a1 1 0 011.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.45.57 3.57a1 1 0 01-.25 1.02l-2.2 2.2z" />
-              </svg>
+          <div className="bg-white rounded-lg p-4 sm:p-5 border border-gray-100 shadow-xs hover:shadow-md transition-shadow flex items-start gap-3">
+            <div className="w-16 h-16 rounded-full bg-[#fdf0ef] flex items-center justify-center shrink-0 text-[#cb5855]">
+              <CallIcon className="w-8 h-8 fill-current" />
             </div>
             <div className="flex flex-col">
-              <h3 className="text-base font-bold text-[#241121]">Phone Number</h3>
+              <h3 className="text-sm font-bold text-[#241121]">{phoneCard.title}</h3>
               {phoneNumbers.map((phone) => (
                 <Link
                   key={phone}
                   href={`tel:${phone.replace(/\s+/g, "")}`}
-                  className="text-sm font-semibold text-[#332233] hover:text-[#cb5855] transition-colors mt-0.5"
+                  className="text-xs sm:text-sm font-semibold text-[#332233] hover:text-[#cb5855] transition-colors mt-0.5"
                 >
                   {phone}
                 </Link>
               ))}
-              <span className="text-xs text-[#888] mt-2">
-                Mon - Sat, 9:00 AM – 6:00 PM
+              <span className="text-[11px] text-[#888] mt-1">
+                {phoneCard.hours}
               </span>
             </div>
           </div>
 
           {/* Card 2: Email */}
-          <div className="bg-white rounded-2xl p-6 sm:p-7 border border-gray-100 shadow-xs hover:shadow-md transition-shadow flex items-start gap-4">
-            <div className="w-14 h-14 rounded-full bg-[#fdf0ef] flex items-center justify-center shrink-0 text-[#cb5855]">
-              {/* Email Icon */}
-              <svg
-                className="w-6 h-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <rect width="20" height="16" x="2" y="4" rx="2" />
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"
-                />
-              </svg>
+          <div className="bg-white rounded-lg p-4 sm:p-5 border border-gray-100 shadow-xs hover:shadow-md transition-shadow flex items-start gap-3">
+            <div className="w-16 h-16 rounded-full bg-[#fdf0ef] flex items-center justify-center shrink-0 text-[#cb5855]">
+              <EmailIcon className="w-8 h-8 text-[#cb5855]" />
             </div>
             <div className="flex flex-col">
-              <h3 className="text-base font-bold text-[#241121]">
-                Email Address
+              <h3 className="text-sm font-bold text-[#241121]">
+                {emailCard.title}
               </h3>
               {emailAddresses.map((email) => (
                 <Link
                   key={email}
                   href={`mailto:${email}`}
-                  className="text-sm font-semibold text-[#332233] hover:text-[#cb5855] transition-colors mt-0.5"
+                  className="text-xs sm:text-sm font-semibold text-[#332233] hover:text-[#cb5855] transition-colors mt-0.5"
                 >
                   {email}
                 </Link>
               ))}
-              <span className="text-xs text-[#888] mt-2">
-                We reply within 24 hours
+              <span className="text-[11px] text-[#888] mt-1">
+                {emailCard.note}
               </span>
             </div>
           </div>
 
           {/* Card 3: Our Office */}
-          <div className="bg-white rounded-2xl p-6 sm:p-7 border border-gray-100 shadow-xs hover:shadow-md transition-shadow flex items-start gap-4">
-            <div className="w-14 h-14 rounded-full bg-[#fdf0ef] flex items-center justify-center shrink-0 text-[#cb5855]">
-              {/* Location Pin Icon */}
-              <svg
-                className="w-6 h-6"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M11.54 22.351l.07.04.028.016a.76.76 0 00.723 0l.028-.015.071-.041a16.975 16.975 0 001.144-.742 19.58 19.58 0 002.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 00-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 002.682 2.282 16.975 16.975 0 001.145.742zM12 13.5a3 3 0 100-6 3 3 0 000 6z"
-                  clipRule="evenodd"
-                />
-              </svg>
+          <div className="bg-white rounded-lg p-4 sm:p-5 border border-gray-100 shadow-xs hover:shadow-md transition-shadow flex items-start gap-3">
+            <div className="w-16 h-16 rounded-full bg-[#fdf0ef] flex items-center justify-center shrink-0 text-[#cb5855]">
+              <LocationIcon className="w-8 h-8 fill-current" />
             </div>
             <div className="flex flex-col">
-              <h3 className="text-base font-bold text-[#241121]">Our Office</h3>
+              <h3 className="text-sm font-bold text-[#241121]">{officeCard.title}</h3>
               {officeAddress.map((line, idx) => (
                 <p
                   key={idx}
-                  className="text-sm font-semibold text-[#332233] leading-snug mt-0.5"
+                  className="text-xs sm:text-sm font-semibold text-[#332233] leading-snug mt-0.5"
                 >
                   {line}
                 </p>
               ))}
-              <span className="text-xs text-[#888] mt-2">
-                Visit us for business inquiries
+              <span className="text-[11px] text-[#888] mt-1">
+                {officeCard.note}
               </span>
             </div>
           </div>
         </div>
 
         {/* ================= 3. FORM & FOLLOW US ================= */}
-        <div className="mt-12 sm:mt-16 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
+        <div className="mt-4 sm:mt-6 grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 items-start">
           {/* Left Column: Form Card */}
-          <div className="lg:col-span-7 bg-white rounded-3xl p-7 sm:p-10 border border-gray-100 shadow-sm">
+          <div className="lg:col-span-7 bg-white rounded-lg p-4 sm:p-6 border border-gray-100 shadow-xs">
             {/* Tagline */}
-            <div className="flex items-center gap-3 mb-2.5">
-              <span className="text-xs font-bold tracking-[0.2em] text-[#cb5855] uppercase">
-                SEND US A MESSAGE
+            <div className="flex items-center gap-2 mb-1.5">
+              <span className="text-[11px] font-bold tracking-[0.2em] text-[#cb5855] uppercase">
+                {formConfig.tagline}
               </span>
               <span
-                className="w-9 h-[2px] bg-[#cb5855] rounded-full inline-block"
+                className="w-6 h-[2px] bg-[#cb5855] rounded-full inline-block"
                 aria-hidden="true"
               />
             </div>
 
             {/* Headline */}
-            <h3 className="text-2xl sm:text-3xl font-extrabold text-[#241121]">
-              <span>Get in Touch </span>
-              <span className="text-[#cb5855]">with Us</span>
+            <h3 className="text-xl sm:text-2xl font-extrabold text-[#241121]">
+              <span>{formConfig.titlePart1} </span>
+              <span className="text-[#cb5855]">{formConfig.titleHighlight}</span>
             </h3>
 
-            <p className="mt-2 text-sm text-[#5b525a]">
-              Fill out the form below and we&apos;ll get back to you shortly.
+            <p className="mt-1 text-xs sm:text-sm text-[#5b525a]">
+              {formConfig.subtitle}
             </p>
 
             {/* The Form */}
-            <form onSubmit={handleSubmit} className="mt-8 space-y-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <form onSubmit={handleSubmit} className="mt-4 space-y-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {/* Your Name */}
                 <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
-                    <svg
-                      className="w-4 h-4"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
-                      />
-                    </svg>
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
+                    <UserIcon className="w-4 h-4" />
                   </div>
                   <input
                     type="text"
@@ -255,27 +249,14 @@ export default function ContactSection({
                     onChange={(e) =>
                       setFormData({ ...formData, name: e.target.value })
                     }
-                    className="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-xl text-sm text-[#241121] placeholder-gray-400 focus:outline-none focus:border-[#cb5855] focus:ring-1 focus:ring-[#cb5855] transition-colors"
+                    className="w-full pl-9 pr-3 py-2 bg-white border border-gray-200 rounded-sm text-xs sm:text-sm text-[#241121] placeholder-gray-400 focus:outline-none focus:border-[#cb5855] focus:ring-1 focus:ring-[#cb5855] transition-colors"
                   />
                 </div>
 
                 {/* Your Email */}
                 <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
-                    <svg
-                      className="w-4 h-4"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                    >
-                      <rect width="20" height="16" x="2" y="4" rx="2" />
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"
-                      />
-                    </svg>
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
+                    <EmailIcon className="w-4 h-4 text-gray-400" />
                   </div>
                   <input
                     type="email"
@@ -285,28 +266,16 @@ export default function ContactSection({
                     onChange={(e) =>
                       setFormData({ ...formData, email: e.target.value })
                     }
-                    className="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-xl text-sm text-[#241121] placeholder-gray-400 focus:outline-none focus:border-[#cb5855] focus:ring-1 focus:ring-[#cb5855] transition-colors"
+                    className="w-full pl-9 pr-3 py-2 bg-white border border-gray-200 rounded-sm text-xs sm:text-sm text-[#241121] placeholder-gray-400 focus:outline-none focus:border-[#cb5855] focus:ring-1 focus:ring-[#cb5855] transition-colors"
                   />
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {/* Your Phone */}
                 <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
-                    <svg
-                      className="w-4 h-4"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"
-                      />
-                    </svg>
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
+                    <PhoneOutlineIcon className="w-4 h-4" />
                   </div>
                   <input
                     type="tel"
@@ -315,38 +284,21 @@ export default function ContactSection({
                     onChange={(e) =>
                       setFormData({ ...formData, phone: e.target.value })
                     }
-                    className="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-xl text-sm text-[#241121] placeholder-gray-400 focus:outline-none focus:border-[#cb5855] focus:ring-1 focus:ring-[#cb5855] transition-colors"
+                    className="w-full pl-9 pr-3 py-2 bg-white border border-gray-200 rounded-sm text-xs sm:text-sm text-[#241121] placeholder-gray-400 focus:outline-none focus:border-[#cb5855] focus:ring-1 focus:ring-[#cb5855] transition-colors"
                   />
                 </div>
 
                 {/* Select Service Dropdown */}
                 <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
-                    <svg
-                      className="w-4 h-4"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="m12.89 1.45 8 4a2 2 0 0 1 0 3.55l-8 4a2 2 0 0 1-1.79 0l-8-4a2 2 0 0 1 0-3.55l8-4a2 2 0 0 1 1.79 0z"
-                      />
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="m2 12 9.11 4.55a2 2 0 0 0 1.78 0L22 12"
-                      />
-                    </svg>
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
+                    <LayersIcon className="w-4 h-4 text-gray-400" />
                   </div>
                   <select
                     value={formData.service}
                     onChange={(e) =>
                       setFormData({ ...formData, service: e.target.value })
                     }
-                    className="w-full pl-10 pr-10 py-3 bg-white border border-gray-200 rounded-xl text-sm text-[#241121] focus:outline-none focus:border-[#cb5855] focus:ring-1 focus:ring-[#cb5855] transition-colors appearance-none cursor-pointer"
+                    className="w-full pl-9 pr-8 py-2 bg-white border border-gray-200 rounded-sm text-xs sm:text-sm text-[#241121] focus:outline-none focus:border-[#cb5855] focus:ring-1 focus:ring-[#cb5855] transition-colors appearance-none cursor-pointer"
                   >
                     <option value="">Select Service</option>
                     {serviceOptions.map((opt) => (
@@ -355,83 +307,54 @@ export default function ContactSection({
                       </option>
                     ))}
                   </select>
-                  <div className="absolute inset-y-0 right-0 pr-3.5 flex items-center pointer-events-none text-gray-400">
-                    <svg
-                      className="w-4 h-4"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="m19.5 8.25-7.5 7.5-7.5-7.5"
-                      />
-                    </svg>
+                  <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-gray-400">
+                    <ChevronDownIcon className="w-4 h-4 text-gray-400" />
                   </div>
                 </div>
               </div>
 
               {/* Message */}
               <div className="relative">
-                <div className="absolute top-3.5 left-3.5 pointer-events-none text-gray-400">
-                  <svg
-                    className="w-4 h-4"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z"
-                    />
-                  </svg>
+                <div className="absolute top-3 left-3 pointer-events-none text-gray-400">
+                  <ChatBubbleIcon className="w-4 h-4" />
                 </div>
                 <textarea
-                  rows={4}
+                  rows={3}
                   required
                   placeholder="Your Message *"
                   value={formData.message}
                   onChange={(e) =>
                     setFormData({ ...formData, message: e.target.value })
                   }
-                  className="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-xl text-sm text-[#241121] placeholder-gray-400 focus:outline-none focus:border-[#cb5855] focus:ring-1 focus:ring-[#cb5855] transition-colors resize-none"
+                  className="w-full pl-9 pr-3 py-2 bg-white border border-gray-200 rounded-sm text-xs sm:text-sm text-[#241121] placeholder-gray-400 focus:outline-none focus:border-[#cb5855] focus:ring-1 focus:ring-[#cb5855] transition-colors resize-none"
                 />
               </div>
 
               {/* Submit Button */}
               <button
                 type="submit"
-                className="w-full py-4 rounded-xl bg-[#851028] hover:bg-[#720e22] text-white font-semibold text-sm sm:text-base flex items-center justify-center gap-2 shadow-md hover:shadow-lg active:scale-[0.99] transition-all duration-200 cursor-pointer"
+                className="w-full py-2.5 rounded-sm bg-[#851028] hover:bg-[#720e22] text-white font-semibold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-xs hover:shadow-sm active:scale-[0.99] transition-all duration-200 cursor-pointer"
               >
-                <svg
-                  className="w-4 h-4 fill-current rotate-45 -mt-0.5"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
-                </svg>
-                <span>Send Message</span>
+                <SendIcon className="w-3.5 h-3.5 fill-current rotate-45 -mt-0.5" />
+                <span>{formConfig.buttonLabel}</span>
                 <span aria-hidden="true">→</span>
               </button>
 
               {formSubmitted && (
-                <div className="p-3 bg-green-50 text-green-800 text-sm rounded-xl text-center font-medium animate-in fade-in duration-300">
-                  Thank you! Your message has been sent successfully.
+                <div className="p-2.5 bg-green-50 text-green-800 text-xs sm:text-sm rounded-sm text-center font-medium animate-in fade-in duration-300">
+                  {formConfig.successMessage}
                 </div>
               )}
             </form>
           </div>
 
           {/* Right Column: Branded Coffee Mug & Follow Us */}
-          <div className="lg:col-span-5 flex flex-col space-y-8">
+          <div className="lg:col-span-5 flex flex-col space-y-4">
             {/* Branded Mug Photo */}
-            <div className="relative w-full aspect-[16/11] rounded-3xl overflow-hidden shadow-sm border border-gray-100 bg-white group">
+            <div className="relative w-full aspect-[16/10] rounded-lg overflow-hidden shadow-xs border border-gray-100 bg-white group">
               <Image
-                src="/images/contact-mug.jpg"
-                alt="PrintAxis Branded Merchandise"
+                src={sideImage.src}
+                alt={sideImage.alt}
                 fill
                 priority
                 className="object-cover transition-transform duration-500 group-hover:scale-102"
@@ -441,138 +364,67 @@ export default function ContactSection({
 
             {/* Follow Us Section */}
             <div>
-              <h4 className="text-xl font-bold text-[#241121]">Follow Us</h4>
-              <p className="mt-1.5 text-sm text-[#5b525a] leading-relaxed">
-                Stay connected with us for updates, offers and more printing inspiration.
+              <h4 className="text-lg font-bold text-[#241121]">{followUs.title}</h4>
+              <p className="mt-1 text-xs sm:text-sm text-[#5b525a] leading-relaxed">
+                {followUs.description}
               </p>
 
-              {/* 5 Social Media Badges */}
-              <div className="flex items-center gap-3.5 mt-5">
-                {/* Facebook */}
-                <Link
-                  href="https://facebook.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Facebook"
-                  className="w-11 h-11 rounded-full bg-[#fdf0ef] text-[#cb5855] hover:bg-[#cb5855] hover:text-white flex items-center justify-center transition-all duration-200 shadow-xs"
-                >
-                  <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3V2z" />
-                  </svg>
-                </Link>
-
-                {/* LinkedIn */}
-                <Link
-                  href="https://linkedin.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="LinkedIn"
-                  className="w-11 h-11 rounded-full bg-[#fdf0ef] text-[#cb5855] hover:bg-[#cb5855] hover:text-white flex items-center justify-center transition-all duration-200 shadow-xs"
-                >
-                  <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
-                    <rect width="4" height="12" x="2" y="9" />
-                    <circle cx="4" cy="4" r="2" />
-                  </svg>
-                </Link>
-
-                {/* Instagram */}
-                <Link
-                  href="https://instagram.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Instagram"
-                  className="w-11 h-11 rounded-full bg-[#fdf0ef] text-[#cb5855] hover:bg-[#cb5855] hover:text-white flex items-center justify-center transition-all duration-200 shadow-xs"
-                >
-                  <svg
-                    className="w-4 h-4"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
+              {/* Social Media Badges */}
+              <div className="flex items-center gap-2.5 mt-3">
+                {followUs.socialLinks.map((item) => (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={item.name}
+                    className="w-12 h-12 rounded-full bg-[#fdf0ef] text-[#cb5855] hover:bg-[#cb5855] hover:text-white flex items-center justify-center transition-all duration-200 shadow-xs"
                   >
-                    <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
-                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-                    <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
-                  </svg>
-                </Link>
-
-                {/* YouTube */}
-                <Link
-                  href="https://youtube.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="YouTube"
-                  className="w-11 h-11 rounded-full bg-[#fdf0ef] text-[#cb5855] hover:bg-[#cb5855] hover:text-white flex items-center justify-center transition-all duration-200 shadow-xs"
-                >
-                  <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                    <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19.1c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.43zM9.75 15.02V8.48l5.75 3.27-5.75 3.27z" />
-                  </svg>
-                </Link>
-
-                {/* X / Twitter */}
-                <Link
-                  href="https://x.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="X (formerly Twitter)"
-                  className="w-11 h-11 rounded-full bg-[#fdf0ef] text-[#cb5855] hover:bg-[#cb5855] hover:text-white flex items-center justify-center transition-all duration-200 shadow-xs font-bold text-sm"
-                >
-                  𝕏
-                </Link>
+                    {getSocialIcon(item.name)}
+                  </Link>
+                ))}
               </div>
             </div>
           </div>
         </div>
 
         {/* ================= 4. VISIT OUR OFFICE & MAP BANNER ================= */}
-        <div className="mt-14 sm:mt-18 bg-[#fdf2f1] rounded-3xl p-6 sm:p-8 lg:p-10 border border-[#fae0de]">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        <div className="mt-4 sm:mt-6 bg-[#fdf2f1] rounded-lg p-4 sm:p-6 border border-[#fae0de]">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
             {/* Left Column: Text & Directions Button */}
             <div className="lg:col-span-5 flex flex-col items-start">
               {/* Tagline */}
-              <div className="flex items-center gap-2.5 mb-2">
+              <div className="flex items-center gap-2 mb-1.5">
                 <span
                   className="w-6 h-[2px] bg-[#cb5855] rounded-full inline-block"
                   aria-hidden="true"
                 />
-                <span className="text-xs font-bold tracking-[0.2em] text-[#cb5855] uppercase">
-                  Our Location
+                <span className="text-[11px] font-bold tracking-[0.2em] text-[#cb5855] uppercase">
+                  {mapBanner.tagline}
                 </span>
               </div>
 
               {/* Title */}
-              <h3 className="text-2xl sm:text-3xl font-extrabold text-[#241121]">
-                <span>Visit Our </span>
-                <span className="text-[#cb5855]">Office</span>
+              <h3 className="text-xl sm:text-2xl font-extrabold text-[#241121]">
+                <span>{mapBanner.titlePart1} </span>
+                <span className="text-[#cb5855]">{mapBanner.titleHighlight}</span>
               </h3>
 
               {/* Description */}
-              <p className="mt-2.5 text-sm text-[#5b525a] leading-relaxed">
-                We&apos;d love to meet you in person. Find us at our office or get directions for easy access.
+              <p className="mt-1.5 text-xs sm:text-sm text-[#5b525a] leading-relaxed">
+                {mapBanner.description}
               </p>
 
               {/* Get Directions Button */}
-              <div className="mt-6">
+              <div className="mt-3 sm:mt-4">
                 <Link
-                  href="https://maps.google.com/?q=123+Creative+Business+Park+New+Delhi"
+                  href={mapBanner.directionsUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white border border-[#cb5855] text-[#cb5855] hover:bg-[#cb5855] hover:text-white font-semibold text-sm shadow-xs transition-all duration-200"
+                  className="group inline-flex items-center gap-2 px-4 py-2 rounded-sm bg-white border border-[#cb5855] text-[#cb5855] hover:bg-[#cb5855] hover:text-white font-semibold text-xs sm:text-sm shadow-xs transition-all duration-200"
                 >
-                  <svg
-                    className="w-4 h-4 fill-current"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M11.54 22.351l.07.04.028.016a.76.76 0 00.723 0l.028-.015.071-.041a16.975 16.975 0 001.144-.742 19.58 19.58 0 002.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 00-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 002.682 2.282 16.975 16.975 0 001.145.742zM12 13.5a3 3 0 100-6 3 3 0 000 6z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  <span>Get Directions</span>
+                  <MapPinSolidIcon className="w-3.5 h-3.5 fill-current" />
+                  <span>{mapBanner.directionsLabel}</span>
                   <span className="transition-transform duration-200 group-hover:translate-x-1" aria-hidden="true">
                     →
                   </span>
@@ -581,7 +433,7 @@ export default function ContactSection({
             </div>
 
             {/* Right Column: Clean Vector Map Visual with Pin Card */}
-            <div className="lg:col-span-7 relative w-full h-56 sm:h-64 lg:h-72 rounded-2xl overflow-hidden border border-[#fae0de] shadow-sm bg-[#e8ece9]">
+            <div className="lg:col-span-7 relative w-full h-48 sm:h-56 rounded-sm overflow-hidden border border-[#fae0de] shadow-xs bg-[#e8ece9]">
               {/* Detailed Stylized Vector Map Graphics */}
               <svg
                 className="w-full h-full object-cover"
@@ -593,9 +445,9 @@ export default function ContactSection({
                 <rect width="600" height="300" fill="#f0ede5" />
 
                 {/* Parks / Green Zones */}
-                <rect x="260" y="230" width="70" height="50" rx="6" fill="#cbe4ca" />
-                <rect x="470" y="240" width="80" height="40" rx="6" fill="#cbe4ca" />
-                <rect x="10" y="235" width="85" height="50" rx="8" fill="#cbe4ca" />
+                <rect x="260" y="230" width="70" height="50" rx="3" fill="#cbe4ca" />
+                <rect x="470" y="240" width="80" height="40" rx="3" fill="#cbe4ca" />
+                <rect x="10" y="235" width="85" height="50" rx="3" fill="#cbe4ca" />
                 <circle cx="280" cy="180" r="30" fill="#daf0d8" />
 
                 {/* Major Roads & Avenues */}
@@ -629,29 +481,27 @@ export default function ContactSection({
               </svg>
 
               {/* Metro Station Badge */}
-              <div className="absolute bottom-6 left-1/3 flex items-center gap-1.5 bg-white/95 px-2.5 py-1 rounded-md shadow-sm border border-gray-100 text-[11px] font-semibold text-[#0066cc]">
-                <span className="w-4 h-4 rounded bg-[#0066cc] text-white flex items-center justify-center text-[9px] font-bold">
+              <div className="absolute bottom-4 left-1/3 flex items-center gap-1.5 bg-white/95 px-2 py-0.5 rounded-sm shadow-xs border border-gray-100 text-[10px] font-semibold text-[#0066cc]">
+                <span className="w-3.5 h-3.5 rounded-xs bg-[#0066cc] text-white flex items-center justify-center text-[8px] font-bold">
                   M
                 </span>
-                <span>Rajiv Chowk Metro Station</span>
+                <span>{mapBanner.metroStation}</span>
               </div>
 
               {/* Pin Marker with Tooltip Card */}
-              <div className="absolute top-1/2 left-2/3 -translate-x-1/2 -translate-y-1/2 flex items-center gap-2.5">
+              <div className="absolute top-1/2 left-2/3 -translate-x-1/2 -translate-y-1/2 flex items-center gap-2">
                 {/* Red Pin */}
-                <div className="w-8 h-8 rounded-full bg-[#cb5855] text-white flex items-center justify-center shadow-lg animate-bounce duration-1000">
-                  <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z" />
-                  </svg>
+                <div className="w-7 h-7 rounded-sm bg-[#cb5855] text-white flex items-center justify-center shadow-md animate-bounce duration-1000">
+                  <LocationIcon className="w-3.5 h-3.5 fill-current" />
                 </div>
 
                 {/* Floating Office Card */}
-                <div className="bg-white/95 backdrop-blur-xs px-3.5 py-2 rounded-xl shadow-lg border border-gray-100 text-left">
-                  <h5 className="text-xs font-bold text-[#241121]">PrintAxis</h5>
-                  <p className="text-[10px] text-gray-500 leading-tight mt-0.5">
-                    123 Creative Business Park,
+                <div className="bg-white/95 backdrop-blur-xs px-2.5 py-1.5 rounded-sm shadow-md border border-gray-100 text-left">
+                  <h5 className="text-[11px] font-bold text-[#241121]">{mapBanner.officePin.title}</h5>
+                  <p className="text-[9px] text-gray-500 leading-tight mt-0.5">
+                    {mapBanner.officePin.lines[0]}
                     <br />
-                    New Delhi, DL 110001
+                    {mapBanner.officePin.lines[1]}
                   </p>
                 </div>
               </div>

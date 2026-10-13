@@ -1,7 +1,10 @@
 import React from "react";
 import Link from "next/link";
+import { siteMap, PrintAxisCtaData } from "@/data";
+import { ArrowRightIcon } from "@/components/icons";
 
 export interface CtaSectionProps {
+  data?: PrintAxisCtaData;
   titlePart1?: string;
   titleHighlight?: string;
   description?: string;
@@ -10,17 +13,21 @@ export interface CtaSectionProps {
   backgroundImageSrc?: string;
 }
 
-export default function CtaSection({
-  titlePart1 = "Let’s Bring Your",
-  titleHighlight = "Ideas to Print",
-  description = "Custom printing solutions for your business, events and personal needs. Get high-quality prints that make an impact.",
-  buttonText = "Get a Quote",
-  buttonHref = "/contact",
-  backgroundImageSrc = "/images/cta-banner.png",
-}: CtaSectionProps) {
+export default function CtaSection(props: CtaSectionProps) {
+  const data = props.data || siteMap.cta;
+
+  const titlePart1 = props.titlePart1 || data?.titlePart1 || siteMap.cta.titlePart1;
+  const titleHighlight = props.titleHighlight || data?.titleHighlight || siteMap.cta.titleHighlight;
+  const description = props.description || data?.description || siteMap.cta.description;
+
+  const buttonText = props.buttonText || data?.button?.label || siteMap.cta.button.label;
+  const buttonHref = props.buttonHref || data?.button?.href || siteMap.cta.button.href;
+
+  const backgroundImageSrc = props.backgroundImageSrc || data?.backgroundImageSrc || siteMap.cta.backgroundImageSrc;
+
   return (
     <section
-      className="relative w-full overflow-hidden bg-cover bg-no-repeat bg-center min-h-[460px] sm:min-h-[520px] lg:min-h-[580px] flex items-center justify-center bg-[#fdf5f4]"
+      className="relative w-full overflow-hidden bg-cover bg-no-repeat bg-center min-h-[360px] sm:min-h-[420px] lg:min-h-[480px] flex items-center justify-center bg-[#fdf5f4]"
       style={{
         backgroundImage: `url('${backgroundImageSrc}')`,
       }}
@@ -31,9 +38,9 @@ export default function CtaSection({
         aria-hidden="true"
       />
 
-      <div className="relative z-10 max-w-[1420px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 py-16 sm:py-20 text-center flex flex-col items-center">
+      <div className="relative z-10 max-w-[1420px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 py-8 lg:py-12 text-center flex flex-col items-center">
         {/* Headline */}
-        <h2 className="text-3xl sm:text-4xl lg:text-[46px] xl:text-[50px] font-extrabold tracking-tight leading-[1.12] text-[#241121]">
+        <h2 className="text-3xl sm:text-4xl lg:text-[44px] font-extrabold tracking-tight leading-[1.12] text-[#241121]">
           <span>{titlePart1}</span>
           <br />
           <span className="text-[#cb5855] inline-block mt-1">
@@ -42,30 +49,18 @@ export default function CtaSection({
         </h2>
 
         {/* Subtitle / Description */}
-        <p className="mt-4 sm:mt-5 text-[#5b525a] text-sm sm:text-base lg:text-[17px] leading-relaxed max-w-xl mx-auto">
+        <p className="mt-2 text-[#5b525a] text-sm sm:text-base leading-relaxed max-w-xl mx-auto">
           {description}
         </p>
 
         {/* CTA Button */}
-        <div className="mt-8 sm:mt-9">
+        <div className="mt-3 sm:mt-4">
           <Link
             href={buttonHref}
-            className="group inline-flex items-center justify-center gap-2.5 px-8 py-3.5 sm:px-9 sm:py-4 rounded-xl bg-gradient-to-r from-[#ba4f4c] via-[#c85956] to-[#d66560] text-white font-semibold text-sm sm:text-base tracking-wide shadow-sm hover:shadow-md hover:brightness-105 active:scale-[0.98] transition-all duration-200"
+            className="group inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-sm bg-gradient-to-r from-[#ba4f4c] via-[#c85956] to-[#d66560] text-white font-semibold text-xs sm:text-sm tracking-wide uppercase shadow-sm hover:shadow-md hover:brightness-105 active:scale-[0.98] transition-all duration-200"
           >
             <span>{buttonText}</span>
-            <svg
-              className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth="2.2"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
-              />
-            </svg>
+            <ArrowRightIcon />
           </Link>
         </div>
       </div>

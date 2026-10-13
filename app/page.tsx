@@ -1,3 +1,4 @@
+import { siteMap } from "@/data";
 import AboutSection from "@/sections/home/AboutSection";
 import BlogSection from "@/sections/home/BlogSection";
 import CtaSection from "@/sections/home/CtaSection";
@@ -7,16 +8,17 @@ import ServiceSection from "@/sections/home/ServiceSection";
 import TestimonialSection from "@/sections/home/TestimonialSection";
 
 export default function Home() {
-  return (
-    <div>
-      <HeroSection />
-      <AboutSection />
-      <ServiceSection />
-      <ProcessSection />
-      <TestimonialSection />
-      <CtaSection />
-      <BlogSection />
+  const { hero, about, service, process, testimonial, cta, blog } = siteMap;
 
-    </div>
+  return (
+    <main>
+      <HeroSection data={hero} />
+      <AboutSection data={about} />
+      <ServiceSection data={service} />
+      <ProcessSection data={process} />
+      <TestimonialSection data={testimonial} />
+      <CtaSection data={cta} />
+      <BlogSection data={blog} />
+    </main>
   );
 }

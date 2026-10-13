@@ -21,11 +21,11 @@ export default function BlogCard({ post, className = "" }: BlogCardProps) {
 
   return (
     <article
-      className={`group bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between ${className}`}
+      className={`group bg-white rounded-sm overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between h-full ${className}`}
     >
       <div>
         {/* Top Photographic Cover */}
-        <div className="relative w-full aspect-[16/10] overflow-hidden bg-gray-50">
+        <div className="relative w-full aspect-[20/10] overflow-hidden bg-gray-50">
           <Image
             src={post.imageSrc}
             alt={post.title}
@@ -36,29 +36,29 @@ export default function BlogCard({ post, className = "" }: BlogCardProps) {
         </div>
 
         {/* Card Content */}
-        <div className="p-6 pt-5">
+        <div className="p-4 pt-3">
           {/* Date Badge */}
-          <span className="inline-block bg-[#fdf0ef] text-[#cb5855] text-xs font-semibold px-3 py-1 rounded-md mb-3.5">
+          <span className="inline-block bg-[#fdf0ef] text-[#cb5855] text-[11px] font-semibold px-2.5 py-0.5 rounded-sm mb-2">
             {post.date}
           </span>
 
           {/* Post Title */}
-          <h3 className="text-lg sm:text-xl font-bold text-[#241121] group-hover:text-[#cb5855] transition-colors duration-200 leading-snug">
+          <h3 className="text-base sm:text-lg font-bold text-[#241121] group-hover:text-[#cb5855] transition-colors duration-200 leading-snug">
             <Link href={targetHref}>{post.title}</Link>
           </h3>
 
           {/* Excerpt Description */}
-          <p className="mt-2.5 text-sm text-[#665e64] leading-relaxed line-clamp-3">
+          <p className="mt-1.5 text-xs sm:text-sm text-[#665e64] leading-relaxed line-clamp-3">
             {post.description}
           </p>
         </div>
       </div>
 
       {/* Read More Footer */}
-      <div className="px-6 pb-6 pt-1">
+      <div className="px-4 pb-4 pt-1">
         <Link
           href={targetHref}
-          className="text-sm font-semibold text-[#cb5855] inline-flex items-center gap-1.5 hover:underline group/link"
+          className="text-xs sm:text-sm font-semibold text-[#cb5855] inline-flex items-center gap-1.5 hover:underline group/link"
         >
           <span>Read More</span>
           <span
