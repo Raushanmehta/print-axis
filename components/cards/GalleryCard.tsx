@@ -1,6 +1,9 @@
 "use client";
+
+import React from "react";
 import Image from "next/image";
 import { ZoomInIcon } from "@/components/icons";
+import { motion } from "framer-motion";
 
 export interface GalleryItem {
   id: string;
@@ -18,9 +21,11 @@ export interface GalleryCardProps {
 
 export default function GalleryCard({ item, onPreview }: GalleryCardProps) {
   return (
-    <div
+    <motion.div
+      whileHover={{ y: -6 }}
+      transition={{ duration: 0.25, ease: "easeOut" }}
       onClick={() => onPreview?.(item)}
-      className="group relative aspect-[4/3] w-full overflow-hidden rounded-lg bg-gray-100 border border-gray-100/90 shadow-xs hover:shadow-md transition-all duration-300 cursor-pointer"
+      className="group relative aspect-[4/3] w-full overflow-hidden rounded-lg bg-gray-100 border border-gray-100/90 shadow-xs hover:shadow-xl transition-shadow duration-300 cursor-pointer"
       role="button"
       tabIndex={0}
       onKeyDown={(e) => {
@@ -37,7 +42,7 @@ export default function GalleryCard({ item, onPreview }: GalleryCardProps) {
         alt={item.alt}
         fill
         sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-        className="object-cover transition-transform duration-500 ease-out group-hover:scale-108"
+        className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
       />
 
       {/* Hover Overlay with Gradient */}
@@ -56,6 +61,6 @@ export default function GalleryCard({ item, onPreview }: GalleryCardProps) {
           </h4>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }

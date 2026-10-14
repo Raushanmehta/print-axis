@@ -1,6 +1,6 @@
 import PageTopSection from "@/components/common/PageTopSection";
 import ThankyouSection from "@/sections/ThankyouSection";
-import { siteMap } from "@/data";
+import { site } from "@/data";
 
 export const metadata = {
   title: "Thank You | PrintAxis",
@@ -8,8 +8,9 @@ export const metadata = {
     "Thank you for contacting PrintAxis. We have received your inquiry and our team will get in touch with you shortly.",
 };
 
+// Thank you page confirming quote submission with next steps.
 export default function ThankYouPage() {
-  const { thankyou, pageTopSection } = siteMap;
+  const { thankyou, pageTopSection } = site;
 
   return (
     <main>

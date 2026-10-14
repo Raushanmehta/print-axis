@@ -3,10 +3,11 @@ import AboutSection from "@/sections/home/AboutSection";
 import CtaSection from "@/sections/home/CtaSection";
 import ProcessSection from "@/sections/home/ProcessSection";
 import TestimonialSection from "@/sections/home/TestimonialSection";
-import { siteMap } from "@/data";
+import { site } from "@/data";
 
+// About page rendering company overview and why choose us.
 export default function AboutPage() {
-  const { about, process, cta, testimonial, pageTopSection } = siteMap;
+  const { about, process, cta, testimonial, pageTopSection } = site;
 
   return (
     <main>

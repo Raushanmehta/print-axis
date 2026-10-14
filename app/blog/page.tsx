@@ -1,8 +1,8 @@
 import React from "react";
-import BlogCard, { BlogPost } from "@/components/cards/BlogCard";
+import BlogCard from "@/components/cards/BlogCard";
 import PageTopSection from "@/components/common/PageTopSection";
 import CtaSection from "@/sections/home/CtaSection";
-import { siteMap, type PrintAxisBlogData } from "@/data";
+import { site, type PrintAxisBlogData, type BlogPost } from "@/data";
 
 export interface BlogPageProps {
   data?: PrintAxisBlogData;
@@ -13,9 +13,10 @@ export interface BlogPageProps {
   posts?: BlogPost[];
 }
 
+// Blog listing page displaying recent printing articles and updates.
 export default function BlogPage(props: BlogPageProps = {}) {
-  const { cta, pageTopSection } = siteMap;
-  const blog = props.data || siteMap.blog;
+  const { cta, pageTopSection } = site;
+  const blog = props.data || site.blog;
 
   const tagline = props.tagline || blog?.tagline || "OUR BLOGS";
   const titlePart1 = props.titlePart1 || blog?.titlePart1 || "Insights &";
@@ -37,9 +38,7 @@ export default function BlogPage(props: BlogPageProps = {}) {
       />
       <section className="relative w-full bg-white py-8 lg:py-12 overflow-hidden">
         <div className="max-w-[1420px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10">
-          {/* Section Header */}
           <div className="text-center max-w-3xl mx-auto">
-            {/* Tagline with lines on both sides */}
             <div className="flex items-center justify-center gap-3 mb-2">
               <span
                 className="w-9 h-[2px] bg-[#cb5855] rounded-full inline-block"
@@ -54,19 +53,16 @@ export default function BlogPage(props: BlogPageProps = {}) {
               />
             </div>
 
-            {/* Headline */}
             <h2 className="text-3xl sm:text-4xl lg:text-[44px] font-extrabold tracking-tight text-[#241121]">
               <span>{titlePart1} </span>
               <span className="text-[#cb5855]">{titleHighlight}</span>
             </h2>
 
-            {/* Subtitle */}
             <p className="mt-2 text-sm sm:text-base text-[#5b525a] leading-relaxed max-w-xl mx-auto">
               {subtitle}
             </p>
           </div>
 
-          {/* Blog Cards Grid */}
           <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4 sm:gap-4 mt-4 sm:mt-6">
             {posts.map((post) => (
               <BlogCard key={post.id} post={post} />

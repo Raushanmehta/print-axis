@@ -6,6 +6,10 @@ import Link from "next/link";
 import NeedCustomCard from "@/components/cards/NeedCustomCard";
 import { siteMap } from "@/data";
 import { CalendarIcon, AuthorIcon, ClockIcon } from "@/components/icons";
+import {
+  FadeUp,
+  ScaleIn,
+} from "@/utils/animations";
 
 export interface RecentPostItem {
   id: string;
@@ -29,10 +33,10 @@ export interface BlogDetailSectionProps {
   recentPosts?: RecentPostItem[];
 }
 
+// Blog article section showing post content and recent articles.
 export default function BlogDetailSection(props: BlogDetailSectionProps) {
   const allBlogPosts = (siteMap.blog?.blogPosts || []) as any[];
 
-  // Match post by slug, href, or fallback to first blog post
   const matchedPost =
     props.data ||
     (props.slug
@@ -49,69 +53,84 @@ export default function BlogDetailSection(props: BlogDetailSectionProps) {
   const title =
     props.title ||
     matchedPost.title ||
-    "5 Creative Business Card Design Ideas for 2025";
+    matchedPost.name ||
+    "Printing Techniques & Insights";
   const highLight =
     props.highLight ||
     props.titleHighlight ||
     matchedPost.highLight ||
+    matchedPost.titleHighlight ||
     "";
   const publishDate =
     props.publishDate ||
     matchedPost.publishDate ||
     matchedPost.date ||
-    "15 Mar 2025";
+    "April 20, 2026";
   const authorName =
     props.authorName ||
     matchedPost.authorName ||
-    "PrintAxis Team";
+    matchedPost.author ||
+    "PrintAxis Specialist";
   const readTime =
     props.readTime ||
     matchedPost.readTime ||
-    "5 min read";
+    "4 Min Read";
   const heroImage =
     props.heroImage ||
-    matchedPost.imageSrc ||
     matchedPost.heroImage ||
-    "/images/blog-business-cards.jpg";
+    matchedPost.imageSrc ||
+    matchedPost.image ||
+    "/images/blog-business-card.jpg";
 
   const leadParagraph =
     matchedPost.leadParagraph ||
+    matchedPost.detailParagraph1 ||
     matchedPost.description ||
-    "In today's competitive marketplace, packaging and print branding are essential tactile interactions customers have with your brand identity.";
+    "High-impact print marketing starts with quality craftsmanship. Discover essential strategies and production nuances that turn everyday paper collateral into tangible brand assets.";
   const secondParagraph =
     matchedPost.secondParagraph ||
-    "From custom corrugated mailer boxes to luxury business cards, sensory tactile details directly impact customer perception, engagement, and brand recall.";
+    matchedPost.detailParagraph2 ||
+    "From tactile soft-touch laminations to precision metallic foils and UV spots, choosing the appropriate surface treatment elevates customer perception from first touch.";
+
   const quote = matchedPost.quote || {
-    text: "Great packaging turns a routine delivery into a memorable branded event. Customers don't just receive a product; they unwrap an experience.",
-    author: "PrintAxis Packaging Innovation Team",
+    text: "Print is not dead; it has evolved into the most tangible expression of premium brand trust in a digital world.",
+    author: "PrintAxis Technical Lead",
   };
-  const sections = (matchedPost.sections || []) as Array<{
-    heading: string;
-    text: string;
-    image: string;
-    imageAlt: string;
-  }>;
+
+  const sections: { heading: string; text: string; image: string; imageAlt?: string }[] =
+    matchedPost.sections || [
+      {
+        heading: "1. Select the Right Substrate and GSM",
+        text: "Paper weight and fiber texture dictate the longevity and hand-feel of your promotional pieces. For corporate identity, we recommend 350 GSM matte or uncoated cotton stocks.",
+        image: "/images/blog-brochures.jpg",
+        imageAlt: "Paper stocks sample",
+      },
+      {
+        heading: "2. Color Calibration & CMYK Precision",
+        text: "Ensure all source assets are formatted in 300 DPI CMYK color profiles with appropriate 3mm bleed margins to eliminate trimming artifacts.",
+        image: "/images/why-choose-tshirts.jpg",
+        imageAlt: "Print press calibration",
+      },
+    ];
 
   const recentArticlesTitle =
     matchedPost.recentArticlesTitle || "Recent Articles";
-
-  const fallbackRecentPosts: RecentPostItem[] = (
-    (siteMap.blog as any)?.recentPosts ||
+  const recentPosts: RecentPostItem[] = (
+    props.recentPosts ||
+    matchedPost.recentPosts ||
     allBlogPosts.slice(0, 3).map((p: any) => ({
       id: p.id,
       title: p.title,
       date: p.date,
-      image: p.imageSrc,
-      href: p.href,
+      image: p.imageSrc || p.image,
+      href: p.href || `/blog/${p.id}`,
     }))
   ) as RecentPostItem[];
 
-  const recentPosts = props.recentPosts || fallbackRecentPosts;
-
-  const needCustomCard = (siteMap.blog as any)?.needCustomCard || {
+  const needCustomCard = matchedPost.needCustomCard || {
     title: "Need Custom Printing?",
     description:
-      "Get an instant estimate for your packaging, marketing materials, or merchandise.",
+      "Get high-quality custom prints for your business, events or personal use.",
     buttonText: "Request a Free Quote",
     buttonHref: "/get-a-quote",
   };
@@ -120,54 +139,55 @@ export default function BlogDetailSection(props: BlogDetailSectionProps) {
     <article className="bg-white py-8 lg:py-12">
       <div className="max-w-[1420px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 items-start">
-          {/* Main Article Content */}
           <div className="lg:col-span-8 flex flex-col">
-            {/* Headline */}
-            <h1 className="text-3xl sm:text-4xl lg:text-[42px] font-extrabold text-[#241121] leading-tight tracking-tight mb-3 sm:mb-4">
-              {title}
-              {highLight && (
-                <>
-                  <br />
-                  <span className="text-[#cb5855]">{highLight}</span>
-                </>
-              )}
-            </h1>
+            <FadeUp delay={0.08}>
+              <h1 className="text-3xl sm:text-4xl lg:text-[42px] font-extrabold text-[#241121] leading-tight tracking-tight mb-3 sm:mb-4">
+                {title}
+                {highLight && (
+                  <>
+                    <br />
+                    <span className="text-[#cb5855]">{highLight}</span>
+                  </>
+                )}
+              </h1>
+            </FadeUp>
 
-            {/* Meta Tags */}
-            <div className="flex flex-wrap items-center gap-3 sm:gap-4 mb-3 text-xs text-gray-500 font-medium">
-              <div className="flex items-center gap-1.5">
-                <CalendarIcon className="w-4 h-4 text-[#cb5855]" />
-                <time dateTime={publishDate}>{publishDate}</time>
+            <FadeUp delay={0.14}>
+              <div className="flex flex-wrap items-center gap-3 sm:gap-4 mb-3 text-xs text-gray-500 font-medium">
+                <div className="flex items-center gap-1.5">
+                  <CalendarIcon className="w-4 h-4 text-[#cb5855]" />
+                  <time dateTime={publishDate}>{publishDate}</time>
+                </div>
+
+                <span className="text-gray-300">•</span>
+
+                <div className="flex items-center gap-1.5">
+                  <AuthorIcon className="w-4 h-4 text-[#cb5855]" />
+                  <span>By {authorName}</span>
+                </div>
+
+                <span className="text-gray-300">•</span>
+
+                <div className="flex items-center gap-1.5">
+                  <ClockIcon className="w-4 h-4 text-[#cb5855]" />
+                  <span>{readTime}</span>
+                </div>
               </div>
+            </FadeUp>
 
-              <span className="text-gray-300">•</span>
-
-              <div className="flex items-center gap-1.5">
-                <AuthorIcon className="w-4 h-4 text-[#cb5855]" />
-                <span>By {authorName}</span>
+            <ScaleIn delay={0.2}>
+              <div className="relative aspect-[22/10] w-full rounded-lg overflow-hidden mb-4 sm:mb-6 border border-gray-100 shadow-xs bg-gray-100 group">
+                <Image
+                  src={heroImage}
+                  alt={title}
+                  fill
+                  priority
+                  sizes="(max-width: 1024px) 100vw, 900px"
+                  className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
+                />
               </div>
+            </ScaleIn>
 
-              <span className="text-gray-300">•</span>
-
-              <div className="flex items-center gap-1.5">
-                <ClockIcon className="w-4 h-4 text-[#cb5855]" />
-                <span>{readTime}</span>
-              </div>
-            </div>
-
-            {/* Hero Image */}
-            <div className="relative aspect-[22/10] w-full rounded-lg overflow-hidden mb-4 sm:mb-6 border border-gray-100 shadow-xs bg-gray-100">
-              <Image
-                src={heroImage}
-                alt={title}
-                fill
-                priority
-                sizes="(max-width: 1024px) 100vw, 900px"
-                className="object-cover object-center"
-              />
-            </div>
-
-            {/* Article Body */}
             <div className="prose max-w-none text-[#5b525a] text-xs sm:text-sm lg:text-[15px] leading-relaxed space-y-3 sm:space-y-4">
               <p className="text-sm sm:text-base text-[#241121] font-medium leading-relaxed">
                 {leadParagraph}
@@ -175,7 +195,6 @@ export default function BlogDetailSection(props: BlogDetailSectionProps) {
 
               <p>{secondParagraph}</p>
 
-              {/* Highlight Quote Box */}
               {quote?.text && (
                 <blockquote className="my-4 border-l-4 border-[#cb5855] bg-[#fdf2f1]/60 rounded-r-lg p-3.5 sm:p-4 text-[#241121]">
                   <p className="text-sm sm:text-base font-bold italic leading-relaxed text-[#241121]">
@@ -189,7 +208,6 @@ export default function BlogDetailSection(props: BlogDetailSectionProps) {
                 </blockquote>
               )}
 
-              {/* Dynamic Content Sections */}
               {sections.map((sec, idx) => (
                 <div
                   key={idx}
@@ -217,9 +235,7 @@ export default function BlogDetailSection(props: BlogDetailSectionProps) {
             </div>
           </div>
 
-          {/* Sidebar */}
           <aside className="lg:col-span-4 flex flex-col gap-4 lg:sticky lg:top-24">
-            {/* Recent Posts Card */}
             <div className="bg-white rounded-lg border border-gray-100 p-4 sm:p-5 shadow-xs">
               <h3 className="text-xl sm:text-2xl font-bold text-[#241121] mb-3 pb-2 border-b border-gray-100">
                 {recentArticlesTitle}
@@ -254,7 +270,6 @@ export default function BlogDetailSection(props: BlogDetailSectionProps) {
               </div>
             </div>
 
-            {/* Quick Quote CTA Banner */}
             <NeedCustomCard
               title={needCustomCard.title}
               description={needCustomCard.description}

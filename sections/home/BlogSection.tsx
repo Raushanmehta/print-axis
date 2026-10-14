@@ -10,6 +10,10 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { siteMap, PrintAxisBlogData } from "@/data";
+import {
+  FadeUp,
+  FadeDown,
+} from "@/utils/animations";
 
 export interface BlogSectionProps {
   data?: PrintAxisBlogData;
@@ -21,6 +25,7 @@ export interface BlogSectionProps {
   blogPosts?: BlogPost[];
 }
 
+// Blog section displaying latest articles in a slider.
 export default function BlogSection(props: BlogSectionProps) {
   const data = props.data || siteMap.blog;
 
@@ -40,63 +45,64 @@ export default function BlogSection(props: BlogSectionProps) {
   return (
     <section className="relative w-full bg-white py-8 lg:py-12 overflow-hidden">
       <div className="max-w-[1420px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10">
-        {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto">
-          {/* Tagline with lines on both sides */}
-          <div className="flex items-center justify-center gap-3 mb-2">
-            <span
-              className="w-9 h-[2px] bg-[#cb5855] rounded-full inline-block"
-              aria-hidden="true"
-            />
-            <span className="text-xs sm:text-[13px] font-bold tracking-[0.25em] text-[#8e4f5d] uppercase">
-              {tagline}
-            </span>
-            <span
-              className="w-9 h-[2px] bg-[#cb5855] rounded-full inline-block"
-              aria-hidden="true"
-            />
-          </div>
-
-          {/* Headline */}
-          <h2 className="text-3xl sm:text-4xl lg:text-[44px] font-extrabold tracking-tight text-[#241121]">
-            <span>{titlePart1} </span>
-            <span className="text-[#cb5855]">{titleHighlight}</span>
-          </h2>
-
-          {/* Subtitle */}
-          <p className="mt-2 text-sm sm:text-base text-[#5b525a] leading-relaxed max-w-xl mx-auto">
-            {subtitle}
-          </p>
-        </div>
-
-        {/* Shadcn UI Carousel */}
-        <div className="relative mt-4 sm:mt-6">
-          <Carousel
-            opts={{
-              align: "start",
-              loop: true,
-            }}
-            className="w-full"
-          >
-            {/* Card Slider Track with Vertically Centered Side Navigation Arrows */}
-            <div className="relative">
-              <CarouselContent className="-ml-4 sm:-ml-4 py-2">
-                {posts.map((post) => (
-                  <CarouselItem
-                    key={post.id}
-                    className="pl-4 sm:pl-4 basis-full sm:basis-1/2 lg:basis-1/3"
-                  >
-                    <BlogCard post={post} className="h-full" />
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
-
-              {/* Carousel Navigation Arrows (Card ke vertical center me) */}
-              <CarouselPrevious className="flex -left-3 sm:-left-4 md:-left-5 lg:-left-6 xl:-left-12 top-1/2 -translate-y-1/2 inset-y-auto my-0 size-9 sm:size-10 rounded-full bg-[#fdf0ef] text-[#cb5855] border-transparent hover:bg-[#cb5855] hover:text-white transition-all shadow-md z-20" />
-              <CarouselNext className="flex -right-3 sm:-right-4 md:-right-5 lg:-right-6 xl:-right-12 top-1/2 -translate-y-1/2 inset-y-auto my-0 size-9 sm:size-10 rounded-full bg-[#fdf0ef] text-[#cb5855] border-transparent hover:bg-[#cb5855] hover:text-white transition-all shadow-md z-20" />
+          <FadeDown delay={0.05}>
+            <div className="flex items-center justify-center gap-3 mb-2">
+              <span
+                className="w-9 h-[2px] bg-[#cb5855] rounded-full inline-block"
+                aria-hidden="true"
+              />
+              <span className="text-xs sm:text-[13px] font-bold tracking-[0.25em] text-[#8e4f5d] uppercase">
+                {tagline}
+              </span>
+              <span
+                className="w-9 h-[2px] bg-[#cb5855] rounded-full inline-block"
+                aria-hidden="true"
+              />
             </div>
-          </Carousel>
+          </FadeDown>
+
+          <FadeUp delay={0.12}>
+            <h2 className="text-3xl sm:text-4xl lg:text-[44px] font-extrabold tracking-tight text-[#241121]">
+              <span>{titlePart1} </span>
+              <span className="text-[#cb5855]">{titleHighlight}</span>
+            </h2>
+          </FadeUp>
+
+          <FadeUp delay={0.2}>
+            <p className="mt-2 text-sm sm:text-base text-[#5b525a] leading-relaxed max-w-xl mx-auto">
+              {subtitle}
+            </p>
+          </FadeUp>
         </div>
+
+        <FadeUp delay={0.25}>
+          <div className="relative mt-4 sm:mt-6">
+            <Carousel
+              opts={{
+                align: "start",
+                loop: true,
+              }}
+              className="w-full"
+            >
+              <div className="relative">
+                <CarouselContent className="-ml-4 sm:-ml-4 py-2">
+                  {posts.map((post) => (
+                    <CarouselItem
+                      key={post.id}
+                      className="pl-4 sm:pl-4 basis-full sm:basis-1/2 lg:basis-1/3"
+                    >
+                      <BlogCard post={post} className="h-full" />
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+
+                <CarouselPrevious className="flex -left-3 sm:-left-4 md:-left-5 lg:-left-6 xl:-left-12 size-9 sm:size-10 rounded-full bg-[#fdf0ef] text-[#cb5855] border-transparent hover:bg-[#cb5855] hover:text-white transition-all shadow-md z-20" />
+                <CarouselNext className="flex -right-3 sm:-right-4 md:-right-5 lg:-right-6 xl:-right-12 size-9 sm:size-10 rounded-full bg-[#fdf0ef] text-[#cb5855] border-transparent hover:bg-[#cb5855] hover:text-white transition-all shadow-md z-20" />
+              </div>
+            </Carousel>
+          </div>
+        </FadeUp>
       </div>
     </section>
   );

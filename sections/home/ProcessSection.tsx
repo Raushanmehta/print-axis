@@ -1,7 +1,16 @@
+"use client";
+
 import React from "react";
 import Image from "next/image";
 import { siteMap, PrintAxisProcessData } from "@/data";
 import { ChevronRightIcon } from "@/components/icons";
+import {
+  FadeUp,
+  FadeDown,
+  StaggerContainer,
+  StaggerItem,
+  AnimatedIcon,
+} from "@/utils/animations";
 
 export interface ProcessStep {
   stepNumber: string;
@@ -20,6 +29,7 @@ export interface ProcessSectionProps {
   steps?: ProcessStep[];
 }
 
+// Process section outlining steps from design to delivery.
 export default function ProcessSection(props: ProcessSectionProps) {
   const data = props.data || siteMap.process;
 
@@ -32,45 +42,45 @@ export default function ProcessSection(props: ProcessSectionProps) {
   return (
     <section className="relative w-full bg-white py-8 lg:py-12 overflow-hidden">
       <div className="max-w-[1420px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10">
-        {/* Section Header */}
         <div className="text-center max-w-4xl mx-auto">
-          {/* Tagline */}
-          <div className="flex items-center justify-center gap-3 mb-2">
-            <span
-              className="w-9 h-[2px] bg-[#cb5855] rounded-full inline-block"
-              aria-hidden="true"
-            />
-            <span className="text-xs sm:text-[13px] font-bold tracking-[0.25em] text-[#8e4f5d] uppercase">
-              {tagline}
-            </span>
-          </div>
+          <FadeDown delay={0.05}>
+            <div className="flex items-center justify-center gap-3 mb-2">
+              <span
+                className="w-9 h-[2px] bg-[#cb5855] rounded-full inline-block"
+                aria-hidden="true"
+              />
+              <span className="text-xs sm:text-[13px] font-bold tracking-[0.25em] text-[#8e4f5d] uppercase">
+                {tagline}
+              </span>
+            </div>
+          </FadeDown>
 
-          {/* Headline */}
-          <h2 className="text-3xl sm:text-4xl lg:text-[44px] font-extrabold tracking-tight text-[#241121]">
-            <span>{titlePart1} </span>
-            <span className="text-[#cb5855]">{titleHighlight}</span>
-          </h2>
+          <FadeUp delay={0.12}>
+            <h2 className="text-3xl sm:text-4xl lg:text-[44px] font-extrabold tracking-tight text-[#241121]">
+              <span>{titlePart1} </span>
+              <span className="text-[#cb5855]">{titleHighlight}</span>
+            </h2>
+          </FadeUp>
 
-          {/* Subtitle */}
-          <p className="mt-2 text-sm sm:text-base text-[#5b525a] leading-relaxed max-w-2xl mx-auto">
-            {subtitle}
-          </p>
+          <FadeUp delay={0.2}>
+            <p className="mt-2 text-sm sm:text-base text-[#5b525a] leading-relaxed max-w-2xl mx-auto">
+              {subtitle}
+            </p>
+          </FadeUp>
         </div>
 
-        {/* 4 Steps Row */}
-        <div className="mt-4 sm:mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-4 relative">
+        <StaggerContainer speed="fast" className="mt-6 sm:mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-4 relative">
           {steps.map((step, index) => (
-            <div
+            <StaggerItem
               key={step.stepNumber}
-              className="relative flex flex-col items-center group"
+              variant="up"
+              className="relative flex flex-col items-center group text-center"
             >
-              {/* Connector Line to Next Step (Visible on desktop lg) */}
               {index < steps.length - 1 && (
                 <div
-                  className="hidden lg:flex items-center justify-center absolute top-12 sm:top-16 left-[calc(50%+54px)] sm:left-[calc(50%+70px)] w-[calc(100%-108px)] sm:w-[calc(100%-140px)] z-0"
+                  className="hidden lg:flex items-center justify-center absolute top-14 left-[calc(50%+60px)] w-[calc(100%-120px)] z-0"
                   aria-hidden="true"
                 >
-                  {/* Left animated dashed line flowing right */}
                   <div className="flex-1 overflow-hidden h-2 flex items-center">
                     <svg className="w-full h-2 overflow-visible" preserveAspectRatio="none">
                       <line
@@ -82,7 +92,6 @@ export default function ProcessSection(props: ProcessSectionProps) {
                         strokeWidth="2"
                         strokeDasharray="6 6"
                         strokeOpacity="0.55"
-                        className="animate-dash-flow"
                       >
                         <animate
                           attributeName="stroke-dashoffset"
@@ -95,70 +104,46 @@ export default function ProcessSection(props: ProcessSectionProps) {
                     </svg>
                   </div>
 
-                  {/* Middle Arrow Badge */}
-                  <div className="w-8 h-8 rounded-full bg-[#cb5855] text-white flex items-center justify-center text-[15px] shrink-0 mx-2 shadow-xs transition-transform duration-200 group-hover:scale-110">
-                    <ChevronRightIcon className="w-3.5 h-3.5" />
-                  </div>
-
-                  {/* Right animated dashed line flowing right */}
-                  <div className="flex-1 overflow-hidden h-2 flex items-center">
-                    <svg className="w-full h-2 overflow-visible" preserveAspectRatio="none">
-                      <line
-                        x1="0"
-                        y1="1"
-                        x2="100%"
-                        y2="1"
-                        stroke="#cb5855"
-                        strokeWidth="2"
-                        strokeDasharray="6 6"
-                        strokeOpacity="0.55"
-                        className="animate-dash-flow"
-                      >
-                        <animate
-                          attributeName="stroke-dashoffset"
-                          from="0"
-                          to="-24"
-                          dur="1s"
-                          repeatCount="indefinite"
-                        />
-                      </line>
-                    </svg>
-                  </div>
+                  <AnimatedIcon animation="pulse">
+                    <div className="w-7 h-7 rounded-full bg-[#cb5855] text-white flex items-center justify-center text-[14px] shrink-0 mx-2 shadow-xs transition-transform duration-200 group-hover:scale-115">
+                      <ChevronRightIcon className="w-3 h-3" />
+                    </div>
+                  </AnimatedIcon>
                 </div>
               )}
 
-              {/* Circular Icon Container */}
-              <div className="relative z-10 w-24 h-24 sm:w-32 sm:h-32 rounded-full bg-[#fdf0ef] flex items-center justify-center transition-transform duration-300 group-hover:scale-105 shadow-xs">
+              <div className="relative w-24 h-24 sm:w-32 sm:h-32 mb-5 rounded-full border-4 border-white shadow-lg bg-gray-100 flex items-center justify-center group-hover:shadow-xl transition-shadow duration-300">
                 {step.imageSrc ? (
-                  <Image
-                    src={step.imageSrc}
-                    alt={step.title}
-                    width={64}
-                    height={64}
-                    className="w-12 h-12 sm:w-14 sm:h-14 object-contain transition-transform duration-300 group-hover:scale-110"
-                  />
+                  <div className="relative w-12 h-12 sm:w-14 sm:h-14 transition-transform duration-500 group-hover:scale-110">
+                    <Image
+                      src={step.imageSrc}
+                      alt={step.title}
+                      fill
+                      className="object-contain"
+                      sizes="(max-width: 640px) 48px, 56px"
+                    />
+                  </div>
                 ) : (
-                  step.icon
+                  <div className="text-2xl font-black text-[#cb5855]">
+                    {step.stepNumber}
+                  </div>
                 )}
 
-                {/* Step Number Badge */}
-                <div className="absolute -bottom-2.5 left-1/2 -translate-x-1/2 w-10 h-10 rounded-full bg-[#cb5855] text-white text-[16px] font-bold flex items-center justify-center border-2 border-white shadow-sm">
+                <div className="absolute -bottom-5 left-1/2 -translate-x-1/2 w-10 h-10 rounded-full bg-[#cb5855] text-white text-sm font-bold flex items-center justify-center border-2 border-white shadow-md transition-transform duration-300 group-hover:scale-110 z-10">
                   {step.stepNumber}
                 </div>
               </div>
 
-              {/* Step Title */}
-              <h3 className="mt-4 text-base sm:text-lg font-bold text-[#241121] text-center group-hover:text-[#cb5855] transition-colors duration-200">
+              <h3 className="text-base sm:text-lg font-bold text-[#241121] group-hover:text-[#cb5855] transition-colors duration-200">
                 {step.title}
               </h3>
 
-              {/* Step Description */}
-              <p className="mt-1.5 text-xs sm:text-sm text-[#665e64] text-center leading-relaxed max-w-xs">
+              <p className="mt-1 text-xs sm:text-sm text-[#5b525a] leading-relaxed max-w-xs mx-auto">
                 {step.description}
               </p>
-            </div>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerContainer>
       </div>
     </section>
   );

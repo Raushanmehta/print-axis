@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import {
   QuoteIcon,
@@ -5,6 +7,7 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
 } from "@/components/icons";
+import { AnimatedIcon } from "@/utils/animations";
 
 export interface TestimonialItem {
   id: string;
@@ -36,7 +39,7 @@ export default function TestimonialCard({
 
   return (
     <div
-      className={`relative bg-[#34142b] rounded-sm p-5 sm:p-6 lg:p-7 overflow-hidden text-white shadow-xl flex flex-col justify-between ${className}`}
+      className={`relative bg-[#34142b] rounded-lg p-5 sm:p-6 lg:p-7 overflow-hidden text-white shadow-xl flex flex-col justify-between ${className}`}
     >
       {/* Background Subtle Organic Curved Waves */}
       <div className="absolute right-0 bottom-0 w-80 h-80 pointer-events-none opacity-20">
@@ -45,9 +48,11 @@ export default function TestimonialCard({
       </div>
 
       <div className="relative z-10" key={testimonial.id}>
-        {/* Double Quote Icon in Coral */}
+        {/* Double Quote Icon in Coral with Gentle Float */}
         <div className="mb-3">
-          <QuoteIcon />
+          <AnimatedIcon animation="float">
+            <QuoteIcon />
+          </AnimatedIcon>
         </div>
 
         {/* Testimonial Quote Body */}
@@ -67,7 +72,9 @@ export default function TestimonialCard({
           {/* Star Rating */}
           <div className="flex items-center gap-1 mt-1.5">
             {[...Array(rating)].map((_, i) => (
-              <StarIcon key={i} />
+              <span key={i} className="text-[#e06864]">
+                <StarIcon />
+              </span>
             ))}
           </div>
         </div>
@@ -93,7 +100,7 @@ export default function TestimonialCard({
             type="button"
             onClick={onPrev}
             aria-label="Previous testimonial"
-            className="w-8 h-8 sm:w-9 sm:h-9 rounded-sm bg-[#4a2240] text-white/90 hover:bg-[#5a2a4e] hover:text-white flex items-center justify-center transition-colors duration-200"
+            className="w-8 h-8 sm:w-9 sm:h-9 rounded-sm bg-[#4a2240] text-white/90 hover:bg-[#5a2a4e] hover:text-white flex items-center justify-center transition-all duration-200 active:scale-95"
           >
             <ChevronLeftIcon />
           </button>
@@ -102,7 +109,7 @@ export default function TestimonialCard({
             type="button"
             onClick={onNext}
             aria-label="Next testimonial"
-            className="w-8 h-8 sm:w-9 sm:h-9 rounded-sm bg-[#cb5855] text-white hover:bg-[#b84e4b] flex items-center justify-center transition-colors duration-200 shadow-sm"
+            className="w-8 h-8 sm:w-9 sm:h-9 rounded-sm bg-[#cb5855] text-white hover:bg-[#b84e4b] flex items-center justify-center transition-all duration-200 shadow-sm active:scale-95"
           >
             <ChevronRightIcon className="w-3.5 h-3.5" />
           </button>

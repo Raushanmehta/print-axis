@@ -1,10 +1,11 @@
 import PageTopSection from "@/components/common/PageTopSection";
 import GetAQuoteSection from "@/sections/GetAQuoteSection";
 import CtaSection from "@/sections/home/CtaSection";
-import { siteMap } from "@/data";
+import { site } from "@/data";
 
+// Quote request page with comprehensive custom estimation form.
 export default function GetAQuotePage() {
-  const { getAQuote, cta, pageTopSection } = siteMap;
+  const { getAQuote, cta, pageTopSection } = site;
 
   return (
     <main>

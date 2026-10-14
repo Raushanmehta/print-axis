@@ -1,11 +1,16 @@
+import { notFound } from "next/navigation";
 import PageTopSection from "@/components/common/PageTopSection";
 import ServiceDetailSection from "@/sections/ServiceDetailSection";
 import WhyChooseUsSection from "@/sections/WhyChooseUsSection";
 import CtaSection from "@/sections/home/CtaSection";
-import { siteMap } from "@/data";
+import { site } from "@/data";
+
+interface ServiceDetailRouteProps {
+  params: Promise<{ slug: string }> | { slug: string };
+}
 
 export function generateStaticParams() {
-  const services = siteMap.service?.servicesList || [];
+  const services = site.service?.servicesList || [];
   const slugs = new Set<string>();
   services.forEach((s) => {
     if (s.id) slugs.add(s.id);
@@ -15,31 +20,36 @@ export function generateStaticParams() {
   return Array.from(slugs).map((slug) => ({ slug }));
 }
 
-export default async function ServiceDetailPage({
-  params,
-}: {
-  params: Promise<{ slug: string }> | { slug: string };
-}) {
-  const resolvedParams = await params;
-  const { service, whyChooseUs, cta, pageTopSection } = siteMap;
+// Service details page rendering specific printing service information.
+export default async function ServiceDetailPage({ params }: ServiceDetailRouteProps) {
+  const { slug } = await params;
+  const serviceData = site.service;
 
-  // Find the matching service item to pass down
-  const matchedService = service?.servicesList?.find(
+  const matchedService = serviceData?.servicesList?.find(
     (s: any) =>
-      s.id === resolvedParams?.slug ||
-      s.href === `/services/${resolvedParams?.slug}` ||
-      s.href?.endsWith(`/${resolvedParams?.slug}`)
+      s.id === slug ||
+      (s as any).slug === slug ||
+      s.href === `/services/${slug}` ||
+      s.href?.endsWith(`/${slug}`)
   );
+
+  if (!matchedService) {
+    notFound();
+  }
 
   return (
     <main>
-      <PageTopSection data={pageTopSection} title="Service Detail" breadcrumb="Service Detail" />
+      <PageTopSection
+        data={site.pageTopSection}
+        title={matchedService.title || "Service Detail"}
+        breadcrumb="Service Detail"
+      />
       <ServiceDetailSection
-        slug={resolvedParams?.slug}
+        slug={slug}
         data={matchedService}
       />
-      <WhyChooseUsSection data={whyChooseUs} />
-      <CtaSection data={cta} />
+      <WhyChooseUsSection data={site.whyChooseUs} />
+      <CtaSection data={site.cta} />
     </main>
   );
 }

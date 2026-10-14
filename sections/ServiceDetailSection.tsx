@@ -16,6 +16,13 @@ import {
   ChevronRightIcon,
   ArrowRightIcon,
 } from "@/components/icons";
+import {
+  FadeUp,
+  ScaleIn,
+  StaggerContainer,
+  StaggerItem,
+  AnimatedIcon,
+} from "@/utils/animations";
 
 export interface ServiceFeatureItem {
   id: string;
@@ -102,10 +109,10 @@ function getProcessIcon(iconName?: string): React.ReactNode {
   }
 }
 
+// Service detail section displaying service specs, features, and process.
 export default function ServiceDetailSection(props: ServiceDetailSectionProps) {
   const allServices = (siteMap.service?.servicesList || []) as any[];
 
-  // Match current service by slug or href, fallback to first service
   const matchedService =
     props.data ||
     (props.slug
@@ -250,62 +257,62 @@ export default function ServiceDetailSection(props: ServiceDetailSectionProps) {
   return (
     <section className="bg-white pt-8 lg:pt-12 pb-0 lg:pb-0">
       <div className="max-w-[1420px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10">
-        {/* Top 2-Column Section */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 items-start">
-          {/* Left Column (Content & Big Image) */}
           <div className="lg:col-span-8 flex flex-col">
-            {/* Hero Main Machine Image */}
-            <div className="relative aspect-[20/9] w-full rounded-lg overflow-hidden border border-gray-100 shadow-xs bg-gray-50">
-              <Image
-                src={heroImage}
-                alt={heroImageAlt}
-                fill
-                priority
-                sizes="(max-width: 1024px) 100vw, 800px"
-                className="object-cover object-center"
-              />
-            </div>
+            <ScaleIn delay={0.08}>
+              <div className="relative aspect-[20/9] w-full rounded-lg overflow-hidden border border-gray-100 shadow-xs bg-gray-50 group">
+                <Image
+                  src={heroImage}
+                  alt={heroImageAlt}
+                  fill
+                  priority
+                  sizes="(max-width: 1024px) 100vw, 800px"
+                  className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
+                />
+              </div>
+            </ScaleIn>
 
-            {/* Main Title */}
-            <h1 className="text-3xl sm:text-4xl lg:text-[42px] font-extrabold text-[#241121] tracking-tight mt-4 sm:mt-5">
-              {mainTitlePart1}{" "}
-              <span className="text-[#cb5855]">{mainTitleHighlight}</span>
-            </h1>
+            <FadeUp delay={0.15}>
+              <h1 className="text-3xl sm:text-4xl lg:text-[42px] font-extrabold text-[#241121] tracking-tight mt-4 sm:mt-5">
+                {mainTitlePart1}{" "}
+                <span className="text-[#cb5855]">{mainTitleHighlight}</span>
+              </h1>
+            </FadeUp>
 
-            {/* Description Text */}
-            <p className="text-gray-500 text-xs sm:text-sm lg:text-[15px] leading-relaxed mt-1.5 max-w-4xl">
-              {description}
-            </p>
+            <FadeUp delay={0.22}>
+              <p className="text-gray-500 text-xs sm:text-sm lg:text-[15px] leading-relaxed mt-1.5 max-w-4xl">
+                {description}
+              </p>
+            </FadeUp>
 
-            {/* 3 Key Feature Cards Row */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 pt-5">
+            <StaggerContainer speed="fast" className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 pt-5">
               {features.map((feature: any, idx: number) => (
-                <div
+                <StaggerItem
                   key={feature.id}
+                  variant="up"
                   className={`flex flex-col items-center text-center ${
                     idx !== features.length - 1
                       ? "sm:border-r sm:border-gray-100 sm:pr-4"
                       : ""
                   }`}
                 >
-                  {/* Badge */}
-                  <div className="w-16 h-16 rounded-full bg-[#fdf2f1] flex items-center justify-center mb-2.5 text-[#cb5855] shadow-xs">
-                    {feature.icon}
-                  </div>
+                  <AnimatedIcon animation="pulse">
+                    <div className="w-16 h-16 rounded-full bg-[#fdf2f1] flex items-center justify-center mb-2.5 text-[#cb5855] shadow-xs">
+                      {feature.icon}
+                    </div>
+                  </AnimatedIcon>
                   <h2 className="font-bold text-sm sm:text-lg text-[#241121] leading-snug">
                     {feature.title}
                   </h2>
                   <p className="text-sm text-gray-500 mt-1 leading-relaxed max-w-xs mx-auto">
                     {feature.description}
                   </p>
-                </div>
+                </StaggerItem>
               ))}
-            </div>
+            </StaggerContainer>
           </div>
 
-          {/* Right Column (Sidebar: Other Services & CTA Card) */}
           <div className="lg:col-span-4 flex flex-col gap-4">
-            {/* Card 1: Other Services */}
             <div className="bg-white rounded-lg border border-gray-100 p-4 sm:p-5 shadow-xs">
               <h2 className="text-xl sm:text-2xl font-bold text-[#241121] mb-3">
                 {otherServicesTitle}
@@ -355,7 +362,6 @@ export default function ServiceDetailSection(props: ServiceDetailSectionProps) {
               </div>
             </div>
 
-            {/* Card 2: Need Custom Card */}
             <NeedCustomCard
               title={ctaTitle}
               description={ctaDescription}
@@ -367,9 +373,7 @@ export default function ServiceDetailSection(props: ServiceDetailSectionProps) {
           </div>
         </div>
 
-        {/* Bottom Card: OUR PROCESS — How It Works */}
         <div className="mt-4 sm:mt-6 bg-[#fdf7f6] rounded-lg p-4 sm:p-6 border border-[#fae4e1]">
-          {/* Header */}
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 mb-1 sm:mb-2 pb-3 sm:pb-2">
             <div>
               <div className="flex items-center gap-2 mb-1.5">
@@ -388,13 +392,10 @@ export default function ServiceDetailSection(props: ServiceDetailSectionProps) {
             </p>
           </div>
 
-          {/* 4 Steps Row Connected with Arrows */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-7 gap-4 sm:gap-4 items-center">
             {processSteps.map((step: any, index: number) => (
               <React.Fragment key={step.stepNumber}>
-                {/* Step Item */}
                 <div className="flex flex-col items-center text-center group lg:col-span-1">
-                  {/* Badge */}
                   <div className="w-20 h-20 rounded-full bg-white shadow-xs border border-gray-100 flex items-center justify-center text-[#cb5855] mb-2.5 group-hover:scale-105 group-hover:shadow-sm transition-all duration-300">
                     {step.icon}
                   </div>
@@ -410,7 +411,6 @@ export default function ServiceDetailSection(props: ServiceDetailSectionProps) {
                   </p>
                 </div>
 
-                {/* Arrow Connector (between steps) */}
                 {index < processSteps.length - 1 && (
                   <div className="hidden lg:flex items-center justify-center text-[#cb5855] lg:col-span-1">
                     <ArrowRightIcon className="w-6 h-6 opacity-70" />

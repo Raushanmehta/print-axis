@@ -1,4 +1,4 @@
-import { siteMap } from "@/data";
+import { site } from "@/data";
 import AboutSection from "@/sections/home/AboutSection";
 import BlogSection from "@/sections/home/BlogSection";
 import CtaSection from "@/sections/home/CtaSection";
@@ -7,8 +7,9 @@ import ProcessSection from "@/sections/home/ProcessSection";
 import ServiceSection from "@/sections/home/ServiceSection";
 import TestimonialSection from "@/sections/home/TestimonialSection";
 
+// Homepage rendering hero, services, process, and testimonial sections.
 export default function Home() {
-  const { hero, about, service, process, testimonial, cta, blog } = siteMap;
+  const { hero, about, service, process, testimonial, cta, blog } = site;
 
   return (
     <main>

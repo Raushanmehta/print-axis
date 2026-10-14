@@ -3,7 +3,7 @@
 import React, { useState, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { siteMap, type PrintAxisGetAQuoteData } from "@/data";
+import { site, type PrintAxisGetAQuoteData } from "@/data";
 import {
   DiamondIcon,
   ClockIcon,
@@ -59,8 +59,9 @@ function getWhyChooseIcon(id: string): React.ReactNode {
   }
 }
 
+// Quote request section with interactive estimate form and benefits.
 export default function GetAQuoteSection(props: GetAQuoteSectionProps) {
-  const fallback = siteMap.getAQuote;
+  const fallback = site.getAQuote;
   const titlePart1 = props.titlePart1 || props.data?.titlePart1 || fallback.titlePart1;
   const titleHighlight = props.titleHighlight || props.data?.titleHighlight || fallback.titleHighlight;
   const subtitle = props.subtitle || props.data?.subtitle || fallback.subtitle;
@@ -145,9 +146,7 @@ export default function GetAQuoteSection(props: GetAQuoteSectionProps) {
     <section className="bg-[#fcfbfc] py-8 lg:py-12">
       <div className="max-w-[1420px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 items-start">
-          {/* Left Column: Form Card */}
           <div className="lg:col-span-7 bg-white rounded-lg p-4 sm:p-6 border border-gray-100 shadow-xs">
-            {/* Header */}
             <div className="mb-4">
               <h1 className="text-2xl sm:text-3xl lg:text-[32px] font-extrabold text-[#241121] tracking-tight">
                 {titlePart1}{" "}
@@ -165,9 +164,7 @@ export default function GetAQuoteSection(props: GetAQuoteSectionProps) {
               </div>
             )}
 
-            {/* Form */}
             <form onSubmit={handleSubmit} className="space-y-3">
-              {/* Row 1: Full Name & Phone Number */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label
@@ -208,7 +205,6 @@ export default function GetAQuoteSection(props: GetAQuoteSectionProps) {
                 </div>
               </div>
 
-              {/* Row 2: Email Address & Company Name */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label
@@ -248,7 +244,6 @@ export default function GetAQuoteSection(props: GetAQuoteSectionProps) {
                 </div>
               </div>
 
-              {/* Row 3: Select Service */}
               <div>
                 <label
                   htmlFor="service"
@@ -281,7 +276,6 @@ export default function GetAQuoteSection(props: GetAQuoteSectionProps) {
                 </div>
               </div>
 
-              {/* Row 4: Product Details */}
               <div>
                 <label
                   htmlFor="productDetails"
@@ -301,7 +295,6 @@ export default function GetAQuoteSection(props: GetAQuoteSectionProps) {
                 />
               </div>
 
-              {/* Row 5: Upload Files (Optional) */}
               <div>
                 <label className="block text-xs font-semibold text-[#241121] mb-1">
                   {formLabels.uploadTitle}
@@ -311,7 +304,6 @@ export default function GetAQuoteSection(props: GetAQuoteSectionProps) {
                   className="w-full border border-gray-200/90 rounded-lg p-2.5 sm:p-3 bg-[#fcfbfc] hover:bg-[#faf8f9] hover:border-[#cb5855]/40 transition-all cursor-pointer flex items-center justify-between group"
                 >
                   <div className="flex items-center gap-3">
-                    {/* Coral Icon Badge */}
                     <div className="w-12 h-12 rounded-full bg-[#cb5855]/10 flex items-center justify-center shrink-0 group-hover:bg-[#cb5855]/20 group-hover:scale-105 transition-all">
                       <UploadIcon className="w-6 h-6 text-[#cb5855]" />
                     </div>
@@ -341,7 +333,6 @@ export default function GetAQuoteSection(props: GetAQuoteSectionProps) {
                   />
                 </div>
 
-                {/* Uploaded Files preview pills */}
                 {formData.files.length > 0 && (
                   <div className="mt-2 flex flex-wrap gap-1.5">
                     {formData.files.map((file, idx) => (
@@ -367,7 +358,6 @@ export default function GetAQuoteSection(props: GetAQuoteSectionProps) {
                 )}
               </div>
 
-              {/* Submit Button */}
               <div className="pt-1">
                 <button
                   type="submit"
@@ -390,11 +380,8 @@ export default function GetAQuoteSection(props: GetAQuoteSectionProps) {
             </form>
           </div>
 
-          {/* Right Column: Why Choose & Need Help Cards */}
           <div className="lg:col-span-5 flex flex-col gap-4">
-            {/* Card 1: Why Choose PrintAxis? */}
             <div className="bg-[#34142b] rounded-lg p-4 sm:p-6 text-white shadow-md relative overflow-hidden">
-              {/* Subtle decorative glow */}
               <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl pointer-events-none" />
 
               <h2 className="text-lg sm:text-xl font-bold text-white mb-3 tracking-tight relative z-10">
@@ -404,7 +391,6 @@ export default function GetAQuoteSection(props: GetAQuoteSectionProps) {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 relative z-10">
                 {rawWhyChooseItems.map((item) => (
                   <div key={item.id} className="flex flex-col items-start">
-                    {/* Outline Icon Badge */}
                     <div className="w-16 h-16 rounded-full border border-white/30 flex items-center justify-center mb-3 text-white bg-white/[0.04] shrink-0 transition-transform hover:scale-105">
                       {item.icon || getWhyChooseIcon(item.id)}
                     </div>
@@ -419,9 +405,7 @@ export default function GetAQuoteSection(props: GetAQuoteSectionProps) {
               </div>
             </div>
 
-            {/* Card 2: Need Help with Your Quote? */}
             <div className="bg-white rounded-lg border border-gray-100 shadow-xs overflow-hidden flex flex-col sm:flex-row items-stretch">
-              {/* Left Content Area */}
               <div className="flex-1 p-4 sm:p-5 flex flex-col justify-between">
                 <div>
                   <h3 className="text-xl sm:text-2xl font-extrabold leading-tight tracking-tight">
@@ -448,7 +432,6 @@ export default function GetAQuoteSection(props: GetAQuoteSectionProps) {
                 </div>
               </div>
 
-              {/* Right Mockup Graphic Area */}
               <div className="relative w-full sm:w-44 min-h-[140px] sm:min-h-full bg-[#fdf5f4] flex items-center justify-center overflow-hidden p-2.5 sm:p-3">
                 <div className="relative w-full h-full min-h-[130px] flex items-center justify-center">
                   <Image

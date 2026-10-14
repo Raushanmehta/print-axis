@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -7,6 +9,16 @@ import {
   AboutTopAccentIcon,
   AboutBottomAccentIcon,
 } from "@/components/icons";
+import {
+  FadeLeft,
+  FadeRight,
+  FadeDown,
+  ScaleIn,
+  StaggerContainer,
+  StaggerItem,
+  AnimatedButton,
+  FloatingElement,
+} from "@/utils/animations";
 
 export interface AboutSectionProps {
   data?: PrintAxisAboutData;
@@ -24,6 +36,7 @@ export interface AboutSectionProps {
   smallImage2Alt?: string;
 }
 
+// About section showcasing company story, gallery, and advantages.
 export default function AboutSection(props: AboutSectionProps) {
   const data = props.data || siteMap.about;
 
@@ -48,108 +61,118 @@ export default function AboutSection(props: AboutSectionProps) {
     <section className="relative w-full bg-white py-8 lg:py-12 overflow-hidden">
       <div className="max-w-[1420px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-4 items-stretch">
-          {/* Left Column: Heading, Paragraph, CTA and 2 Smaller Images */}
           <div className="lg:col-span-6 flex flex-col justify-between">
             <div>
-              {/* Tagline / Sub-header */}
-              <div className="flex items-center gap-3 mb-2">
-                <span
-                  className="w-9 h-[2px] bg-[#cb5855] rounded-full inline-block"
-                  aria-hidden="true"
-                />
-                <span className="text-xs sm:text-[13px] font-bold tracking-[0.25em] text-[#8e4f5d] uppercase">
-                  {tagline}
-                </span>
-              </div>
+              <FadeDown delay={0.05}>
+                <div className="flex items-center gap-3 mb-2">
+                  <span
+                    className="w-9 h-[2px] bg-[#cb5855] rounded-full inline-block"
+                    aria-hidden="true"
+                  />
+                  <span className="text-xs sm:text-[13px] font-bold tracking-[0.25em] text-[#8e4f5d] uppercase">
+                    {tagline}
+                  </span>
+                </div>
+              </FadeDown>
 
-              {/* Main Headline */}
-              <h2 className="text-3xl sm:text-4xl lg:text-[44px] xl:text-[48px] font-extrabold tracking-tight leading-[1.12] text-[#241121]">
-                <span>{titlePart1}</span>
-                <br />
-                <span className="text-[#cb5855] inline-block mt-1">
-                  {titleHighlight}
-                </span>
-              </h2>
+              <FadeLeft delay={0.12}>
+                <h2 className="text-3xl sm:text-4xl lg:text-[44px] xl:text-[48px] font-extrabold tracking-tight leading-[1.12] text-[#241121]">
+                  <span>{titlePart1}</span>
+                  <br />
+                  <span className="text-[#cb5855] inline-block mt-1">
+                    {titleHighlight}
+                  </span>
+                </h2>
+              </FadeLeft>
 
-              {/* Description Paragraph */}
-              <p className="mt-2 text-[#5b525a] text-sm sm:text-base leading-relaxed max-w-xl">
-                {description}
-              </p>
+              <FadeLeft delay={0.2}>
+                <p className="mt-2 text-[#5b525a] text-sm sm:text-base leading-relaxed max-w-xl">
+                  {description}
+                </p>
+              </FadeLeft>
 
-              {/* Action Button */}
-              <div className="mt-2 sm:mt-2">
-                <Link
-                  href={buttonHref}
-                  className="group inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-gradient-to-r from-[#ba4f4c] via-[#c85956] to-[#d66560] text-white font-semibold text-xs sm:text-sm tracking-wide uppercase shadow-sm hover:shadow-md hover:brightness-105 active:scale-[0.98] transition-all duration-200"
-                >
-                  <span>{buttonText}</span>
-                  <ArrowRightIcon />
-                </Link>
-              </div>
+              <FadeLeft delay={0.28}>
+                <div className="mt-3 sm:mt-3">
+                  <AnimatedButton glow>
+                    <Link
+                      href={buttonHref}
+                      className="group inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-gradient-to-r from-[#ba4f4c] via-[#c85956] to-[#d66560] text-white font-semibold text-xs sm:text-sm tracking-wide uppercase shadow-sm transition-all duration-200"
+                    >
+                      <span>{buttonText}</span>
+                      <span className="transition-transform duration-200 group-hover:translate-x-1 inline-flex items-center">
+                        <ArrowRightIcon />
+                      </span>
+                    </Link>
+                  </AnimatedButton>
+                </div>
+              </FadeLeft>
             </div>
 
-            {/* Bottom 2 Smaller Gallery Images */}
-            <div className="grid grid-cols-2 gap-4 sm:gap-4 mt-2 pt-2">
-              {/* Small Image 1: Stack of brochures */}
-              <div className="relative group overflow-hidden shadow-md border border-gray-100 bg-gray-50 aspect-[4/3]">
-                <Image
-                  src={smallImage1Src}
-                  alt={smallImage1Alt}
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  sizes="(max-width: 768px) 50vw, 25vw"
-                />
-              </div>
+            <StaggerContainer speed="fast" className="grid grid-cols-2 gap-4 sm:gap-4 mt-4 pt-2">
+              <StaggerItem variant="scale">
+                <div className="relative group overflow-hidden shadow-md border border-gray-100 bg-gray-50 aspect-[4/3] rounded-sm">
+                  <Image
+                    src={smallImage1Src}
+                    alt={smallImage1Alt}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-108"
+                    sizes="(max-width: 768px) 50vw, 25vw"
+                  />
+                </div>
+              </StaggerItem>
 
-              {/* Small Image 2: Packaging boxes */}
-              <div className="relative group overflow-hidden shadow-md border border-gray-100 bg-gray-50 aspect-[4/3]">
-                <Image
-                  src={smallImage2Src}
-                  alt={smallImage2Alt}
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  sizes="(max-width: 768px) 50vw, 25vw"
-                />
-              </div>
-            </div>
+              <StaggerItem variant="scale">
+                <div className="relative group overflow-hidden shadow-md border border-gray-100 bg-gray-50 aspect-[4/3] rounded-sm">
+                  <Image
+                    src={smallImage2Src}
+                    alt={smallImage2Alt}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-108"
+                    sizes="(max-width: 768px) 50vw, 25vw"
+                  />
+                </div>
+              </StaggerItem>
+            </StaggerContainer>
           </div>
 
-          {/* Right Column: Large Industrial Press Machine Image */}
           <div className="lg:col-span-6 relative flex items-center lg:-mr-0 xl:-mr-0">
-            <div className="relative w-full h-full min-h-[420px] sm:min-h-[500px] lg:min-h-[560px]">
-              {/* Main Showcase Image Container */}
-              <div className="relative z-10 w-full h-full min-h-[420px] sm:min-h-[500px] lg:min-h-[560px] overflow-hidden shadow-xl border border-gray-100 bg-gray-50 group">
-                <Image
-                  src={largeImageSrc}
-                  alt={largeImageAlt}
-                  fill
-                  priority
-                  className="object-cover transition-transform duration-700 group-hover:scale-102"
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                />
+            <FadeRight delay={0.15} className="w-full h-full">
+              <div className="relative w-full h-full min-h-[420px] sm:min-h-[500px] lg:min-h-[560px]">
+                <ScaleIn delay={0.2} className="w-full h-full">
+                  <div className="relative z-10 w-full h-full min-h-[420px] sm:min-h-[500px] lg:min-h-[560px] overflow-hidden shadow-xl border border-gray-100 bg-gray-50 rounded-sm group">
+                    <Image
+                      src={largeImageSrc}
+                      alt={largeImageAlt}
+                      fill
+                      priority
+                      className="object-cover transition-transform duration-700 group-hover:scale-105"
+                      sizes="(max-width: 1024px) 100vw, 50vw"
+                    />
+                  </div>
+                </ScaleIn>
               </div>
-            </div>
+            </FadeRight>
           </div>
         </div>
       </div>
 
-      {/* Outer Decorative Accent Geometric Frame on Right Edge */}
       <div
         className="absolute right-0 top-0 bottom-0 w-16 sm:w-20 md:w-24 lg:w-28 pointer-events-none hidden sm:flex flex-col justify-between items-end z-0"
         aria-hidden="true"
       >
-        {/* Top-Right Graphic Accent (Flush to right edge) */}
-        <div className="w-full flex justify-end">
-          <AboutTopAccentIcon />
-        </div>
+        <FloatingElement amplitude={4} duration={4}>
+          <div className="w-full flex justify-end">
+            <AboutTopAccentIcon />
+          </div>
+        </FloatingElement>
 
-        {/* Vertical thin accent line running between top and bottom blocks */}
         <div className="w-[1.5px] bg-[#cb5855]/70 h-full my-2 mr-8 sm:mr-10 md:mr-11 lg:mr-12" />
 
-        {/* Bottom-Right Graphic Accent (Flush to right edge) */}
-        <div className="w-full flex justify-end">
-          <AboutBottomAccentIcon />
-        </div>
+        <FloatingElement amplitude={4} duration={4.2} reverse>
+          <div className="w-full flex justify-end">
+            <AboutBottomAccentIcon />
+          </div>
+        </FloatingElement>
       </div>
     </section>
   );

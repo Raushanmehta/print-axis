@@ -21,6 +21,16 @@ import {
   XSocialIcon,
   MapPinSolidIcon,
 } from "@/components/icons";
+import {
+  FadeUp,
+  FadeDown,
+  FadeLeft,
+  FadeRight,
+  StaggerContainer,
+  StaggerItem,
+  AnimatedIcon,
+  AnimatedButton,
+} from "@/utils/animations";
 
 export interface ContactInfoItem {
   id: string;
@@ -59,6 +69,7 @@ function getSocialIcon(name: string): React.ReactNode {
   }
 }
 
+// Contact section with contact cards, form, and directions.
 export default function ContactSection(props: ContactSectionProps) {
   const fallback = siteMap.contact;
   const tagline = props.tagline || props.data?.tagline || fallback.tagline;
@@ -109,110 +120,118 @@ export default function ContactSection(props: ContactSectionProps) {
   return (
     <section className="relative w-full bg-[#faf8f9] py-8 lg:py-12 overflow-hidden">
       <div className="max-w-[1420px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10">
-        {/* ================= 1. HEADER ================= */}
         <div className="text-center max-w-3xl mx-auto">
-          {/* Tagline */}
-          <div className="flex items-center justify-center gap-3 mb-2">
-            <span
-              className="w-9 h-[2px] bg-[#cb5855] rounded-full inline-block"
-              aria-hidden="true"
-            />
-            <span className="text-xs sm:text-[13px] font-bold tracking-[0.25em] text-[#cb5855] uppercase">
-              {tagline}
-            </span>
-            <span
-              className="w-9 h-[2px] bg-[#cb5855] rounded-full inline-block"
-              aria-hidden="true"
-            />
-          </div>
+          <FadeDown delay={0.05}>
+            <div className="flex items-center justify-center gap-3 mb-2">
+              <span
+                className="w-9 h-[2px] bg-[#cb5855] rounded-full inline-block"
+                aria-hidden="true"
+              />
+              <span className="text-xs sm:text-[13px] font-bold tracking-[0.25em] text-[#cb5855] uppercase">
+                {tagline}
+              </span>
+              <span
+                className="w-9 h-[2px] bg-[#cb5855] rounded-full inline-block"
+                aria-hidden="true"
+              />
+            </div>
+          </FadeDown>
 
-          {/* Headline */}
-          <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-extrabold tracking-tight text-[#241121]">
-            <span>{titlePart1} </span>
-            <span className="text-[#cb5855]">{titleHighlight}</span>
-          </h2>
+          <FadeUp delay={0.12}>
+            <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-extrabold tracking-tight text-[#241121]">
+              <span>{titlePart1} </span>
+              <span className="text-[#cb5855]">{titleHighlight}</span>
+            </h2>
+          </FadeUp>
 
-          {/* Subtitle */}
-          <p className="mt-2 text-sm sm:text-base text-[#5b525a] leading-relaxed max-w-2xl mx-auto">
-            {subtitle}
-          </p>
+          <FadeUp delay={0.18}>
+            <p className="mt-2 text-sm sm:text-base text-[#5b525a] leading-relaxed max-w-2xl mx-auto">
+              {subtitle}
+            </p>
+          </FadeUp>
         </div>
 
-        {/* ================= 2. TOP CONTACT CARDS ================= */}
-        <div className="mt-4 sm:mt-6 grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
-          {/* Card 1: Phone */}
-          <div className="bg-white rounded-lg p-4 sm:p-5 border border-gray-100 shadow-xs hover:shadow-md transition-shadow flex items-start gap-3">
-            <div className="w-16 h-16 rounded-full bg-[#fdf0ef] flex items-center justify-center shrink-0 text-[#cb5855]">
-              <CallIcon className="w-8 h-8 fill-current" />
+        <StaggerContainer speed="fast" className="mt-4 sm:mt-6 grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
+          <StaggerItem variant="up">
+            <div className="bg-white rounded-lg p-4 sm:p-5 border border-gray-100 shadow-xs hover:shadow-md transition-shadow flex items-start gap-3 h-full">
+              <AnimatedIcon animation="pulse">
+                <div className="w-16 h-16 rounded-full bg-[#fdf0ef] flex items-center justify-center shrink-0 text-[#cb5855]">
+                  <CallIcon className="w-8 h-8 fill-current" />
+                </div>
+              </AnimatedIcon>
+              <div className="flex flex-col">
+                <h3 className="text-sm font-bold text-[#241121]">{phoneCard.title}</h3>
+                {phoneNumbers.map((phone) => (
+                  <Link
+                    key={phone}
+                    href={`tel:${phone.replace(/\s+/g, "")}`}
+                    className="text-xs sm:text-sm font-semibold text-[#332233] hover:text-[#cb5855] transition-colors mt-0.5"
+                  >
+                    {phone}
+                  </Link>
+                ))}
+                <span className="text-[11px] text-[#888] mt-1">
+                  {phoneCard.hours}
+                </span>
+              </div>
             </div>
-            <div className="flex flex-col">
-              <h3 className="text-sm font-bold text-[#241121]">{phoneCard.title}</h3>
-              {phoneNumbers.map((phone) => (
-                <Link
-                  key={phone}
-                  href={`tel:${phone.replace(/\s+/g, "")}`}
-                  className="text-xs sm:text-sm font-semibold text-[#332233] hover:text-[#cb5855] transition-colors mt-0.5"
-                >
-                  {phone}
-                </Link>
-              ))}
-              <span className="text-[11px] text-[#888] mt-1">
-                {phoneCard.hours}
-              </span>
-            </div>
-          </div>
+          </StaggerItem>
 
-          {/* Card 2: Email */}
-          <div className="bg-white rounded-lg p-4 sm:p-5 border border-gray-100 shadow-xs hover:shadow-md transition-shadow flex items-start gap-3">
-            <div className="w-16 h-16 rounded-full bg-[#fdf0ef] flex items-center justify-center shrink-0 text-[#cb5855]">
-              <EmailIcon className="w-8 h-8 text-[#cb5855]" />
+          <StaggerItem variant="up">
+            <div className="bg-white rounded-lg p-4 sm:p-5 border border-gray-100 shadow-xs hover:shadow-md transition-shadow flex items-start gap-3 h-full">
+              <AnimatedIcon animation="pulse">
+                <div className="w-16 h-16 rounded-full bg-[#fdf0ef] flex items-center justify-center shrink-0 text-[#cb5855]">
+                  <EmailIcon className="w-8 h-8 text-[#cb5855]" />
+                </div>
+              </AnimatedIcon>
+              <div className="flex flex-col">
+                <h3 className="text-sm font-bold text-[#241121]">
+                  {emailCard.title}
+                </h3>
+                {emailAddresses.map((email) => (
+                  <Link
+                    key={email}
+                    href={`mailto:${email}`}
+                    className="text-xs sm:text-sm font-semibold text-[#332233] hover:text-[#cb5855] transition-colors mt-0.5"
+                  >
+                    {email}
+                  </Link>
+                ))}
+                <span className="text-[11px] text-[#888] mt-1">
+                  {emailCard.note}
+                </span>
+              </div>
             </div>
-            <div className="flex flex-col">
-              <h3 className="text-sm font-bold text-[#241121]">
-                {emailCard.title}
-              </h3>
-              {emailAddresses.map((email) => (
-                <Link
-                  key={email}
-                  href={`mailto:${email}`}
-                  className="text-xs sm:text-sm font-semibold text-[#332233] hover:text-[#cb5855] transition-colors mt-0.5"
-                >
-                  {email}
-                </Link>
-              ))}
-              <span className="text-[11px] text-[#888] mt-1">
-                {emailCard.note}
-              </span>
-            </div>
-          </div>
+          </StaggerItem>
 
-          {/* Card 3: Our Office */}
-          <div className="bg-white rounded-lg p-4 sm:p-5 border border-gray-100 shadow-xs hover:shadow-md transition-shadow flex items-start gap-3">
-            <div className="w-16 h-16 rounded-full bg-[#fdf0ef] flex items-center justify-center shrink-0 text-[#cb5855]">
-              <LocationIcon className="w-8 h-8 fill-current" />
+          <StaggerItem variant="up">
+            <div className="bg-white rounded-lg p-4 sm:p-5 border border-gray-100 shadow-xs hover:shadow-md transition-shadow flex items-start gap-3 h-full">
+              <AnimatedIcon animation="pulse">
+                <div className="w-16 h-16 rounded-full bg-[#fdf0ef] flex items-center justify-center shrink-0 text-[#cb5855]">
+                  <LocationIcon className="w-8 h-8 fill-current" />
+                </div>
+              </AnimatedIcon>
+              <div className="flex flex-col">
+                <h3 className="text-sm font-bold text-[#241121]">{officeCard.title}</h3>
+                {officeAddress.map((line, idx) => (
+                  <p
+                    key={idx}
+                    className="text-xs sm:text-sm font-semibold text-[#332233] leading-snug mt-0.5"
+                  >
+                    {line}
+                  </p>
+                ))}
+                <span className="text-[11px] text-[#888] mt-1">
+                  {officeCard.note}
+                </span>
+              </div>
             </div>
-            <div className="flex flex-col">
-              <h3 className="text-sm font-bold text-[#241121]">{officeCard.title}</h3>
-              {officeAddress.map((line, idx) => (
-                <p
-                  key={idx}
-                  className="text-xs sm:text-sm font-semibold text-[#332233] leading-snug mt-0.5"
-                >
-                  {line}
-                </p>
-              ))}
-              <span className="text-[11px] text-[#888] mt-1">
-                {officeCard.note}
-              </span>
-            </div>
-          </div>
-        </div>
+          </StaggerItem>
+        </StaggerContainer>
 
-        {/* ================= 3. FORM & FOLLOW US ================= */}
         <div className="mt-4 sm:mt-6 grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 items-start">
-          {/* Left Column: Form Card */}
-          <div className="lg:col-span-7 bg-white rounded-lg p-4 sm:p-6 border border-gray-100 shadow-xs">
-            {/* Tagline */}
+          <FadeLeft delay={0.15} className="lg:col-span-7">
+            <div className="bg-white rounded-lg p-4 sm:p-6 border border-gray-100 shadow-xs">
             <div className="flex items-center gap-2 mb-1.5">
               <span className="text-[11px] font-bold tracking-[0.2em] text-[#cb5855] uppercase">
                 {formConfig.tagline}
@@ -223,7 +242,6 @@ export default function ContactSection(props: ContactSectionProps) {
               />
             </div>
 
-            {/* Headline */}
             <h3 className="text-xl sm:text-2xl font-extrabold text-[#241121]">
               <span>{formConfig.titlePart1} </span>
               <span className="text-[#cb5855]">{formConfig.titleHighlight}</span>
@@ -233,10 +251,8 @@ export default function ContactSection(props: ContactSectionProps) {
               {formConfig.subtitle}
             </p>
 
-            {/* The Form */}
             <form onSubmit={handleSubmit} className="mt-4 space-y-3">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {/* Your Name */}
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
                     <UserIcon className="w-4 h-4" />
@@ -253,7 +269,6 @@ export default function ContactSection(props: ContactSectionProps) {
                   />
                 </div>
 
-                {/* Your Email */}
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
                     <EmailIcon className="w-4 h-4 text-gray-400" />
@@ -272,7 +287,6 @@ export default function ContactSection(props: ContactSectionProps) {
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {/* Your Phone */}
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
                     <PhoneOutlineIcon className="w-4 h-4" />
@@ -288,7 +302,6 @@ export default function ContactSection(props: ContactSectionProps) {
                   />
                 </div>
 
-                {/* Select Service Dropdown */}
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
                     <LayersIcon className="w-4 h-4 text-gray-400" />
@@ -313,7 +326,6 @@ export default function ContactSection(props: ContactSectionProps) {
                 </div>
               </div>
 
-              {/* Message */}
               <div className="relative">
                 <div className="absolute top-3 left-3 pointer-events-none text-gray-400">
                   <ChatBubbleIcon className="w-4 h-4" />
@@ -330,15 +342,16 @@ export default function ContactSection(props: ContactSectionProps) {
                 />
               </div>
 
-              {/* Submit Button */}
-              <button
-                type="submit"
-                className="w-full py-2.5 rounded-sm bg-[#851028] hover:bg-[#720e22] text-white font-semibold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-xs hover:shadow-sm active:scale-[0.99] transition-all duration-200 cursor-pointer"
-              >
-                <SendIcon className="w-3.5 h-3.5 fill-current rotate-45 -mt-0.5" />
-                <span>{formConfig.buttonLabel}</span>
-                <span aria-hidden="true">→</span>
-              </button>
+              <AnimatedButton glow>
+                <button
+                  type="submit"
+                  className="w-full py-2.5 rounded-sm bg-[#851028] hover:bg-[#720e22] text-white font-semibold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-xs transition-all duration-200 cursor-pointer"
+                >
+                  <SendIcon className="w-3.5 h-3.5 fill-current rotate-45 -mt-0.5" />
+                  <span>{formConfig.buttonLabel}</span>
+                  <span aria-hidden="true">→</span>
+                </button>
+              </AnimatedButton>
 
               {formSubmitted && (
                 <div className="p-2.5 bg-green-50 text-green-800 text-xs sm:text-sm rounded-sm text-center font-medium animate-in fade-in duration-300">
@@ -347,10 +360,10 @@ export default function ContactSection(props: ContactSectionProps) {
               )}
             </form>
           </div>
+        </FadeLeft>
 
-          {/* Right Column: Branded Coffee Mug & Follow Us */}
-          <div className="lg:col-span-5 flex flex-col space-y-4">
-            {/* Branded Mug Photo */}
+        <FadeRight delay={0.2} className="lg:col-span-5">
+          <div className="flex flex-col space-y-4">
             <div className="relative w-full aspect-[16/10] rounded-lg overflow-hidden shadow-xs border border-gray-100 bg-white group">
               <Image
                 src={sideImage.src}
@@ -362,14 +375,12 @@ export default function ContactSection(props: ContactSectionProps) {
               />
             </div>
 
-            {/* Follow Us Section */}
             <div>
               <h4 className="text-lg font-bold text-[#241121]">{followUs.title}</h4>
               <p className="mt-1 text-xs sm:text-sm text-[#5b525a] leading-relaxed">
                 {followUs.description}
               </p>
 
-              {/* Social Media Badges */}
               <div className="flex items-center gap-2.5 mt-3">
                 {followUs.socialLinks.map((item) => (
                   <Link
@@ -386,14 +397,12 @@ export default function ContactSection(props: ContactSectionProps) {
               </div>
             </div>
           </div>
-        </div>
+        </FadeRight>
+      </div>
 
-        {/* ================= 4. VISIT OUR OFFICE & MAP BANNER ================= */}
         <div className="mt-4 sm:mt-6 bg-[#fdf2f1] rounded-lg p-4 sm:p-6 border border-[#fae0de]">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-            {/* Left Column: Text & Directions Button */}
             <div className="lg:col-span-5 flex flex-col items-start">
-              {/* Tagline */}
               <div className="flex items-center gap-2 mb-1.5">
                 <span
                   className="w-6 h-[2px] bg-[#cb5855] rounded-full inline-block"
@@ -404,18 +413,15 @@ export default function ContactSection(props: ContactSectionProps) {
                 </span>
               </div>
 
-              {/* Title */}
               <h3 className="text-xl sm:text-2xl font-extrabold text-[#241121]">
                 <span>{mapBanner.titlePart1} </span>
                 <span className="text-[#cb5855]">{mapBanner.titleHighlight}</span>
               </h3>
 
-              {/* Description */}
               <p className="mt-1.5 text-xs sm:text-sm text-[#5b525a] leading-relaxed">
                 {mapBanner.description}
               </p>
 
-              {/* Get Directions Button */}
               <div className="mt-3 sm:mt-4">
                 <Link
                   href={mapBanner.directionsUrl}
@@ -432,25 +438,20 @@ export default function ContactSection(props: ContactSectionProps) {
               </div>
             </div>
 
-            {/* Right Column: Clean Vector Map Visual with Pin Card */}
             <div className="lg:col-span-7 relative w-full h-48 sm:h-56 rounded-sm overflow-hidden border border-[#fae0de] shadow-xs bg-[#e8ece9]">
-              {/* Detailed Stylized Vector Map Graphics */}
               <svg
                 className="w-full h-full object-cover"
                 viewBox="0 0 600 300"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
               >
-                {/* Background Land */}
                 <rect width="600" height="300" fill="#f0ede5" />
 
-                {/* Parks / Green Zones */}
                 <rect x="260" y="230" width="70" height="50" rx="3" fill="#cbe4ca" />
                 <rect x="470" y="240" width="80" height="40" rx="3" fill="#cbe4ca" />
                 <rect x="10" y="235" width="85" height="50" rx="3" fill="#cbe4ca" />
                 <circle cx="280" cy="180" r="30" fill="#daf0d8" />
 
-                {/* Major Roads & Avenues */}
                 <path d="M-10 60 L610 60" stroke="#ffffff" strokeWidth="22" />
                 <path d="M-10 160 L610 160" stroke="#ffffff" strokeWidth="24" />
                 <path d="M-10 240 L610 240" stroke="#ffffff" strokeWidth="18" />
@@ -458,29 +459,23 @@ export default function ContactSection(props: ContactSectionProps) {
                 <path d="M380 -10 L380 310" stroke="#ffffff" strokeWidth="26" />
                 <path d="M520 -10 L520 310" stroke="#ffffff" strokeWidth="16" />
 
-                {/* Diagonal Boulevards */}
                 <path d="M40 -10 L300 310" stroke="#ffffff" strokeWidth="16" />
                 <path d="M550 -10 L220 310" stroke="#ffffff" strokeWidth="18" />
                 <path d="M-10 130 L450 310" stroke="#ffffff" strokeWidth="12" />
 
-                {/* Water/Canal accents */}
                 <path d="M20 -10 L20 180" stroke="#d4e8f2" strokeWidth="8" />
 
-                {/* Road Centers / Yellow Lines */}
                 <path d="M-10 160 L610 160" stroke="#ffebc2" strokeWidth="4" />
                 <path d="M380 -10 L380 310" stroke="#ffebc2" strokeWidth="4" />
 
-                {/* Connaught Place radial ring */}
                 <circle cx="200" cy="160" r="45" stroke="#ffffff" strokeWidth="14" fill="none" />
                 <circle cx="200" cy="160" r="45" stroke="#ffebc2" strokeWidth="2" fill="none" />
 
-                {/* Street Labels */}
                 <text x="150" y="155" fill="#758276" fontSize="11" fontFamily="sans-serif" fontWeight="500">
                   Connaught Place
                 </text>
               </svg>
 
-              {/* Metro Station Badge */}
               <div className="absolute bottom-4 left-1/3 flex items-center gap-1.5 bg-white/95 px-2 py-0.5 rounded-sm shadow-xs border border-gray-100 text-[10px] font-semibold text-[#0066cc]">
                 <span className="w-3.5 h-3.5 rounded-xs bg-[#0066cc] text-white flex items-center justify-center text-[8px] font-bold">
                   M
@@ -488,14 +483,11 @@ export default function ContactSection(props: ContactSectionProps) {
                 <span>{mapBanner.metroStation}</span>
               </div>
 
-              {/* Pin Marker with Tooltip Card */}
               <div className="absolute top-1/2 left-2/3 -translate-x-1/2 -translate-y-1/2 flex items-center gap-2">
-                {/* Red Pin */}
                 <div className="w-7 h-7 rounded-sm bg-[#cb5855] text-white flex items-center justify-center shadow-md animate-bounce duration-1000">
                   <LocationIcon className="w-3.5 h-3.5 fill-current" />
                 </div>
 
-                {/* Floating Office Card */}
                 <div className="bg-white/95 backdrop-blur-xs px-2.5 py-1.5 rounded-sm shadow-md border border-gray-100 text-left">
                   <h5 className="text-[11px] font-bold text-[#241121]">{mapBanner.officePin.title}</h5>
                   <p className="text-[9px] text-gray-500 leading-tight mt-0.5">

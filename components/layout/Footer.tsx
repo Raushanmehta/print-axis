@@ -92,7 +92,7 @@ export default function Footer(props: FooterProps) {
   return (
     <footer className="w-full bg-[#261021] text-white pt-16 lg:pt-20">
       <div className="max-w-[1420px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 lg:gap-8">
           {/* Column 1: Brand & Bio & Socials from JSON */}
           <div className="lg:col-span-4 flex flex-col space-y-6">
             <Link href="/" className="inline-block">
@@ -242,7 +242,7 @@ export default function Footer(props: FooterProps) {
         </div>
 
         {/* Bottom Bar: Copyright from JSON */}
-        <div className="mt-14 lg:mt-16 border-t border-white/10 py-6 text-center flex items-center justify-center">
+        <div className="mt-10 lg:mt-12 border-t border-white/10 py-6 text-center flex items-center justify-center">
           <p className="text-xs sm:text-sm text-white/70 text-center">
             {copyrightText}
           </p>

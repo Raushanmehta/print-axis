@@ -1,12 +1,17 @@
-import siteData from "./site.json";
+import siteData from "@/data/site.json";
 
-// Types
+// ── Root Schema Types ──
 export type RawSiteData = typeof siteData;
 export type PrintAxisSchema = typeof siteData.PrintAxis;
 export type PrintAxisSections = PrintAxisSchema["sections"];
 export type PrintAxisTemplateComponents = PrintAxisSchema["templateComponents"];
 
-// Types
+// Aliases matching reference schema conventions
+export type ServicesSchema = PrintAxisSchema;
+export type ServicesSections = PrintAxisSections;
+export type ServicesTemplateComponents = PrintAxisTemplateComponents;
+
+// ── Universal SectionProps Interface (ai-builder Standard) ──
 export interface SectionProps<T = unknown> {
   data?: T;
   className?: string;
@@ -16,16 +21,16 @@ export interface SectionProps<T = unknown> {
   onUpdate?: (newData: Partial<T>) => void;
 }
 
-// Types
+// ── Strongly Typed Section Variant Data Models ──
 export type PrintAxisTopbarData = PrintAxisSections["topbar"]["variants"]["PrintAxisTopbar1"];
 export type PrintAxisNavbarData = PrintAxisSections["navbar"]["variants"]["PrintAxisNavbar1"];
 export type PrintAxisFooterData = PrintAxisSections["footer"]["variants"]["PrintAxisFooter1"];
-export type PrintAxisPageTopData = PrintAxisSections["pageTopSection"]["variants"]["PrintAxisPageTopSection1"];
-export type PrintAxisPageTopSectionData = PrintAxisPageTopData;
+export type PrintAxisPageTopSectionData = PrintAxisSections["pageTopSection"]["variants"]["PrintAxisPageTopSection1"];
+export type PrintAxisPageTopData = PrintAxisPageTopSectionData;
 export type PrintAxisHeroData = PrintAxisSections["hero"]["variants"]["PrintAxisHero1"];
 export type PrintAxisAboutData = PrintAxisSections["about"]["variants"]["PrintAxisAbout1"];
-export type PrintAxisServicesData = PrintAxisSections["service"]["variants"]["PrintAxisService1"];
-export type PrintAxisServiceData = PrintAxisServicesData;
+export type PrintAxisServiceData = PrintAxisSections["service"]["variants"]["PrintAxisService1"];
+export type PrintAxisServicesData = PrintAxisServiceData;
 export type PrintAxisWhyChooseUsData = PrintAxisSections["whyChooseUs"]["variants"]["PrintAxisWhyChooseUs1"];
 export type PrintAxisTestimonialData = PrintAxisSections["testimonial"]["variants"]["PrintAxisTestimonial1"];
 export type PrintAxisTestimonialPageData = PrintAxisTestimonialData;
@@ -36,28 +41,49 @@ export type PrintAxisBlogPageData = PrintAxisBlogData;
 export type PrintAxisGalleryData = PrintAxisSections["gallery"]["variants"]["PrintAxisGallery1"];
 export type PrintAxisGetAQuoteData = PrintAxisSections["getAQuote"]["variants"]["PrintAxisGetAQuote1"];
 export type PrintAxisContactData = PrintAxisSections["contact"]["variants"]["PrintAxisContact1"];
-export type PrintAxisThankYouData = PrintAxisSections["thankyou"]["variants"]["PrintAxisThankyou1"];
-export type PrintAxisThankyouData = PrintAxisThankYouData;
+export type PrintAxisThankyouData = PrintAxisSections["thankyou"]["variants"]["PrintAxisThankyou1"];
+export type PrintAxisThankYouData = PrintAxisThankyouData;
 export type PrintAxisNotFoundData = PrintAxisSections["notFound"]["variants"]["PrintAxisNotFound1"];
 export type PrintAxisServicesPageData = PrintAxisServicesData;
 
-// Types
-export type NavItem = PrintAxisNavbarData["navLinks"][number];
-export type ServiceItem = PrintAxisServicesData["servicesList"][number];
-export type WhyChooseUsItem = PrintAxisWhyChooseUsData["featuresList"][number];
-export type TestimonialItem = PrintAxisTestimonialData["testimonialsList"][number];
-export type ProcessStepItem = PrintAxisProcessData["steps"][number];
-export type BlogPostItem = PrintAxisBlogData["blogPosts"][number];
-export type PrintAxisBlogPost = BlogPostItem;
-export type GalleryItem = PrintAxisGalleryData["galleryItems"][number];
+// ── Inferred Sub-item Data Models ──
+export type NavItem = PrintAxisNavbarData["navLinks"][0];
+export type ServiceItem = PrintAxisServicesData["servicesList"][0];
+export type BlogPost = PrintAxisBlogData["blogPosts"][0];
+export type BlogPostItem = BlogPost;
+export type PrintAxisBlogPost = BlogPost;
+export type WhyChooseUsFeature = PrintAxisWhyChooseUsData["featuresList"][0];
+export type WhyChooseUsItem = WhyChooseUsFeature;
+export type TestimonialItem = PrintAxisTestimonialData["testimonialsList"][0];
+export type ProcessStep = PrintAxisProcessData["steps"][0];
+export type ProcessStepItem = ProcessStep;
+export type GalleryItem = PrintAxisGalleryData["galleryItems"][0];
 export type ContactPhoneCard = PrintAxisContactData["phoneCard"];
 export type ContactEmailCard = PrintAxisContactData["emailCard"];
 export type ContactOfficeCard = PrintAxisContactData["officeCard"];
 
-// Location
+// ── Convenience & Short Aliases ──
+export type HeroData = PrintAxisHeroData;
+export type AboutData = PrintAxisAboutData;
+export type ServicesData = PrintAxisServicesData;
+export type WhyChooseUsData = PrintAxisWhyChooseUsData;
+export type TestimonialsData = PrintAxisTestimonialData;
+export type CtaData = PrintAxisCtaData;
+export type ProcessData = PrintAxisProcessData;
+export type BlogData = PrintAxisBlogData;
+export type GalleryData = PrintAxisGalleryData;
+export type GetAQuoteData = PrintAxisGetAQuoteData;
+export type ContactData = PrintAxisContactData;
+export type ThankyouData = PrintAxisThankyouData;
+export type FooterData = PrintAxisFooterData;
+export type NavbarData = PrintAxisNavbarData;
+export type TopbarData = PrintAxisTopbarData;
+export type PageTopSectionData = PrintAxisPageTopSectionData;
+
+// ── Default Site Data (Unified Schema Node Map) ──
 const sec = siteData.PrintAxis.sections;
 
-export const siteMap = {
+export const site = {
   topbar: sec.topbar.variants.PrintAxisTopbar1,
   navbar: sec.navbar.variants.PrintAxisNavbar1,
   footer: sec.footer.variants.PrintAxisFooter1,
@@ -82,7 +108,7 @@ export const siteMap = {
   notFound: sec.notFound.variants.PrintAxisNotFound1,
   servicesPage: sec.service.variants.PrintAxisService1,
 
-  // Compatibility
+  // Compatibility & Legacy Keys
   topbarData: sec.topbar.variants.PrintAxisTopbar1,
   navbarData: sec.navbar.variants.PrintAxisNavbar1,
   footerData: sec.footer.variants.PrintAxisFooter1,
@@ -107,10 +133,11 @@ export const siteMap = {
   notFoundData: sec.notFound.variants.PrintAxisNotFound1,
   servicesPageData: sec.service.variants.PrintAxisService1,
 
-  // Root
+  // Root References
   PrintAxis: siteData.PrintAxis,
+  Services: siteData.PrintAxis,
 };
 
-export type SiteData = typeof siteMap;
-export const site = siteMap;
+export const siteMap = site;
+export type SiteData = typeof site;
 export default siteData;
