@@ -19,7 +19,6 @@ import {
   FadeDown,
   StaggerContainer,
   StaggerItem,
-  AnimatedButton,
   AnimatedIcon,
 } from "@/utils/animations";
 
@@ -101,7 +100,6 @@ export default function ServiceSection(props: ServiceSectionProps) {
   const exploreButtonText = props.exploreButtonText || data?.exploreButton?.label || siteMap.service.exploreButton.label;
   const exploreButtonHref = props.exploreButtonHref || data?.exploreButton?.href || siteMap.service.exploreButton.href;
 
-  const features = props.features || data?.features || siteMap.service.features;
   const rawServices =
     props.services ||
     props.servicesList ||
@@ -109,6 +107,18 @@ export default function ServiceSection(props: ServiceSectionProps) {
     (data as any)?.services ||
     siteMap.service.servicesList ||
     [];
+
+  const rawFeatures =
+    props.features ||
+    (data as any)?.features ||
+    (rawServices[0] as any)?.features ||
+    [];
+
+  const features: ServiceFeatureItem[] = (rawFeatures as any[]).map((f: any, idx: number) => ({
+    id: f.id || `feat-${idx}`,
+    title: f.title || "",
+    icon: f.icon || "quality",
+  }));
 
   const formattedServices: ServiceItem[] = (rawServices as any[]).map((item) => ({
     id: item.id,
@@ -177,17 +187,15 @@ export default function ServiceSection(props: ServiceSectionProps) {
 
             <FadeLeft delay={0.3}>
               <div className="mt-4 sm:mt-5">
-                <AnimatedButton glow>
-                  <Link
-                    href={exploreButtonHref}
-                    className="group inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-sm bg-gradient-to-r from-[#ba4f4c] via-[#c85956] to-[#d66560] text-white font-semibold text-xs sm:text-sm tracking-wide uppercase shadow-sm transition-all duration-200"
-                  >
-                    <span>{exploreButtonText}</span>
-                    <span className="transition-transform duration-200 group-hover:translate-x-1 inline-flex items-center">
-                      <ArrowRightIcon />
-                    </span>
-                  </Link>
-                </AnimatedButton>
+                <Link
+                  href={exploreButtonHref}
+                  className="group inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-sm bg-gradient-to-r from-[#ba4f4c] via-[#c85956] to-[#d66560] hover:from-black hover:via-black hover:to-black hover:bg-black hover:bg-none text-white font-semibold text-xs sm:text-sm tracking-wide uppercase shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer"
+                >
+                  <span>{exploreButtonText}</span>
+                  <span className="transition-transform duration-200 group-hover:translate-x-1 inline-flex items-center">
+                    <ArrowRightIcon />
+                  </span>
+                </Link>
               </div>
             </FadeLeft>
           </div>

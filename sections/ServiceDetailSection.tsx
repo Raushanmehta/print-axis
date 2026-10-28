@@ -144,7 +144,7 @@ export default function ServiceDetailSection(props: ServiceDetailSectionProps) {
     props.heroImage ||
     matchedService.heroImage ||
     matchedService.imageSrc ||
-    "/images/service-printing.jpg";
+    "/images/service-printing.webp";
   const heroImageAlt =
     props.heroImageAlt ||
     matchedService.heroImageAlt ||
@@ -175,21 +175,27 @@ export default function ServiceDetailSection(props: ServiceDetailSectionProps) {
     (siteMap.service as any)?.otherServices ||
     allServices;
 
-  const otherServices: OtherServiceItem[] = rawOtherServices.map((s: any) => {
-    const isCurrent =
-      (props.slug &&
-        (s.href?.endsWith(`/${props.slug}`) || s.id === props.slug)) ||
-      matchedService.id === s.id ||
-      matchedService.href === s.href;
+  const currentSlug = (props.slug || "").toLowerCase().trim();
+  const currentServiceId = (matchedService.id || "").toLowerCase().trim();
+  const currentServiceHref = (matchedService.href || "").toLowerCase().trim();
 
-    return {
-      id: s.id,
-      name: s.name || s.title,
-      image: s.image || s.imageSrc,
-      href: s.href,
-      active: !!isCurrent,
-    };
+  const activeIndex = rawOtherServices.findIndex((s: any) => {
+    const itemHref = (s.href || "").toLowerCase().trim();
+    const itemId = (s.id || "").toLowerCase().trim();
+    return Boolean(
+      (currentSlug && (itemHref === `/services/${currentSlug}` || itemHref.endsWith(`/${currentSlug}`) || itemId === currentSlug)) ||
+      (currentServiceId && itemId === currentServiceId) ||
+      (currentServiceHref && itemHref === currentServiceHref)
+    );
   });
+
+  const otherServices: OtherServiceItem[] = rawOtherServices.map((s: any, idx: number) => ({
+    id: s.id,
+    name: s.name || s.title,
+    image: s.image || s.imageSrc,
+    href: s.href,
+    active: idx === activeIndex,
+  }));
 
   const processTagline =
     props.processTagline ||
@@ -237,7 +243,7 @@ export default function ServiceDetailSection(props: ServiceDetailSectionProps) {
     props.ctaImageSrc ||
     matchedService.ctaImageSrc ||
     (siteMap.service as any)?.needHelpCta?.ctaImageSrc ||
-    "/images/why-choose-tshirts.jpg";
+    "/images/why-choose-tshirts.webp";
   const ctaImageAlt =
     props.ctaImageAlt ||
     matchedService.ctaImageAlt ||
@@ -247,12 +253,12 @@ export default function ServiceDetailSection(props: ServiceDetailSectionProps) {
     props.ctaButtonText ||
     matchedService.ctaButtonText ||
     (siteMap.service as any)?.needHelpCta?.ctaButtonText ||
-    "Request a Free Quote";
+    "Contact Us";
   const ctaButtonHref =
     props.ctaButtonHref ||
     matchedService.ctaButtonHref ||
     (siteMap.service as any)?.needHelpCta?.ctaButtonHref ||
-    "/get-a-quote";
+    "/contact";
 
   return (
     <section className="bg-white pt-8 lg:pt-12 pb-0 lg:pb-0">
@@ -318,32 +324,32 @@ export default function ServiceDetailSection(props: ServiceDetailSectionProps) {
                 {otherServicesTitle}
               </h2>
 
-              <div className="space-y-2">
+              <div className="space-y-2.5">
                 {otherServices.map((service) => (
                   <Link
                     key={service.id}
                     href={service.href}
-                    className={`flex items-center justify-between px-2 rounded-lg transition-all duration-200 group ${
+                    className={`flex items-center justify-between p-2.5 rounded-lg border transition-all duration-300 group cursor-pointer ${
                       service.active
-                        ? "bg-[#fdf2f1] border border-[#cb5855]/30 text-[#cb5855]"
-                        : "hover:bg-gray-50 text-gray-700 hover:text-[#241121]"
+                        ? "bg-[#fdf2f1] border-[#cb5855]/40 text-[#cb5855] shadow-xs"
+                        : "bg-white border-gray-100/90 text-[#241121] hover:bg-black hover:border-black hover:text-white hover:shadow-md"
                     }`}
                   >
                     <div className="flex items-center gap-3">
-                      <div className="relative w-25 h-15 rounded-sm overflow-hidden border border-gray-200 shrink-0 bg-gray-100">
+                      <div className="relative w-16 h-12 rounded-md overflow-hidden border border-gray-200/80 shrink-0 bg-gray-100">
                         <Image
                           src={service.image}
                           alt={service.name}
                           fill
-                          className="object-cover"
-                          sizes="40px"
+                          className="object-cover transition-transform duration-300 group-hover:scale-108"
+                          sizes="64px"
                         />
                       </div>
                       <span
-                        className={`text-xs sm:text-sm font-semibold transition-colors ${
+                        className={`text-xs sm:text-sm font-semibold transition-colors duration-200 ${
                           service.active
                             ? "text-[#cb5855]"
-                            : "group-hover:text-[#cb5855]"
+                            : "text-[#241121] group-hover:text-white"
                         }`}
                       >
                         {service.name}
@@ -351,10 +357,10 @@ export default function ServiceDetailSection(props: ServiceDetailSectionProps) {
                     </div>
 
                     <ChevronRightIcon
-                      className={`w-4 h-4 transition-transform group-hover:translate-x-0.5 ${
+                      className={`w-4 h-4 transition-transform duration-200 group-hover:translate-x-1 ${
                         service.active
                           ? "text-[#cb5855]"
-                          : "text-gray-400 group-hover:text-[#cb5855]"
+                          : "text-gray-400 group-hover:text-white"
                       }`}
                     />
                   </Link>

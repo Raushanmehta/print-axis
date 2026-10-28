@@ -1,17 +1,15 @@
-import PageTopSection from "@/components/common/PageTopSection";
+import Breadcrumb from "@/components/common/Breadcrumb";
 import GallerySection from "@/sections/GallerySection";
-import CtaSection from "@/sections/home/CtaSection";
 import { site } from "@/data";
 
 // Gallery page showcasing completed printing work and portfolio.
 export default function GalleryPage() {
-  const { gallery, cta, pageTopSection } = site;
+  const { gallery, pageTopSection } = site;
 
   return (
     <main>
-      <PageTopSection data={pageTopSection} title="Our Gallery" breadcrumb="Gallery" />
+      <Breadcrumb data={pageTopSection} title="Our Gallery" breadcrumb="Gallery" />
       <GallerySection data={gallery} />
-      <CtaSection data={cta} />
     </main>
   );
 }

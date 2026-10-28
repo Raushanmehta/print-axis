@@ -36,28 +36,26 @@ export default function NeedCustomCard({
       <div className="absolute top-0 right-0 w-44 h-54 bg-white/5 rounded-full blur-2xl pointer-events-none" />
 
       <div
-        className={`relative z-10 ${
-          imageSrc ? "flex items-start justify-between gap-4" : "flex flex-col"
-        }`}
+        className={`relative z-10 ${imageSrc ? "flex items-start justify-between gap-4" : "flex flex-col"
+          }`}
       >
         <div className="flex-1">
           <h3 className="text-xl sm:text-2xl font-bold text-white leading-tight mb-1.5">
             {title}
           </h3>
           <p
-            className={`text-sm text-white/75 leading-relaxed mb-4 ${
-              imageSrc ? "max-w-[210px]" : "max-w-md text-base"
-            }`}
+            className={`text-sm text-white/75 leading-relaxed mb-4 ${imageSrc ? "max-w-[210px]" : "max-w-md text-base"
+              }`}
           >
             {description}
           </p>
-          <AnimatedButton glow>
+          <AnimatedButton >
             <Link
               href={buttonHref}
-              className="inline-flex items-center gap-1.5 px-4 py-3 rounded-lg bg-[#cb5855] hover:bg-[#ba4c49] text-white text-sm font-semibold shadow-xs transition-all duration-200 group w-fit"
+              className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-sm bg-gradient-to-r from-[#ba4f4c] via-[#c85956] to-[#d66560] hover:from-black hover:via-black hover:to-black hover:bg-black hover:bg-none text-white text-xs sm:text-sm font-semibold tracking-wide uppercase border border-white/20 e shadow-sm hover:shadow-lg transition-all duration-300 group w-fit cursor-pointer"
             >
               <span>{buttonText}</span>
-              <span className="transition-transform group-hover:translate-x-1 inline-flex items-center">
+              <span className="transition-transform duration-200 group-hover:translate-x-1 inline-flex items-center">
                 <ArrowRightIcon className="w-3.5 h-3.5" />
               </span>
             </Link>

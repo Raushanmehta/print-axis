@@ -79,6 +79,7 @@ export type FooterData = PrintAxisFooterData;
 export type NavbarData = PrintAxisNavbarData;
 export type TopbarData = PrintAxisTopbarData;
 export type PageTopSectionData = PrintAxisPageTopSectionData;
+export type BreadcrumbData = PrintAxisPageTopSectionData;
 
 // ── Default Site Data (Unified Schema Node Map) ──
 const sec = siteData.PrintAxis.sections;

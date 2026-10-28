@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { site, type PrintAxisGetAQuoteData } from "@/data";
@@ -11,7 +11,6 @@ import {
   HeadsetIcon,
   CheckCircleSolidIcon,
   ChevronDownIcon,
-  UploadIcon,
   SpinnerIcon,
   ArrowRightIcon,
 } from "@/components/icons";
@@ -30,7 +29,6 @@ export interface QuoteFormData {
   companyName: string;
   service: string;
   productDetails: string;
-  files: File[];
 }
 
 export interface GetAQuoteSectionProps {
@@ -83,12 +81,10 @@ export default function GetAQuoteSection(props: GetAQuoteSectionProps) {
     companyName: "",
     service: "",
     productDetails: "",
-    files: [],
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleInputChange = (
     e: React.ChangeEvent<
@@ -102,22 +98,6 @@ export default function GetAQuoteSection(props: GetAQuoteSectionProps) {
     }));
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      const selectedFiles = Array.from(e.target.files);
-      setFormData((prev) => ({
-        ...prev,
-        files: [...prev.files, ...selectedFiles],
-      }));
-    }
-  };
-
-  const removeFile = (index: number) => {
-    setFormData((prev) => ({
-      ...prev,
-      files: prev.files.filter((_, i) => i !== index),
-    }));
-  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -133,11 +113,8 @@ export default function GetAQuoteSection(props: GetAQuoteSectionProps) {
         companyName: "",
         service: "",
         productDetails: "",
-        files: [],
       });
-      if (fileInputRef.current) {
-        fileInputRef.current.value = "";
-      }
+
       setTimeout(() => setSubmitted(false), 6000);
     }, 1000);
   };
@@ -295,74 +272,11 @@ export default function GetAQuoteSection(props: GetAQuoteSectionProps) {
                 />
               </div>
 
-              <div>
-                <label className="block text-xs font-semibold text-[#241121] mb-1">
-                  {formLabels.uploadTitle}
-                </label>
-                <div
-                  onClick={() => fileInputRef.current?.click()}
-                  className="w-full border border-gray-200/90 rounded-lg p-2.5 sm:p-3 bg-[#fcfbfc] hover:bg-[#faf8f9] hover:border-[#cb5855]/40 transition-all cursor-pointer flex items-center justify-between group"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-full bg-[#cb5855]/10 flex items-center justify-center shrink-0 group-hover:bg-[#cb5855]/20 group-hover:scale-105 transition-all">
-                      <UploadIcon className="w-6 h-6 text-[#cb5855]" />
-                    </div>
-
-                    <div>
-                      <p className="text-xs sm:text-sm font-semibold text-[#241121] group-hover:text-[#cb5855] transition-colors">
-                        {formLabels.uploadChoose}
-                      </p>
-                      <p className="text-[10px] sm:text-[11px] text-gray-400 mt-0.5">
-                        {formLabels.uploadFormats}
-                      </p>
-                    </div>
-                  </div>
-
-                  <span className="text-xs font-medium text-gray-400 group-hover:text-[#cb5855] transition-colors pr-1">
-                    {formLabels.uploadBrowse}
-                  </span>
-
-                  <input
-                    ref={fileInputRef}
-                    id="fileUpload"
-                    type="file"
-                    multiple
-                    accept=".pdf,.ai,.psd,.jpg,.jpeg,.png"
-                    onChange={handleFileChange}
-                    className="sr-only"
-                  />
-                </div>
-
-                {formData.files.length > 0 && (
-                  <div className="mt-2 flex flex-wrap gap-1.5">
-                    {formData.files.map((file, idx) => (
-                      <span
-                        key={idx}
-                        className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg text-xs font-medium bg-[#cb5855]/10 text-[#cb5855] border border-[#cb5855]/20"
-                      >
-                        <span className="truncate max-w-[180px]">{file.name}</span>
-                        <button
-                          type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            removeFile(idx);
-                          }}
-                          className="hover:text-red-700 ml-1 text-sm leading-none"
-                          aria-label="Remove file"
-                        >
-                          ×
-                        </button>
-                      </span>
-                    ))}
-                  </div>
-                )}
-              </div>
-
               <div className="pt-1">
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full py-3 px-5 rounded-lg bg-[#cb5855] hover:bg-[#ba4c49] active:scale-[0.99] text-white font-semibold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-xs hover:shadow-sm transition-all duration-200 cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed group"
+                  className="w-full py-3 px-5 rounded-lg bg-gradient-to-r from-[#ba4f4c] via-[#c85956] to-[#d66560] hover:from-black hover:via-black hover:to-black hover:bg-black hover:bg-none active:scale-[0.99] text-white font-semibold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-xs hover:shadow-md transition-all duration-300 cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed group"
                 >
                   {isSubmitting ? (
                     <>
@@ -424,7 +338,7 @@ export default function GetAQuoteSection(props: GetAQuoteSectionProps) {
                 <div>
                   <Link
                     href={helpCard.buttonHref}
-                    className="inline-flex items-center gap-1.5 px-3.5 py-3 rounded-lg border border-[#cb5855] text-[#cb5855] text-sm font-semibold hover:bg-[#cb5855] hover:text-white transition-all duration-200 group w-fit"
+                    className="inline-flex items-center gap-1.5 px-3.5 py-3 rounded-lg border border-[#cb5855] text-[#cb5855] text-sm font-semibold hover:bg-black hover:border-black hover:text-white transition-all duration-300 group w-fit cursor-pointer"
                   >
                     <span>{helpCard.buttonLabel}</span>
                     <ArrowRightIcon className="w-5 h-5 transition-transform group-hover:translate-x-1" />

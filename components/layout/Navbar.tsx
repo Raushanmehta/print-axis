@@ -46,7 +46,7 @@ export const QuoteButton: React.FC<QuoteButtonProps> = ({
   );
 
   const baseClasses =
-    "group inline-flex items-center justify-center gap-2.5 px-7 py-3 sm:px-8 sm:py-3.5 rounded-sm bg-gradient-to-r from-[#ba4f4c] via-[#c85956] to-[#d66560] text-white shadow-md hover:shadow-lg hover:brightness-105 active:scale-[0.98] transition-all duration-200 cursor-pointer";
+    "group inline-flex items-center justify-center gap-2.5 px-7 py-3 sm:px-8 sm:py-3.5 rounded-sm bg-gradient-to-r from-[#ba4f4c] via-[#c85956] to-[#d66560] hover:from-black hover:via-black hover:to-black hover:bg-black hover:bg-none text-white shadow-md hover:shadow-lg active:scale-[0.98] transition-all duration-300 cursor-pointer";
 
   if (href) {
     return (
@@ -72,7 +72,7 @@ export default function Navbar({
   navItems = data?.navLinks || siteMap.navbar.navLinks,
   quoteButtonText = data?.cta?.label || siteMap.navbar.cta.label,
   quoteButtonHref = data?.cta?.href || siteMap.navbar.cta.href,
-}: NavbarProps) {
+}: NavbarProps = {}) {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const logo = data?.logo || siteMap.navbar.logo;

@@ -83,7 +83,7 @@ export default function ServiceCard({
         <Link
           href={targetHref}
           aria-label={`Learn more about ${service.title}`}
-          className="w-10 h-10 rounded-full border border-[#cb5855]/40 flex items-center justify-center text-[#cb5855] group-hover:border-[#cb5855] group-hover:bg-[#cb5855] group-hover:text-white transition-all duration-300 shadow-xs"
+          className="w-10 h-10 rounded-full border border-[#cb5855]/40 flex items-center justify-center text-[#cb5855] group-hover:border-black group-hover:bg-black group-hover:text-white hover:bg-black hover:border-black hover:text-white transition-all duration-300 shadow-xs cursor-pointer"
         >
           <ArrowRightIcon className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
         </Link>

@@ -1,4 +1,4 @@
-import PageTopSection from "@/components/common/PageTopSection";
+import Breadcrumb from "@/components/common/Breadcrumb";
 import ThankyouSection from "@/sections/ThankyouSection";
 import { site } from "@/data";
 
@@ -14,7 +14,7 @@ export default function ThankYouPage() {
 
   return (
     <main>
-      <PageTopSection data={pageTopSection} title="Thank You" breadcrumb="Thank You" />
+      <Breadcrumb data={pageTopSection} title="Thank You" breadcrumb="Thank You" />
       <ThankyouSection data={thankyou} />
     </main>
   );

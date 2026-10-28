@@ -1,17 +1,29 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import GalleryCard, { GalleryItem } from "@/components/cards/GalleryCard";
 import { siteMap, type PrintAxisGalleryData } from "@/data";
-import { CloseIcon, ChevronLeftIcon, ChevronRightIcon } from "@/components/icons";
 import {
   FadeUp,
   FadeDown,
   StaggerContainer,
   StaggerItem,
 } from "@/utils/animations";
-import { motion, AnimatePresence } from "framer-motion";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+  type CarouselApi,
+} from "@/components/ui/carousel";
 
 export interface GallerySectionProps {
   data?: PrintAxisGalleryData;
@@ -22,7 +34,7 @@ export interface GallerySectionProps {
   items?: GalleryItem[];
 }
 
-// Gallery section displaying project portfolio with interactive lightbox.
+// Gallery section displaying project portfolio with interactive shadcn Dialog slider.
 export default function GallerySection(props: GallerySectionProps) {
   const fallback = siteMap.gallery;
   const tagline = props.tagline || props.data?.tagline || fallback.tagline;
@@ -31,33 +43,37 @@ export default function GallerySection(props: GallerySectionProps) {
   const subtitle = props.subtitle || props.data?.subtitle || fallback.subtitle;
   const items: GalleryItem[] = (props.items || props.data?.galleryItems || fallback.galleryItems) as GalleryItem[];
 
-  const [activeItem, setActiveItem] = useState<GalleryItem | null>(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [api, setApi] = useState<CarouselApi>();
+  const [current, setCurrent] = useState(0);
 
-  const handleNext = useCallback(() => {
-    if (!activeItem) return;
-    const currentIndex = items.findIndex((i) => i.id === activeItem.id);
-    const nextIndex = (currentIndex + 1) % items.length;
-    setActiveItem(items[nextIndex]);
-  }, [activeItem, items]);
-
-  const handlePrev = useCallback(() => {
-    if (!activeItem) return;
-    const currentIndex = items.findIndex((i) => i.id === activeItem.id);
-    const prevIndex = (currentIndex - 1 + items.length) % items.length;
-    setActiveItem(items[prevIndex]);
-  }, [activeItem, items]);
+  const handlePreview = (item: GalleryItem) => {
+    const idx = items.findIndex((i) => i.id === item.id);
+    const targetIdx = idx >= 0 ? idx : 0;
+    setSelectedIndex(targetIdx);
+    setCurrent(targetIdx);
+    setIsOpen(true);
+  };
 
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (!activeItem) return;
-      if (e.key === "Escape") setActiveItem(null);
-      if (e.key === "ArrowRight") handleNext();
-      if (e.key === "ArrowLeft") handlePrev();
-    };
+    if (!api || !isOpen) return;
+    api.scrollTo(selectedIndex, true);
+  }, [api, isOpen, selectedIndex]);
 
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [activeItem, handleNext, handlePrev]);
+  useEffect(() => {
+    if (!api) return;
+    setCurrent(api.selectedScrollSnap());
+    const onSelect = () => {
+      setCurrent(api.selectedScrollSnap());
+    };
+    api.on("select", onSelect);
+    return () => {
+      api.off("select", onSelect);
+    };
+  }, [api]);
+
+  const activeItem = items[current] || items[0];
 
   return (
     <section className="bg-white py-8 lg:py-12 overflow-hidden">
@@ -91,92 +107,76 @@ export default function GallerySection(props: GallerySectionProps) {
             <StaggerItem key={item.id} variant="scale">
               <GalleryCard
                 item={item}
-                onPreview={(item) => setActiveItem(item)}
+                onPreview={handlePreview}
               />
             </StaggerItem>
           ))}
         </StaggerContainer>
       </div>
 
-      <AnimatePresence>
-        {activeItem && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-black/85 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4"
-            onClick={() => setActiveItem(null)}
+      {/* Shadcn Dialog Modal with Embla Carousel Slider */}
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        <DialogContent className="p-0 overflow-hidden bg-[#241121] border-white/10 max-w-4xl">
+          <Carousel
+            setApi={setApi}
+            opts={{
+              loop: true,
+              startIndex: selectedIndex,
+            }}
+            className="w-full relative"
           >
-            <button
-              type="button"
-              onClick={() => setActiveItem(null)}
-              className="absolute top-4 right-4 z-50 w-9 h-9 rounded-lg bg-white/10 hover:bg-[#cb5855] text-white flex items-center justify-center transition-all duration-200 cursor-pointer"
-              aria-label="Close modal"
-            >
-              <CloseIcon className="w-4 h-4" />
-            </button>
+            <CarouselContent>
+              {items.map((item) => (
+                <CarouselItem key={item.id}>
+                  <div className="relative aspect-[16/10] sm:aspect-[16/9] w-full bg-black/60 flex items-center justify-center">
+                    <Image
+                      src={item.image}
+                      alt={item.alt || item.title}
+                      fill
+                      className="object-contain"
+                      sizes="(max-width: 1024px) 95vw, 896px"
+                      priority
+                    />
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
 
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                handlePrev();
-              }}
-              className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 z-50 w-9 h-9 rounded-lg bg-white/10 hover:bg-[#cb5855] text-white flex items-center justify-center transition-all duration-200 cursor-pointer"
-              aria-label="Previous item"
-            >
-              <ChevronLeftIcon className="w-4 h-4" />
-            </button>
+            {/* Slider Navigation Arrows */}
+            <CarouselPrevious
+              className="absolute left-3 top-1/2 -translate-y-1/2 z-40 bg-black/50 hover:bg-black text-white border-white/20 hover:border-white w-10 h-10 transition-all cursor-pointer"
+            />
+            <CarouselNext
+              className="absolute right-3 top-1/2 -translate-y-1/2 z-40 bg-black/50 hover:bg-black text-white border-white/20 hover:border-white w-10 h-10 transition-all cursor-pointer"
+            />
+          </Carousel>
 
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                handleNext();
-              }}
-              className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 z-50 w-9 h-9 rounded-lg bg-white/10 hover:bg-[#cb5855] text-white flex items-center justify-center transition-all duration-200 cursor-pointer"
-              aria-label="Next item"
-            >
-              <ChevronRightIcon className="w-4 h-4" />
-            </button>
-
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="relative max-w-4xl w-full bg-[#241121] rounded-xl overflow-hidden shadow-2xl border border-white/10"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="relative aspect-[16/10] sm:aspect-[16/9] w-full bg-black/40">
-                <Image
-                  src={activeItem.image}
-                  alt={activeItem.alt}
-                  fill
-                  className="object-contain"
-                  sizes="(max-width: 1024px) 100vw, 896px"
-                  priority
-                />
+          {/* Modal Bottom Details */}
+          {activeItem && (
+            <div className="p-4 sm:p-5 flex items-center justify-between bg-[#241121] text-white border-t border-white/10 gap-4">
+              <div className="flex-1 min-w-0">
+                <span className="text-[11px] font-semibold tracking-wider text-[#cb5855] uppercase block">
+                  {activeItem.category}
+                </span>
+                <DialogTitle className="mt-0.5 truncate">
+                  {activeItem.title}
+                </DialogTitle>
+                {activeItem.description && (
+                  <DialogDescription className="mt-1 line-clamp-2">
+                    {activeItem.description}
+                  </DialogDescription>
+                )}
               </div>
-              <div className="p-4 sm:p-5 flex items-center justify-between bg-[#241121] text-white border-t border-white/10">
-                <div>
-                  <span className="text-[11px] font-semibold tracking-wider text-[#cb5855] uppercase">
-                    {activeItem.category}
-                  </span>
-                  <h3 className="text-base sm:text-lg font-bold text-white mt-0.5">
-                    {activeItem.title}
-                  </h3>
-                  {activeItem.description && (
-                    <p className="text-xs sm:text-sm text-gray-300 mt-1 max-w-xl">
-                      {activeItem.description}
-                    </p>
-                  )}
-                </div>
+
+              {/* Slider Counter Badge */}
+              <div className="shrink-0 px-3 py-1 rounded-full bg-white/10 border border-white/20 text-xs font-semibold text-white/90">
+                {current + 1} / {items.length}
               </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </section>
   );
 }
+

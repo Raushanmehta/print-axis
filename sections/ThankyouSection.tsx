@@ -100,7 +100,7 @@ export default function ThankyouSection(props: ThankyouSectionProps) {
               <AnimatedButton glow>
                 <Link
                   href={backBtn.href}
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#cb5855] hover:bg-[#ba4c49] text-white text-xs sm:text-sm font-semibold transition-all duration-200 shadow-xs"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-gradient-to-r from-[#ba4f4c] via-[#c85956] to-[#d66560] hover:from-black hover:via-black hover:to-black hover:bg-black hover:bg-none text-white text-xs sm:text-sm font-semibold transition-all duration-300 shadow-xs hover:shadow-md cursor-pointer"
                 >
                   <HomeIcon className="w-4 h-4" />
                   <span>{backBtn.label}</span>
@@ -110,7 +110,7 @@ export default function ThankyouSection(props: ThankyouSectionProps) {
               <AnimatedButton>
                 <Link
                   href={servicesBtn.href}
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-gray-200 bg-white hover:bg-gray-50 text-[#241121] text-xs sm:text-sm font-semibold transition-all duration-200 shadow-xs"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-gray-200 bg-white hover:bg-black hover:border-black hover:text-white text-[#241121] text-xs sm:text-sm font-semibold transition-all duration-300 shadow-xs hover:shadow-md cursor-pointer"
                 >
                   <span>{servicesBtn.label}</span>
                   <span aria-hidden="true">→</span>
@@ -120,7 +120,7 @@ export default function ThankyouSection(props: ThankyouSectionProps) {
               <AnimatedButton>
                 <Link
                   href={contactBtn.href}
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-[#cb5855]/30 text-[#cb5855] hover:bg-[#fdf0ef] text-xs sm:text-sm font-semibold transition-all duration-200"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-[#cb5855]/30 text-[#cb5855] hover:bg-black hover:border-black hover:text-white text-xs sm:text-sm font-semibold transition-all duration-300 cursor-pointer"
                 >
                   <span>{contactBtn.label}</span>
                 </Link>

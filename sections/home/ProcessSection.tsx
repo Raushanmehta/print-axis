@@ -78,7 +78,7 @@ export default function ProcessSection(props: ProcessSectionProps) {
             >
               {index < steps.length - 1 && (
                 <div
-                  className="hidden lg:flex items-center justify-center absolute top-14 left-[calc(50%+60px)] w-[calc(100%-120px)] z-0"
+                  className="hidden lg:flex items-center justify-center absolute top-16 -translate-y-1/2 left-[calc(50%+64px)] w-[calc(100%-128px)] z-0"
                   aria-hidden="true"
                 >
                   <div className="flex-1 overflow-hidden h-2 flex items-center">
@@ -105,10 +105,33 @@ export default function ProcessSection(props: ProcessSectionProps) {
                   </div>
 
                   <AnimatedIcon animation="pulse">
-                    <div className="w-7 h-7 rounded-full bg-[#cb5855] text-white flex items-center justify-center text-[14px] shrink-0 mx-2 shadow-xs transition-transform duration-200 group-hover:scale-115">
-                      <ChevronRightIcon className="w-3 h-3" />
+                    <div className="w-7 h-7 rounded-full bg-[#cb5855] text-white flex items-center justify-center shrink-0 mx-2 shadow-xs transition-transform duration-200 group-hover:scale-115">
+                      <ChevronRightIcon className="w-3.5 h-3.5 ml-0.5" />
                     </div>
                   </AnimatedIcon>
+
+                  <div className="flex-1 overflow-hidden h-2 flex items-center">
+                    <svg className="w-full h-2 overflow-visible" preserveAspectRatio="none">
+                      <line
+                        x1="0"
+                        y1="1"
+                        x2="100%"
+                        y2="1"
+                        stroke="#cb5855"
+                        strokeWidth="2"
+                        strokeDasharray="6 6"
+                        strokeOpacity="0.55"
+                      >
+                        <animate
+                          attributeName="stroke-dashoffset"
+                          from="0"
+                          to="-24"
+                          dur="1s"
+                          repeatCount="indefinite"
+                        />
+                      </line>
+                    </svg>
+                  </div>
                 </div>
               )}
 

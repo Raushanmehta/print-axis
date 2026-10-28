@@ -31,11 +31,12 @@ const renderSocialIcon = (iconName: string) => {
   }
 };
 
-export default function Topbar({ data = siteMap.topbar }: TopbarProps) {
-  const { phone, phoneHref, email, emailHref, socialLinks } = data;
+export default function Topbar({ data = siteMap.topbar }: TopbarProps = {}) {
+  const currentData = data || siteMap.topbar;
+  const { phone, phoneHref, email, emailHref, socialLinks } = currentData;
 
   return (
-    <div className="w-full bg-[#362136] text-white text-xs sm:text-[13px]">
+    <div className="w-full bg-[#362136] text-white text-xs sm:text-[13px] hidden sm:block">
       <div className="max-w-[1420px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 py-2 sm:py-2.5 flex flex-wrap items-center justify-between gap-y-2">
         {/* Left Section: Contact Details */}
         <div className="flex items-center flex-wrap gap-3 sm:gap-5">

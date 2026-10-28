@@ -97,8 +97,8 @@ export default function BlogSection(props: BlogSectionProps) {
                   ))}
                 </CarouselContent>
 
-                <CarouselPrevious className="flex -left-3 sm:-left-4 md:-left-5 lg:-left-6 xl:-left-12 size-9 sm:size-10 rounded-full bg-[#fdf0ef] text-[#cb5855] border-transparent hover:bg-[#cb5855] hover:text-white transition-all shadow-md z-20" />
-                <CarouselNext className="flex -right-3 sm:-right-4 md:-right-5 lg:-right-6 xl:-right-12 size-9 sm:size-10 rounded-full bg-[#fdf0ef] text-[#cb5855] border-transparent hover:bg-[#cb5855] hover:text-white transition-all shadow-md z-20" />
+                <CarouselPrevious className="flex -left-3 sm:-left-4 md:-left-5 lg:-left-6 xl:-left-12 size-9 sm:size-10 rounded-full bg-[#fdf0ef] text-[#cb5855] border-transparent hover:bg-black hover:text-white transition-all shadow-md z-20 cursor-pointer" />
+                <CarouselNext className="flex -right-3 sm:-right-4 md:-right-5 lg:-right-6 xl:-right-12 size-9 sm:size-10 rounded-full bg-[#fdf0ef] text-[#cb5855] border-transparent hover:bg-black hover:text-white transition-all shadow-md z-20 cursor-pointer" />
               </div>
             </Carousel>
           </div>

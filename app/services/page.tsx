@@ -1,7 +1,6 @@
 import React from "react";
-import PageTopSection from "@/components/common/PageTopSection";
+import Breadcrumb from "@/components/common/Breadcrumb";
 import ServiceCard, { ServiceItem } from "@/components/cards/ServiceCard";
-import CtaSection from "@/sections/home/CtaSection";
 import { site, type PrintAxisServiceData } from "@/data";
 import {
   PrinterIcon,
@@ -70,7 +69,7 @@ export default function ServicesPage(props: ServicesPageProps = {}) {
 
   return (
     <main>
-      <PageTopSection data={site.pageTopSection} title="Our Services" breadcrumb="Services" />
+      <Breadcrumb data={site.pageTopSection} title="Our Services" breadcrumb="Services" />
       <section className="relative w-full bg-white py-8 lg:py-12 overflow-hidden">
         <div className="max-w-[1420px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10">
           <div className="text-center max-w-3xl mx-auto">
@@ -105,7 +104,6 @@ export default function ServicesPage(props: ServicesPageProps = {}) {
           </div>
         </div>
       </section>
-      <CtaSection data={site.cta} />
     </main>
   );
 }

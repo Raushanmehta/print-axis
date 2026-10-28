@@ -1,7 +1,7 @@
+import { Suspense } from "react";
 import { notFound } from "next/navigation";
-import PageTopSection from "@/components/common/PageTopSection";
+import Breadcrumb from "@/components/common/Breadcrumb";
 import BlogDetailSection from "@/sections/BlogDetailSection";
-import CtaSection from "@/sections/home/CtaSection";
 import { site } from "@/data";
 
 interface BlogDetailRouteProps {
@@ -19,9 +19,9 @@ export function generateStaticParams() {
   return Array.from(slugs).map((slug) => ({ slug }));
 }
 
-// Blog detail page showing article content and sidebar.
-export default async function BlogPostDetailPage({ params }: BlogDetailRouteProps) {
-  const { slug } = await params;
+async function BlogDetailContent({ params }: BlogDetailRouteProps) {
+  const resolvedParams = await params;
+  const slug = resolvedParams?.slug;
   const blogData = site.blog;
 
   const post = blogData?.blogPosts?.find(
@@ -37,17 +37,30 @@ export default async function BlogPostDetailPage({ params }: BlogDetailRouteProp
   }
 
   return (
-    <main>
-      <PageTopSection
+    <>
+      <Breadcrumb
         data={site.pageTopSection}
-        title="Blog Details"
-        breadcrumb="Blog Details"
+        title={post.title || "Blog Details"}
+        parentLabel="Blog"
+        parentHref="/blog"
+        breadcrumb={post.title || "Blog Details"}
       />
       <BlogDetailSection
         slug={slug}
         data={post}
       />
-      <CtaSection data={site.cta} />
+    </>
+  );
+}
+
+// Blog detail page showing article content and sidebar with Suspense for instant navigation.
+export default function BlogPostDetailPage({ params }: BlogDetailRouteProps) {
+  return (
+    <main>
+      <Suspense fallback={<div className="min-h-screen bg-white" />}>
+        <BlogDetailContent params={params} />
+      </Suspense>
     </main>
   );
 }
+

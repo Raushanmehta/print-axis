@@ -1,8 +1,8 @@
 "use client";
 
-import React from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { siteMap, PrintAxisAboutData } from "@/data";
 import {
   ArrowRightIcon,
@@ -16,8 +16,6 @@ import {
   ScaleIn,
   StaggerContainer,
   StaggerItem,
-  AnimatedButton,
-  FloatingElement,
 } from "@/utils/animations";
 
 export interface AboutSectionProps {
@@ -34,10 +32,14 @@ export interface AboutSectionProps {
   smallImage1Alt?: string;
   smallImage2Src?: string;
   smallImage2Alt?: string;
+  showButton?: boolean;
 }
 
 // About section showcasing company story, gallery, and advantages.
 export default function AboutSection(props: AboutSectionProps) {
+  const pathname = usePathname();
+  const showButton =
+    props.showButton !== undefined ? props.showButton : pathname !== "/about";
   const data = props.data || siteMap.about;
 
   const tagline = props.tagline || data?.tagline || siteMap.about.tagline;
@@ -58,7 +60,7 @@ export default function AboutSection(props: AboutSectionProps) {
   const smallImage2Alt = props.smallImage2Alt || data?.smallImage2?.alt || siteMap.about.smallImage2.alt;
 
   return (
-    <section className="relative w-full bg-white py-8 lg:py-12 overflow-hidden">
+    <section className="relative w-full bg-white py-8 lg:py-12 mt-8 mb-8 overflow-hidden">
       <div className="max-w-[1420px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-4 items-stretch">
           <div className="lg:col-span-6 flex flex-col justify-between">
@@ -91,21 +93,21 @@ export default function AboutSection(props: AboutSectionProps) {
                 </p>
               </FadeLeft>
 
-              <FadeLeft delay={0.28}>
-                <div className="mt-3 sm:mt-3">
-                  <AnimatedButton glow>
+              {showButton && (
+                <FadeLeft delay={0.28}>
+                  <div className="mt-3 sm:mt-3">
                     <Link
                       href={buttonHref}
-                      className="group inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-gradient-to-r from-[#ba4f4c] via-[#c85956] to-[#d66560] text-white font-semibold text-xs sm:text-sm tracking-wide uppercase shadow-sm transition-all duration-200"
+                      className="group inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-sm bg-gradient-to-r from-[#ba4f4c] via-[#c85956] to-[#d66560] hover:from-black hover:via-black hover:to-black hover:bg-black hover:bg-none text-white font-semibold text-xs sm:text-sm tracking-wide uppercase shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer"
                     >
                       <span>{buttonText}</span>
                       <span className="transition-transform duration-200 group-hover:translate-x-1 inline-flex items-center">
                         <ArrowRightIcon />
                       </span>
                     </Link>
-                  </AnimatedButton>
-                </div>
-              </FadeLeft>
+                  </div>
+                </FadeLeft>
+              )}
             </div>
 
             <StaggerContainer speed="fast" className="grid grid-cols-2 gap-4 sm:gap-4 mt-4 pt-2">
@@ -135,7 +137,7 @@ export default function AboutSection(props: AboutSectionProps) {
             </StaggerContainer>
           </div>
 
-          <div className="lg:col-span-6 relative flex items-center lg:-mr-0 xl:-mr-0">
+          <div className="hidden lg:flex lg:col-span-6 relative items-center lg:-mr-0 xl:-mr-0">
             <FadeRight delay={0.15} className="w-full h-full">
               <div className="relative w-full h-full min-h-[420px] sm:min-h-[500px] lg:min-h-[560px]">
                 <ScaleIn delay={0.2} className="w-full h-full">
@@ -157,22 +159,21 @@ export default function AboutSection(props: AboutSectionProps) {
       </div>
 
       <div
-        className="absolute right-0 top-0 bottom-0 w-16 sm:w-20 md:w-24 lg:w-28 pointer-events-none hidden sm:flex flex-col justify-between items-end z-0"
+        className="absolute right-0 top-0 bottom-0 w-16 sm:w-20 md:w-24 lg:w-40 pointer-events-none hidden sm:flex flex-col justify-between items-end z-0"
         aria-hidden="true"
       >
-        <FloatingElement amplitude={4} duration={4}>
-          <div className="w-full flex justify-end">
-            <AboutTopAccentIcon />
-          </div>
-        </FloatingElement>
+
+        <div className="w-full flex justify-end">
+          <AboutTopAccentIcon />
+        </div>
+
 
         <div className="w-[1.5px] bg-[#cb5855]/70 h-full my-2 mr-8 sm:mr-10 md:mr-11 lg:mr-12" />
 
-        <FloatingElement amplitude={4} duration={4.2} reverse>
-          <div className="w-full flex justify-end">
-            <AboutBottomAccentIcon />
-          </div>
-        </FloatingElement>
+
+        <div className="w-full flex justify-end">
+          <AboutBottomAccentIcon />
+        </div>
       </div>
     </section>
   );

@@ -1,7 +1,6 @@
-import React from "react";
+
 import BlogCard from "@/components/cards/BlogCard";
-import PageTopSection from "@/components/common/PageTopSection";
-import CtaSection from "@/sections/home/CtaSection";
+import Breadcrumb from "@/components/common/Breadcrumb";
 import { site, type PrintAxisBlogData, type BlogPost } from "@/data";
 
 export interface BlogPageProps {
@@ -15,7 +14,7 @@ export interface BlogPageProps {
 
 // Blog listing page displaying recent printing articles and updates.
 export default function BlogPage(props: BlogPageProps = {}) {
-  const { cta, pageTopSection } = site;
+  const { pageTopSection } = site;
   const blog = props.data || site.blog;
 
   const tagline = props.tagline || blog?.tagline || "OUR BLOGS";
@@ -31,7 +30,7 @@ export default function BlogPage(props: BlogPageProps = {}) {
 
   return (
     <main>
-      <PageTopSection
+      <Breadcrumb
         data={pageTopSection}
         title="Our Blogs"
         breadcrumb="Blog"
@@ -70,7 +69,6 @@ export default function BlogPage(props: BlogPageProps = {}) {
           </div>
         </div>
       </section>
-      <CtaSection data={cta} />
     </main>
   );
 }

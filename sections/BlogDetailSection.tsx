@@ -41,11 +41,11 @@ export default function BlogDetailSection(props: BlogDetailSectionProps) {
     props.data ||
     (props.slug
       ? allBlogPosts.find(
-          (p) =>
-            p.id === props.slug ||
-            p.href === `/blog/${props.slug}` ||
-            p.href?.endsWith(`/${props.slug}`)
-        )
+        (p) =>
+          p.id === props.slug ||
+          p.href === `/blog/${props.slug}` ||
+          p.href?.endsWith(`/${props.slug}`)
+      )
       : null) ||
     allBlogPosts[0] ||
     {};
@@ -80,7 +80,7 @@ export default function BlogDetailSection(props: BlogDetailSectionProps) {
     matchedPost.heroImage ||
     matchedPost.imageSrc ||
     matchedPost.image ||
-    "/images/blog-business-card.jpg";
+    "/images/blog-business-card.webp";
 
   const leadParagraph =
     matchedPost.leadParagraph ||
@@ -102,13 +102,13 @@ export default function BlogDetailSection(props: BlogDetailSectionProps) {
       {
         heading: "1. Select the Right Substrate and GSM",
         text: "Paper weight and fiber texture dictate the longevity and hand-feel of your promotional pieces. For corporate identity, we recommend 350 GSM matte or uncoated cotton stocks.",
-        image: "/images/blog-brochures.jpg",
+        image: "/images/blog-brochures.webp",
         imageAlt: "Paper stocks sample",
       },
       {
         heading: "2. Color Calibration & CMYK Precision",
         text: "Ensure all source assets are formatted in 300 DPI CMYK color profiles with appropriate 3mm bleed margins to eliminate trimming artifacts.",
-        image: "/images/why-choose-tshirts.jpg",
+        image: "/images/why-choose-tshirts.webp",
         imageAlt: "Print press calibration",
       },
     ];
@@ -131,8 +131,8 @@ export default function BlogDetailSection(props: BlogDetailSectionProps) {
     title: "Need Custom Printing?",
     description:
       "Get high-quality custom prints for your business, events or personal use.",
-    buttonText: "Request a Free Quote",
-    buttonHref: "/get-a-quote",
+    buttonText: "Contact Us",
+    buttonHref: "/contact",
   };
 
   return (

@@ -7,7 +7,6 @@ import ProcessSection from "@/sections/home/ProcessSection";
 import ServiceSection from "@/sections/home/ServiceSection";
 import TestimonialSection from "@/sections/home/TestimonialSection";
 
-// Homepage rendering hero, services, process, and testimonial sections.
 export default function Home() {
   const { hero, about, service, process, testimonial, cta, blog } = site;
 

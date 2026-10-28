@@ -62,29 +62,29 @@ export interface FooterProps {
 const renderSocialIcon = (iconName: string) => {
   switch (iconName.toLowerCase()) {
     case "facebook":
-      return <FacebookIcon className="w-6 h-6 fill-current" />;
+      return <FacebookIcon className="w-5 h-5 fill-current" />;
     case "instagram":
-      return <InstagramIcon className="w-6 h-6" />;
+      return <InstagramIcon className="w-5 h-5" />;
     case "linkedin":
-      return <LinkedInIcon className="w-6 h-6 fill-current" />;
+      return <LinkedInIcon className="w-5 h-5 fill-current" />;
     case "youtube":
-      return <YouTubeIcon className="w-6 h-6 fill-current" />;
+      return <YouTubeIcon className="w-5 h-5 fill-current" />;
     default:
       return null;
   }
 };
 
-export default function Footer(props: FooterProps) {
-  const data = props.data || siteMap.footer;
+export default function Footer(props: FooterProps = {}) {
+  const data = props?.data || siteMap.footer;
 
-  const logo = props.logo || data?.logo || siteMap.footer.logo;
-  const description = props.description || data?.description || siteMap.footer.description;
-  const quickLinks = props.quickLinks || data?.quickLinks || siteMap.footer.quickLinks;
-  const services = props.services || data?.services || siteMap.footer.services;
-  const contactInfo = props.contactInfo || data?.contactInfo || siteMap.footer.contactInfo;
-  const copyrightText = props.copyrightText || data?.copyrightText || siteMap.footer.copyrightText;
-  const socialLinks = props.socialLinks || data?.socialLinks || siteMap.footer.socialLinks;
-  const titles = { ...siteMap.footer.titles, ...(data?.titles || {}), ...(props.titles || {}) };
+  const logo = props?.logo || data?.logo || siteMap.footer.logo;
+  const description = props?.description || data?.description || siteMap.footer.description;
+  const quickLinks = props?.quickLinks || data?.quickLinks || siteMap.footer.quickLinks;
+  const services = props?.services || data?.services || siteMap.footer.services;
+  const contactInfo = props?.contactInfo || data?.contactInfo || siteMap.footer.contactInfo;
+  const copyrightText = props?.copyrightText || data?.copyrightText || siteMap.footer.copyrightText;
+  const socialLinks = props?.socialLinks || data?.socialLinks || siteMap.footer.socialLinks;
+  const titles = { ...siteMap.footer.titles, ...(data?.titles || {}), ...(props?.titles || {}) };
 
   const phoneHref = contactInfo.phoneHref || `tel:${contactInfo.phone.replace(/\s+/g, "")}`;
   const emailHref = contactInfo.emailHref || `mailto:${contactInfo.email}`;
@@ -92,7 +92,7 @@ export default function Footer(props: FooterProps) {
   return (
     <footer className="w-full bg-[#261021] text-white pt-16 lg:pt-20">
       <div className="max-w-[1420px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 lg:gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-12 gap-6 lg:gap-8">
           {/* Column 1: Brand & Bio & Socials from JSON */}
           <div className="lg:col-span-4 flex flex-col space-y-6">
             <Link href="/" className="inline-block">
@@ -118,7 +118,7 @@ export default function Footer(props: FooterProps) {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={item.label}
-                  className="w-12 h-12 rounded-full border border-white/40 flex items-center justify-center text-white/90 hover:text-white hover:border-white hover:bg-white/10 transition-all duration-200"
+                  className="w-10 h-10 rounded-full border border-white/40 flex items-center justify-center text-white/90 hover:text-white hover:border-white hover:bg-white/10 transition-all duration-200"
                 >
                   {renderSocialIcon(item.icon)}
                 </Link>

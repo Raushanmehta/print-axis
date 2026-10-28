@@ -86,11 +86,10 @@ export default function TestimonialCard({
           {Array.from({ length: totalCount }).map((_, i) => (
             <span
               key={i}
-              className={`h-1.5 rounded-full transition-all duration-300 ${
-                i === currentIndex
-                  ? "w-6 bg-[#cb5855]"
-                  : "w-2 bg-white/20"
-              }`}
+              className={`h-1.5 rounded-full transition-all duration-300 ${i === currentIndex
+                ? "w-6 bg-[#cb5855]"
+                : "w-2 bg-white/20"
+                }`}
             />
           ))}
         </div>
@@ -100,7 +99,7 @@ export default function TestimonialCard({
             type="button"
             onClick={onPrev}
             aria-label="Previous testimonial"
-            className="w-8 h-8 sm:w-9 sm:h-9 rounded-sm bg-[#4a2240] text-white/90 hover:bg-[#5a2a4e] hover:text-white flex items-center justify-center transition-all duration-200 active:scale-95"
+            className="w-8 h-8 sm:w-9 sm:h-9 rounded-sm bg-[#e06864] text-white hover:bg-black hover:text-white flex items-center justify-center transition-all duration-200 active:scale-95 cursor-pointer shadow-xs hover:shadow-md"
           >
             <ChevronLeftIcon />
           </button>
@@ -109,7 +108,7 @@ export default function TestimonialCard({
             type="button"
             onClick={onNext}
             aria-label="Next testimonial"
-            className="w-8 h-8 sm:w-9 sm:h-9 rounded-sm bg-[#cb5855] text-white hover:bg-[#b84e4b] flex items-center justify-center transition-all duration-200 shadow-sm active:scale-95"
+            className="w-8 h-8 sm:w-9 sm:h-9 rounded-sm bg-[#e06864] text-white hover:bg-black hover:text-white flex items-center justify-center transition-all duration-200 shadow-sm hover:shadow-md active:scale-95 cursor-pointer"
           >
             <ChevronRightIcon className="w-3.5 h-3.5" />
           </button>

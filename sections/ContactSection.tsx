@@ -345,7 +345,7 @@ export default function ContactSection(props: ContactSectionProps) {
               <AnimatedButton glow>
                 <button
                   type="submit"
-                  className="w-full py-2.5 rounded-sm bg-[#851028] hover:bg-[#720e22] text-white font-semibold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-xs transition-all duration-200 cursor-pointer"
+                  className="w-full py-2.5 rounded-sm bg-gradient-to-r from-[#ba4f4c] via-[#c85956] to-[#d66560] hover:from-black hover:via-black hover:to-black hover:bg-black hover:bg-none text-white font-semibold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-xs hover:shadow-md transition-all duration-300 cursor-pointer"
                 >
                   <SendIcon className="w-3.5 h-3.5 fill-current rotate-45 -mt-0.5" />
                   <span>{formConfig.buttonLabel}</span>
@@ -427,7 +427,7 @@ export default function ContactSection(props: ContactSectionProps) {
                   href={mapBanner.directionsUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group inline-flex items-center gap-2 px-4 py-2 rounded-sm bg-white border border-[#cb5855] text-[#cb5855] hover:bg-[#cb5855] hover:text-white font-semibold text-xs sm:text-sm shadow-xs transition-all duration-200"
+                  className="group inline-flex items-center gap-2 px-4 py-2 rounded-sm bg-white border border-[#cb5855] text-[#cb5855] hover:bg-black hover:border-black hover:text-white font-semibold text-xs sm:text-sm shadow-xs transition-all duration-300"
                 >
                   <MapPinSolidIcon className="w-3.5 h-3.5 fill-current" />
                   <span>{mapBanner.directionsLabel}</span>
@@ -438,62 +438,26 @@ export default function ContactSection(props: ContactSectionProps) {
               </div>
             </div>
 
-            <div className="lg:col-span-7 relative w-full h-48 sm:h-56 rounded-sm overflow-hidden border border-[#fae0de] shadow-xs bg-[#e8ece9]">
-              <svg
-                className="w-full h-full object-cover"
-                viewBox="0 0 600 300"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <rect width="600" height="300" fill="#f0ede5" />
+            <div className="lg:col-span-7 relative w-full h-56 sm:h-64 rounded-sm overflow-hidden border border-[#fae0de] shadow-xs bg-[#e8ece9]">
+              <iframe
+                src={(mapBanner as any)?.mapEmbedUrl || "https://maps.google.com/maps?q=3170+Rosewood+Lane+Beverly+Hills+CA+90210&t=&z=14&ie=UTF8&iwloc=&output=embed"}
+                width="100%"
+                height="100%"
+                className="w-full h-full border-0 filter saturate-[0.95]"
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="PrintAxis Office Location - Beverly Hills, CA"
+              />
 
-                <rect x="260" y="230" width="70" height="50" rx="3" fill="#cbe4ca" />
-                <rect x="470" y="240" width="80" height="40" rx="3" fill="#cbe4ca" />
-                <rect x="10" y="235" width="85" height="50" rx="3" fill="#cbe4ca" />
-                <circle cx="280" cy="180" r="30" fill="#daf0d8" />
-
-                <path d="M-10 60 L610 60" stroke="#ffffff" strokeWidth="22" />
-                <path d="M-10 160 L610 160" stroke="#ffffff" strokeWidth="24" />
-                <path d="M-10 240 L610 240" stroke="#ffffff" strokeWidth="18" />
-                <path d="M140 -10 L140 310" stroke="#ffffff" strokeWidth="20" />
-                <path d="M380 -10 L380 310" stroke="#ffffff" strokeWidth="26" />
-                <path d="M520 -10 L520 310" stroke="#ffffff" strokeWidth="16" />
-
-                <path d="M40 -10 L300 310" stroke="#ffffff" strokeWidth="16" />
-                <path d="M550 -10 L220 310" stroke="#ffffff" strokeWidth="18" />
-                <path d="M-10 130 L450 310" stroke="#ffffff" strokeWidth="12" />
-
-                <path d="M20 -10 L20 180" stroke="#d4e8f2" strokeWidth="8" />
-
-                <path d="M-10 160 L610 160" stroke="#ffebc2" strokeWidth="4" />
-                <path d="M380 -10 L380 310" stroke="#ffebc2" strokeWidth="4" />
-
-                <circle cx="200" cy="160" r="45" stroke="#ffffff" strokeWidth="14" fill="none" />
-                <circle cx="200" cy="160" r="45" stroke="#ffebc2" strokeWidth="2" fill="none" />
-
-                <text x="150" y="155" fill="#758276" fontSize="11" fontFamily="sans-serif" fontWeight="500">
-                  Connaught Place
-                </text>
-              </svg>
-
-              <div className="absolute bottom-4 left-1/3 flex items-center gap-1.5 bg-white/95 px-2 py-0.5 rounded-sm shadow-xs border border-gray-100 text-[10px] font-semibold text-[#0066cc]">
-                <span className="w-3.5 h-3.5 rounded-xs bg-[#0066cc] text-white flex items-center justify-center text-[8px] font-bold">
-                  M
-                </span>
-                <span>{mapBanner.metroStation}</span>
-              </div>
-
-              <div className="absolute top-1/2 left-2/3 -translate-x-1/2 -translate-y-1/2 flex items-center gap-2">
-                <div className="w-7 h-7 rounded-sm bg-[#cb5855] text-white flex items-center justify-center shadow-md animate-bounce duration-1000">
+              <div className="absolute top-3 left-3 bg-white/95 backdrop-blur-xs px-2.5 py-1.5 rounded-sm shadow-md border border-gray-100 text-left pointer-events-none hidden sm:flex items-center gap-2">
+                <div className="w-6 h-6 rounded-xs bg-[#cb5855] text-white flex items-center justify-center shrink-0">
                   <LocationIcon className="w-3.5 h-3.5 fill-current" />
                 </div>
-
-                <div className="bg-white/95 backdrop-blur-xs px-2.5 py-1.5 rounded-sm shadow-md border border-gray-100 text-left">
+                <div>
                   <h5 className="text-[11px] font-bold text-[#241121]">{mapBanner.officePin.title}</h5>
-                  <p className="text-[9px] text-gray-500 leading-tight mt-0.5">
-                    {mapBanner.officePin.lines[0]}
-                    <br />
-                    {mapBanner.officePin.lines[1]}
+                  <p className="text-[9px] text-gray-500 leading-tight">
+                    {mapBanner.officePin.lines[0]} {mapBanner.officePin.lines[1]}
                   </p>
                 </div>
               </div>

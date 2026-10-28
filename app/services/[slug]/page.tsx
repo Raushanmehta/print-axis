@@ -1,8 +1,8 @@
+import { Suspense } from "react";
 import { notFound } from "next/navigation";
-import PageTopSection from "@/components/common/PageTopSection";
+import Breadcrumb from "@/components/common/Breadcrumb";
 import ServiceDetailSection from "@/sections/ServiceDetailSection";
 import WhyChooseUsSection from "@/sections/WhyChooseUsSection";
-import CtaSection from "@/sections/home/CtaSection";
 import { site } from "@/data";
 
 interface ServiceDetailRouteProps {
@@ -20,9 +20,9 @@ export function generateStaticParams() {
   return Array.from(slugs).map((slug) => ({ slug }));
 }
 
-// Service details page rendering specific printing service information.
-export default async function ServiceDetailPage({ params }: ServiceDetailRouteProps) {
-  const { slug } = await params;
+async function ServiceDetailContent({ params }: ServiceDetailRouteProps) {
+  const resolvedParams = await params;
+  const slug = resolvedParams?.slug;
   const serviceData = site.service;
 
   const matchedService = serviceData?.servicesList?.find(
@@ -38,18 +38,30 @@ export default async function ServiceDetailPage({ params }: ServiceDetailRoutePr
   }
 
   return (
-    <main>
-      <PageTopSection
+    <>
+      <Breadcrumb
         data={site.pageTopSection}
         title={matchedService.title || "Service Detail"}
-        breadcrumb="Service Detail"
+        parentLabel="Services"
+        parentHref="/services"
+        breadcrumb={matchedService.title || "Service Detail"}
       />
       <ServiceDetailSection
         slug={slug}
         data={matchedService}
       />
       <WhyChooseUsSection data={site.whyChooseUs} />
-      <CtaSection data={site.cta} />
+    </>
+  );
+}
+
+// Service details page rendering specific printing service information with Suspense for instant navigation.
+export default function ServiceDetailPage({ params }: ServiceDetailRouteProps) {
+  return (
+    <main>
+      <Suspense fallback={<div className="min-h-screen bg-white" />}>
+        <ServiceDetailContent params={params} />
+      </Suspense>
     </main>
   );
 }

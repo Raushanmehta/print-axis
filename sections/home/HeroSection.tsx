@@ -122,7 +122,7 @@ export default function HeroSection(props: HeroSectionProps) {
                 <AnimatedButton glow>
                   <Link
                     href={quoteButtonHref}
-                    className="group inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-sm bg-gradient-to-r from-[#ba4f4c] via-[#c85956] to-[#d66560] text-white font-semibold text-xs sm:text-sm tracking-wide uppercase shadow-sm transition-all duration-200"
+                    className="group inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-sm bg-gradient-to-r from-[#ba4f4c] via-[#c85956] to-[#d66560] hover:from-black hover:via-black hover:to-black hover:bg-black hover:bg-none text-white font-semibold text-xs sm:text-sm tracking-wide uppercase shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer"
                   >
                     <span>{quoteButtonText}</span>
                     <span className="transition-transform duration-200 group-hover:translate-x-1 inline-flex items-center">
@@ -134,7 +134,7 @@ export default function HeroSection(props: HeroSectionProps) {
                 <AnimatedButton>
                   <Link
                     href={servicesButtonHref}
-                    className="group inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-sm border-2 border-[#241121] bg-white/90 backdrop-blur-xs text-[#241121] font-semibold text-xs sm:text-sm tracking-wide uppercase hover:bg-[#241121] hover:text-white transition-all duration-200"
+                    className="group inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-sm border-2 border-[#241121] bg-white/90 backdrop-blur-xs text-[#241121] font-semibold text-xs sm:text-sm tracking-wide uppercase hover:bg-black hover:border-black hover:text-white hover:shadow-md transition-all duration-300 cursor-pointer"
                   >
                     <span>{servicesButtonText}</span>
                     <span className="transition-transform duration-200 group-hover:translate-x-1 inline-flex items-center">
