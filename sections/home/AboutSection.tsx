@@ -159,7 +159,7 @@ export default function AboutSection(props: AboutSectionProps) {
       </div>
 
       <div
-        className="absolute right-0 top-0 bottom-0 w-16 sm:w-20 md:w-24 lg:w-40 pointer-events-none hidden sm:flex flex-col justify-between items-end z-0"
+        className="absolute right-0 top-0 bottom-0 lg:w-40 pointer-events-none hidden lg:flex flex-col justify-between items-end z-0"
         aria-hidden="true"
       >
 

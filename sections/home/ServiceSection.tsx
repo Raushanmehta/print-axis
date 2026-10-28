@@ -13,6 +13,10 @@ import {
   Cube3DIcon,
   OffsetIcon,
   BrandingIcon,
+  BoxPackagingIcon,
+  TShirtIcon,
+  CustomDesignIcon,
+  SpeedIcon,
 } from "@/components/icons";
 import {
   FadeLeft,
@@ -50,15 +54,25 @@ const renderServiceFeatureIcon = (icon: React.ReactNode | string) => {
   switch (iconName) {
     case "quality":
     case "badge":
-      return <BadgeCheckIcon />;
+    case "precision":
+    case "diamond":
+      return <BadgeCheckIcon className="w-6 h-6 text-[#cb5855]" />;
+    case "custom":
+    case "design":
+      return <CustomDesignIcon className="w-6 h-6 text-[#cb5855]" />;
+    case "speed":
+    case "rapid":
+    case "turnaround":
+      return <SpeedIcon className="w-6 h-6 text-[#cb5855]" />;
     case "variety":
     case "layers":
-      return <LayersIcon />;
+    case "stocks":
+      return <LayersIcon className="w-6 h-6 text-[#cb5855]" />;
     case "delivery":
     case "truck":
-      return <TruckIcon />;
+      return <TruckIcon className="w-6 h-6 text-[#cb5855]" />;
     default:
-      return null;
+      return <BadgeCheckIcon className="w-6 h-6 text-[#cb5855]" />;
   }
 };
 
@@ -69,21 +83,30 @@ const renderServiceCardIcon = (icon: React.ReactNode | string) => {
 
   switch (iconName) {
     case "printer":
+    case "printing":
     case "printing-services":
-      return <PrinterIcon />;
+      return <PrinterIcon className="w-7 h-7" />;
     case "3d":
     case "cube":
     case "3d-printing":
-      return <Cube3DIcon />;
+      return <Cube3DIcon className="w-7 h-7" />;
     case "offset":
     case "offset-printing":
-      return <OffsetIcon />;
+      return <OffsetIcon className="w-7 h-7" />;
     case "design":
     case "branding":
     case "design-branding":
-      return <BrandingIcon />;
+      return <BrandingIcon className="w-7 h-7" />;
+    case "packaging":
+    case "custom-packaging":
+    case "box":
+      return <BoxPackagingIcon className="w-7 h-7" />;
+    case "tshirt":
+    case "apparel":
+    case "apparel-printing":
+      return <TShirtIcon className="w-7 h-7" />;
     default:
-      return null;
+      return <PrinterIcon className="w-7 h-7" />;
   }
 };
 
