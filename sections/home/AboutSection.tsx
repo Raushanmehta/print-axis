@@ -61,7 +61,7 @@ export default function AboutSection(props: AboutSectionProps) {
 
   return (
     <section className="relative w-full bg-white py-8 lg:py-12 mt-8 mb-8 overflow-hidden">
-      <div className="max-w-[1420px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10">
+      <div className="relative max-w-[1420px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-4 items-stretch">
           <div className="lg:col-span-6 flex flex-col justify-between">
             <div>
@@ -156,23 +156,21 @@ export default function AboutSection(props: AboutSectionProps) {
             </FadeRight>
           </div>
         </div>
-      </div>
 
-      <div
-        className="absolute right-0 top-0 bottom-0 lg:w-40 pointer-events-none hidden lg:flex flex-col justify-between items-end z-0"
-        aria-hidden="true"
-      >
+        {/* Outer Decorative Accent Geometric Frame on Right Edge (Bounded to max-w container) */}
+        <div
+          className="absolute -right-12  -top-8 -bottom-8 lg:-top-12 lg:-bottom-12 lg:w-40 pointer-events-none hidden lg:flex flex-col justify-between items-end z-0"
+          aria-hidden="true"
+        >
+          <div className="w-full flex justify-end">
+            <AboutTopAccentIcon />
+          </div>
 
-        <div className="w-full flex justify-end">
-          <AboutTopAccentIcon />
-        </div>
+          <div className="w-[1.5px] bg-[#cb5855]/70 h-full my-2 mr-8 sm:mr-10 md:mr-11 lg:mr-12" />
 
-
-        <div className="w-[1.5px] bg-[#cb5855]/70 h-full my-2 mr-8 sm:mr-10 md:mr-11 lg:mr-12" />
-
-
-        <div className="w-full flex justify-end">
-          <AboutBottomAccentIcon />
+          <div className="w-full flex justify-end">
+            <AboutBottomAccentIcon />
+          </div>
         </div>
       </div>
     </section>

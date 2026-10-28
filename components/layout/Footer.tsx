@@ -92,9 +92,9 @@ export default function Footer(props: FooterProps = {}) {
   return (
     <footer className="w-full bg-[#261021] text-white pt-16 lg:pt-20">
       <div className="max-w-[1420px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10">
-        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-12 gap-6 lg:gap-8">
+        <div className="grid grid-cols-2 lg:grid-cols-12 gap-y-10 gap-x-6 sm:gap-x-8 lg:gap-8">
           {/* Column 1: Brand & Bio & Socials from JSON */}
-          <div className="lg:col-span-4 flex flex-col space-y-6">
+          <div className="col-span-2 lg:col-span-4 flex flex-col space-y-6">
             <Link href="/" className="inline-block">
               <Image
                 src={logo.src}
@@ -127,7 +127,7 @@ export default function Footer(props: FooterProps = {}) {
           </div>
 
           {/* Column 2: Quick Links from JSON */}
-          <div className="lg:col-span-2">
+          <div className="col-span-1 lg:col-span-2">
             <h3 className="text-white text-lg font-semibold tracking-wide">
               {titles.quickLinks}
             </h3>
@@ -151,7 +151,7 @@ export default function Footer(props: FooterProps = {}) {
           </div>
 
           {/* Column 3: Our Services from JSON */}
-          <div className="lg:col-span-3">
+          <div className="col-span-1 lg:col-span-3">
             <h3 className="text-white text-lg font-semibold tracking-wide">
               {titles.services}
             </h3>
@@ -175,7 +175,7 @@ export default function Footer(props: FooterProps = {}) {
           </div>
 
           {/* Column 4: Get In Touch from JSON */}
-          <div className="lg:col-span-3 lg:border-l lg:border-white/10 lg:pl-8">
+          <div className="col-span-2 lg:col-span-3 lg:border-l lg:border-white/10 lg:pl-8">
             <h3 className="text-white text-lg font-semibold tracking-wide">
               {titles.contact}
             </h3>
